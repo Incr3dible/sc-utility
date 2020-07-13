@@ -1,5 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:sc_utility/api/GithubApiClient.dart';
+import 'package:sc_utility/utils/flutterextentions.dart';
 import '../resources.dart';
 import '../translationProvider.dart';
 
@@ -15,6 +17,7 @@ class SettingsState extends State<SettingsPage> {
   bool nightModeOn = false;
   int nightModeState = 2;
   int language = 0;
+  bool isLoading = false;
 
   @override
   void initState() {
@@ -79,106 +82,149 @@ class SettingsState extends State<SettingsPage> {
         appBar: AppBar(
           title: Text(TranslationProvider.get("TID_SETTINGS")),
         ),
-        body: Column(
-          children: [
-            Flexible(
-              fit: FlexFit.tight,
-              child: ListView(
-                children: <Widget>[
-                  ListTile(
-                    title: Text(TranslationProvider.get("TID_NOTIFICATIONS")),
-                  ),
-                  Container(
-                    child: ListTile(
-                      onTap: () => {
-                        setState(() {
-                          notificationsOn = !notificationsOn;
-                          onNotificationsChanged();
-                        })
-                      },
-                      leading: notificationsOn
-                          ? Icon(Icons.notifications_active)
-                          : Icon(Icons.notifications_off),
-                      title: Text(
-                        TranslationProvider.get("TID_MAINTENANCE_NOTIFICATIONS"),
-                      ),
-                      subtitle: Text(TranslationProvider.get("TID_MAINTENANCE_NOTIFICATION_DESC")),
-                      trailing: Switch(
-                        value: notificationsOn,
-                        onChanged: (value) {
+        body: Stack(children: <Widget>[
+          Column(
+            children: [
+              Flexible(
+                fit: FlexFit.tight,
+                child: ListView(
+                  children: <Widget>[
+                    ListTile(
+                      title: Text(TranslationProvider.get("TID_NOTIFICATIONS")),
+                    ),
+                    Container(
+                      child: ListTile(
+                        onTap: () => {
                           setState(() {
-                            notificationsOn = value;
+                            notificationsOn = !notificationsOn;
                             onNotificationsChanged();
-                          });
+                          })
                         },
-                        activeTrackColor: Colors.blueGrey[600],
-                        activeColor: Colors.blueGrey[800],
+                        leading: notificationsOn
+                            ? Icon(Icons.notifications_active)
+                            : Icon(Icons.notifications_off),
+                        title: Text(
+                          TranslationProvider.get(
+                              "TID_MAINTENANCE_NOTIFICATIONS"),
+                        ),
+                        subtitle: Text(TranslationProvider.get(
+                            "TID_MAINTENANCE_NOTIFICATION_DESC")),
+                        trailing: Switch(
+                          value: notificationsOn,
+                          onChanged: (value) {
+                            setState(() {
+                              notificationsOn = value;
+                              onNotificationsChanged();
+                            });
+                          },
+                          activeTrackColor: Colors.blueGrey[600],
+                          activeColor: Colors.blueGrey[800],
+                        ),
                       ),
                     ),
-                  ),
-                  Divider(),
-                  ListTile(
-                      leading: Icon(Icons.style),
-                      title: Text(
-                        TranslationProvider.get("TID_THEME"),
-                      )),
-                  Center(
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Radio<int>(
-                          value: 0,
-                          groupValue: nightModeState,
-                          onChanged: handleRadioValueChanged,
-                        ),
-                        Text(TranslationProvider.get("TID_LIGHT")),
-                        Radio<int>(
-                          value: 1,
-                          groupValue: nightModeState,
-                          onChanged: handleRadioValueChanged,
-                        ),
-                        Text(TranslationProvider.get("TID_DARK")),
-                        Radio<int>(
-                          value: 2,
-                          groupValue: nightModeState,
-                          onChanged: handleRadioValueChanged,
-                        ),
-                        Text("System"),
+                    Divider(),
+                    ListTile(
+                        leading: Icon(Icons.style),
+                        title: Text(
+                          TranslationProvider.get("TID_THEME"),
+                        )),
+                    Center(
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Radio<int>(
+                            value: 0,
+                            groupValue: nightModeState,
+                            onChanged: handleRadioValueChanged,
+                          ),
+                          Text(TranslationProvider.get("TID_LIGHT")),
+                          Radio<int>(
+                            value: 1,
+                            groupValue: nightModeState,
+                            onChanged: handleRadioValueChanged,
+                          ),
+                          Text(TranslationProvider.get("TID_DARK")),
+                          Radio<int>(
+                            value: 2,
+                            groupValue: nightModeState,
+                            onChanged: handleRadioValueChanged,
+                          ),
+                          Text("System"),
+                        ],
+                      ),
+                    ),
+                    Divider(),
+                    ListTile(
+                        leading: Icon(Icons.language),
+                        title: Text(TranslationProvider.get("TID_LANGUAGE"))),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        flagButton(0, "assets/uk.png", language == 0),
+                        flagButton(1, "assets/de.png", language == 1),
                       ],
                     ),
-                  ),
-                  Divider(),
-                  ListTile(
-                      leading: Icon(Icons.language),
-                      title: Text(TranslationProvider.get("TID_LANGUAGE"))),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      flagButton(0, "assets/uk.png", language == 0),
-                      flagButton(1, "assets/de.png", language == 1),
-                    ],
-                  ),
-                  Divider(),
-                  ListTile(
-                    leading: Icon(Icons.info),
-                    title: Text(
-                      "Info",
+                    Divider(),
+                    ListTile(
+                      leading: Icon(Icons.info),
+                      title: Text(
+                        "Info",
+                      ),
+                      subtitle: Text("Version: $version Build: $build"),
+                      trailing: IconButton(
+                        icon: Icon(Icons.update),
+                        onPressed: () async {
+                          setState(() {
+                            isLoading = true;
+                          });
+
+                          var isUpdateAvailable =
+                              await GithubApiClient.isNewTagAvailable(resources
+                                  .packageInfo.version
+                                  .replaceAll(".debug", ""));
+
+                          setState(() {
+                            isLoading = false;
+                          });
+
+                          if (isUpdateAvailable) {
+                            FlutterExtensions
+                                .showPopupDialogWithActionAndCancel(
+                                    context,
+                                    "Update available",
+                                    "A new update for this app is available!",
+                                    "Download",
+                                    () => {},
+                                    false);
+                          } else {
+                            FlutterExtensions.showPopupDialog(context,
+                                "Up-to-date", "You are on the latest version.");
+                          }
+                        },
+                      ),
                     ),
-                    subtitle: Text("Version: $version Build: $build"),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
-            Container(
-              margin: EdgeInsets.all(20),
-              child: Center(
-                  child: Text(
-                "Built with ❤",
-                style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
-              )),
-            )
-          ],
-        ));
+              Container(
+                margin: EdgeInsets.all(20),
+                child: Center(
+                    child: Text(
+                  "Built with ❤",
+                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+                )),
+              )
+            ],
+          ),
+          isLoading
+              ? Container(
+                  color: Colors.black54,
+                  child: Center(
+                    child: CircularProgressIndicator(),
+                  ),
+                )
+              : SizedBox.shrink()
+        ]));
   }
 
   Widget flagButton(int index, String assetImage, bool selected) {
@@ -200,20 +246,20 @@ class SettingsState extends State<SettingsPage> {
         ),
         selected
             ? Positioned.fill(
-            child: Align(
-              alignment: Alignment.bottomRight,
-              child: Container(
-                child: Icon(
-                  Icons.done,
-                  size: 20,
-                  color: Colors.white,
+                child: Align(
+                alignment: Alignment.bottomRight,
+                child: Container(
+                  child: Icon(
+                    Icons.done,
+                    size: 20,
+                    color: Colors.white,
+                  ),
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: Theme.of(context).accentColor,
+                  ),
                 ),
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: Theme.of(context).accentColor,
-                ),
-              ),
-            ))
+              ))
             : SizedBox.shrink()
       ],
     );
