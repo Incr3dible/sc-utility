@@ -5,6 +5,7 @@ import 'package:sc_utility/pages/crclient.dart';
 import 'package:sc_utility/pages/eventpage.dart';
 import 'package:sc_utility/pages/settings.dart';
 import 'package:sc_utility/resources.dart';
+import 'package:sc_utility/translationProvider.dart';
 import 'package:sc_utility/utils/flutterextentions.dart';
 import 'package:sc_utility/utils/rootutil.dart';
 import 'dart:async';
@@ -214,7 +215,8 @@ class MainPageState extends State<MainPage>
                         decoration: BoxDecoration(
                           color: Colors.blueGrey[900],
                         ),
-                        accountEmail: Text("an open source project"),
+                        accountEmail: Text(
+                            TranslationProvider.get("TID_OPEN_SOURCE_DESC")),
                         accountName: Text(title),
                       ),
                       ListTile(
@@ -255,7 +257,7 @@ class MainPageState extends State<MainPage>
                       ),
                       ListTile(
                         title: Text(
-                          'Settings',
+                          TranslationProvider.get("TID_SETTINGS"),
                         ),
                         leading: Icon(
                           Icons.settings,
@@ -270,9 +272,8 @@ class MainPageState extends State<MainPage>
                 ),
                 ListTile(
                   leading: Icon(Icons.open_in_new),
-                  title: Text("More"),
-                  subtitle: Text(
-                      "looking for help or want to take a look at the code of this app?"),
+                  title: Text(TranslationProvider.get("TID_MORE")),
+                  subtitle: Text(TranslationProvider.get("TID_MORE_DESC")),
                 ),
                 Divider(),
                 ListTile(
@@ -317,7 +318,7 @@ class MainPageState extends State<MainPage>
         padding: EdgeInsets.all(15.0),
         child: Center(
           child: Text(
-            'Welcome to the Supercell Utility!\nThis app requires root for some features so make sure you have given root access to this app.',
+            TranslationProvider.get("TID_WELCOME_MESSAGE"),
             textAlign: TextAlign.center,
             style: TextStyle(fontSize: 16),
           ),

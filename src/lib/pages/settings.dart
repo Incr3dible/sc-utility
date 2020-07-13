@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:sc_utility/api/GithubApiClient.dart';
 import 'package:sc_utility/utils/flutterextentions.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../resources.dart';
 import '../translationProvider.dart';
 
@@ -129,27 +130,47 @@ class SettingsState extends State<SettingsPage> {
                           TranslationProvider.get("TID_THEME"),
                         )),
                     Center(
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
+                      child: Wrap(
                         children: [
-                          Radio<int>(
-                            value: 0,
-                            groupValue: nightModeState,
-                            onChanged: handleRadioValueChanged,
+                          ChoiceChip(
+                            selectedColor: Theme.of(context).accentColor,
+                            labelStyle: TextStyle(color: Colors.white),
+                            label: Text(TranslationProvider.get("TID_LIGHT")),
+                            selected: nightModeState == 0,
+                            onSelected: (value) {
+                              handleRadioValueChanged(0);
+                            },
                           ),
-                          Text(TranslationProvider.get("TID_LIGHT")),
-                          Radio<int>(
-                            value: 1,
-                            groupValue: nightModeState,
-                            onChanged: handleRadioValueChanged,
+                          const SizedBox(width: 10),
+                          ChoiceChip(
+                            selectedColor: Theme.of(context).accentColor,
+                            labelStyle: TextStyle(
+                                color: nightModeState > 0
+                                    ? Colors.white
+                                    : Colors.black),
+                            label: Text(TranslationProvider.get("TID_DARK")),
+                            selected: nightModeState == 1,
+                            onSelected: (value) {
+                              setState(() {
+                                handleRadioValueChanged(1);
+                              });
+                            },
                           ),
-                          Text(TranslationProvider.get("TID_DARK")),
-                          Radio<int>(
-                            value: 2,
-                            groupValue: nightModeState,
-                            onChanged: handleRadioValueChanged,
+                          const SizedBox(width: 10),
+                          ChoiceChip(
+                            selectedColor: Theme.of(context).accentColor,
+                            labelStyle: TextStyle(
+                                color: nightModeState > 0
+                                    ? Colors.white
+                                    : Colors.black),
+                            label: Text("System"),
+                            selected: nightModeState == 2,
+                            onSelected: (value) {
+                              setState(() {
+                                handleRadioValueChanged(2);
+                              });
+                            },
                           ),
-                          Text("System"),
                         ],
                       ),
                     ),
@@ -191,14 +212,21 @@ class SettingsState extends State<SettingsPage> {
                             FlutterExtensions
                                 .showPopupDialogWithActionAndCancel(
                                     context,
-                                    "Update available",
-                                    "A new update for this app is available!",
-                                    "Download",
-                                    () => {},
+                                    TranslationProvider.get(
+                                        "TID_UPDATE_AVAILABLE"),
+                                    TranslationProvider.get(
+                                        "TID_UPDATE_AVAILABLE_DESC"),
+                                    TranslationProvider.get("TID_DOWNLOAD"),
+                                    () => {
+                                          launchURL(
+                                              "https://github.com/Incr3dible/sc-utility/releases")
+                                        },
                                     false);
                           } else {
-                            FlutterExtensions.showPopupDialog(context,
-                                "Up-to-date", "You are on the latest version.");
+                            FlutterExtensions.showPopupDialog(
+                                context,
+                                TranslationProvider.get("TID_UP_TO_DATE"),
+                                TranslationProvider.get("TID_LATEST_VERSION"));
                           }
                         },
                       ),
@@ -225,6 +253,14 @@ class SettingsState extends State<SettingsPage> {
                 )
               : SizedBox.shrink()
         ]));
+  }
+
+  void launchURL(String url) async {
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
+    }
   }
 
   Widget flagButton(int index, String assetImage, bool selected) {
