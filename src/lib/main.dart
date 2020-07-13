@@ -57,6 +57,7 @@ class MyAppState extends State<MyApp> {
           primarySwatch: themeColor,
           accentColor: themeColor,
           toggleableActiveColor: themeColor,
+          appBarTheme: AppBarTheme(color: themeColor),
           visualDensity: VisualDensity.adaptivePlatformDensity,
           brightness: Brightness.dark),
       themeMode: themeMode,
@@ -84,7 +85,6 @@ class MainPageState extends State<MainPage>
     with SingleTickerProviderStateMixin {
   GlobalKey<ScaffoldState> scaffoldKey = new GlobalKey<ScaffoldState>();
   TabController controller;
-  PackageInfo packageInfo;
   List<ApplicationWithIcon> games;
   bool isLoading = true;
   Resources resources;
@@ -127,8 +127,6 @@ class MainPageState extends State<MainPage>
   }
 
   void prepare() async {
-    packageInfo = await PackageInfo.fromPlatform();
-
     await initRootRequest();
     await Permission.storage.request();
     await RootUtils.grantStoragePermissions();
@@ -205,69 +203,76 @@ class MainPageState extends State<MainPage>
             ],
           ),
           drawer: Drawer(
-            child: ListView(
-              padding: EdgeInsets.zero,
+            child: Column(
               children: <Widget>[
-                UserAccountsDrawerHeader(
-                  accountName: Text(title),
-                  decoration: BoxDecoration(
-                    color: Colors.blueGrey[900],
+                Flexible(
+                  fit: FlexFit.tight,
+                  child: ListView(
+                    padding: EdgeInsets.zero,
+                    children: <Widget>[
+                      UserAccountsDrawerHeader(
+                        decoration: BoxDecoration(
+                          color: Colors.blueGrey[900],
+                        ),
+                        accountEmail: Text("an open source project"),
+                        accountName: Text(title),
+                      ),
+                      ListTile(
+                        enabled: _rootStatus,
+                        title: Text('CR Event Images (ROOT)'),
+                        leading: Icon(
+                          Icons.image,
+                        ),
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              new MaterialPageRoute(
+                                builder: (BuildContext context) =>
+                                    new EventPage("Clash Royale",
+                                        "com.supercell.clashroyale", "events"),
+                              ));
+                        },
+                      ),
+                      ListTile(
+                        enabled: _rootStatus,
+                        title: Text(
+                          'COC Event Images (ROOT)',
+                        ),
+                        leading: Icon(
+                          Icons.image,
+                        ),
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              new MaterialPageRoute(
+                                builder: (BuildContext context) =>
+                                    new EventPage(
+                                        "Clash of Clans",
+                                        "com.supercell.clashofclans",
+                                        "events-coc"),
+                              ));
+                        },
+                      ),
+                      ListTile(
+                        title: Text(
+                          'Settings',
+                        ),
+                        leading: Icon(
+                          Icons.settings,
+                        ),
+                        onTap: () {
+                          Navigator.pushNamed(context, '/settings');
+                        },
+                        enabled: true,
+                      ),
+                    ],
                   ),
-                  accountEmail: packageInfo != null
-                      ? Text("Version: " +
-                          packageInfo.version +
-                          ", Build: " +
-                          packageInfo.buildNumber)
-                      : Text(""),
                 ),
                 ListTile(
-                  enabled: _rootStatus,
-                  title: Text('CR Event Images (ROOT)'),
-                  leading: Icon(
-                    Icons.image,
-                  ),
-                  onTap: () {
-                    Navigator.push(
-                        context,
-                        new MaterialPageRoute(
-                          builder: (BuildContext context) => new EventPage(
-                              "Clash Royale",
-                              "com.supercell.clashroyale",
-                              "events"),
-                        ));
-                  },
-                ),
-                ListTile(
-                  enabled: _rootStatus,
-                  title: Text(
-                    'COC Event Images (ROOT)',
-                  ),
-                  leading: Icon(
-                    Icons.image,
-                  ),
-                  onTap: () {
-                    Navigator.push(
-                        context,
-                        new MaterialPageRoute(
-                          builder: (BuildContext context) => new EventPage(
-                              "Clash of Clans",
-                              "com.supercell.clashofclans",
-                              "events-coc"),
-                        ));
-                  },
-                ),
-                Divider(),
-                ListTile(
-                  title: Text(
-                    'Settings',
-                  ),
-                  leading: Icon(
-                    Icons.settings,
-                  ),
-                  onTap: () {
-                    Navigator.pushNamed(context, '/settings');
-                  },
-                  enabled: true,
+                  leading: Icon(Icons.open_in_new),
+                  title: Text("More"),
+                  subtitle: Text(
+                      "looking for help or want to take a look at the code of this app?"),
                 ),
                 Divider(),
                 ListTile(
@@ -279,6 +284,17 @@ class MainPageState extends State<MainPage>
                   ),
                   onTap: () {
                     launchURL('https://discord.gg/XdTw2PZ');
+                  },
+                ),
+                ListTile(
+                  title: Text(
+                    'Github',
+                  ),
+                  leading: Icon(
+                    Icons.code,
+                  ),
+                  onTap: () {
+                    launchURL('https://github.com/Incr3dible/sc-utility');
                   },
                 )
               ],
@@ -312,6 +328,7 @@ class MainPageState extends State<MainPage>
     widgets.addAll(buildGames());
 
     return ListView.builder(
+        padding: EdgeInsets.only(top: 8, left: 5, right: 5),
         itemCount: widgets.length,
         itemBuilder: (BuildContext ctx, int index) {
           return widgets[index];

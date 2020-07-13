@@ -1,5 +1,6 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:package_info/package_info.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sc_utility/network/Client.dart';
 
@@ -24,6 +25,7 @@ class Resources {
   MainPageState mainPage;
   MyAppState myApp;
   CrClientPageState clientPageState;
+  PackageInfo packageInfo;
 
   bool isPopupOpen = false;
   FirebaseMessaging firebaseMessaging;
@@ -42,6 +44,8 @@ class Resources {
     if (prefs.getBool("notifications") ?? true) {
       firebaseMessaging.subscribeToTopic("everyone");
     }
+
+    packageInfo = await PackageInfo.fromPlatform();
 
     print("Initialized resources.");
 
@@ -65,6 +69,10 @@ class Resources {
     }
 
     return ThemeMode.system;
+  }
+
+  int language(){
+    return prefs?.getInt("language") ?? 0;
   }
 
   String fingerprintSha() {

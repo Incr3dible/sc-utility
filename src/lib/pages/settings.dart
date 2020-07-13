@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../resources.dart';
+import '../translationProvider.dart';
 
 class SettingsPage extends StatefulWidget {
   @override
@@ -13,12 +14,14 @@ class SettingsState extends State<SettingsPage> {
   bool notificationsOn = false;
   bool nightModeOn = false;
   int nightModeState = 2;
+  int language = 0;
 
   @override
   void initState() {
     resources = Resources.getInstance();
     nightModeState = resources.prefs.getInt("themeMode") ?? 2;
     notificationsOn = resources.prefs.getBool("notifications") ?? true;
+    language = resources.language();
 
     super.initState();
   }
@@ -31,6 +34,13 @@ class SettingsState extends State<SettingsPage> {
       resources.prefs.setBool("notifications", false);
       resources.firebaseMessaging.unsubscribeFromTopic("everyone");
     }
+  }
+
+  void onLanguageChanged(int value) {
+    setState(() {
+      language = value;
+      resources.prefs.setInt("language", value);
+    });
   }
 
   void handleRadioValueChanged(int value) {
@@ -62,10 +72,12 @@ class SettingsState extends State<SettingsPage> {
 
   @override
   Widget build(BuildContext context) {
+    var version = resources.packageInfo.version;
+    var build = resources.packageInfo.buildNumber;
+
     return Scaffold(
         appBar: AppBar(
-          title: Text("Settings"),
-          backgroundColor: Colors.blueGrey[900],
+          title: Text(TranslationProvider.get("TID_SETTINGS")),
         ),
         body: Column(
           children: [
@@ -74,7 +86,7 @@ class SettingsState extends State<SettingsPage> {
               child: ListView(
                 children: <Widget>[
                   ListTile(
-                    title: Text("Notifications"),
+                    title: Text(TranslationProvider.get("TID_NOTIFICATIONS")),
                   ),
                   Container(
                     child: ListTile(
@@ -88,8 +100,9 @@ class SettingsState extends State<SettingsPage> {
                           ? Icon(Icons.notifications_active)
                           : Icon(Icons.notifications_off),
                       title: Text(
-                        "Maintenance Notifications",
+                        TranslationProvider.get("TID_MAINTENANCE_NOTIFICATIONS"),
                       ),
+                      subtitle: Text(TranslationProvider.get("TID_MAINTENANCE_NOTIFICATION_DESC")),
                       trailing: Switch(
                         value: notificationsOn,
                         onChanged: (value) {
@@ -105,9 +118,10 @@ class SettingsState extends State<SettingsPage> {
                   ),
                   Divider(),
                   ListTile(
+                      leading: Icon(Icons.style),
                       title: Text(
-                    "Theme",
-                  )),
+                        TranslationProvider.get("TID_THEME"),
+                      )),
                   Center(
                     child: Row(
                       mainAxisSize: MainAxisSize.min,
@@ -117,13 +131,13 @@ class SettingsState extends State<SettingsPage> {
                           groupValue: nightModeState,
                           onChanged: handleRadioValueChanged,
                         ),
-                        Text("Light"),
+                        Text(TranslationProvider.get("TID_LIGHT")),
                         Radio<int>(
                           value: 1,
                           groupValue: nightModeState,
                           onChanged: handleRadioValueChanged,
                         ),
-                        Text("Dark"),
+                        Text(TranslationProvider.get("TID_DARK")),
                         Radio<int>(
                           value: 2,
                           groupValue: nightModeState,
@@ -133,7 +147,25 @@ class SettingsState extends State<SettingsPage> {
                       ],
                     ),
                   ),
-                  Divider()
+                  Divider(),
+                  ListTile(
+                      leading: Icon(Icons.language),
+                      title: Text(TranslationProvider.get("TID_LANGUAGE"))),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      flagButton(0, "assets/uk.png", language == 0),
+                      flagButton(1, "assets/de.png", language == 1),
+                    ],
+                  ),
+                  Divider(),
+                  ListTile(
+                    leading: Icon(Icons.info),
+                    title: Text(
+                      "Info",
+                    ),
+                    subtitle: Text("Version: $version Build: $build"),
+                  ),
                 ],
               ),
             ),
@@ -147,5 +179,43 @@ class SettingsState extends State<SettingsPage> {
             )
           ],
         ));
+  }
+
+  Widget flagButton(int index, String assetImage, bool selected) {
+    return Stack(
+      children: <Widget>[
+        Container(
+          child: GestureDetector(
+            onTap: () {
+              onLanguageChanged(index);
+            },
+          ),
+          margin: EdgeInsets.only(left: 10, right: 10, bottom: 10),
+          width: 45,
+          height: 30,
+          decoration: BoxDecoration(
+              image: DecorationImage(
+                  image: AssetImage(assetImage), fit: BoxFit.fill),
+              borderRadius: BorderRadius.circular(6)),
+        ),
+        selected
+            ? Positioned.fill(
+            child: Align(
+              alignment: Alignment.bottomRight,
+              child: Container(
+                child: Icon(
+                  Icons.done,
+                  size: 20,
+                  color: Colors.white,
+                ),
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: Theme.of(context).accentColor,
+                ),
+              ),
+            ))
+            : SizedBox.shrink()
+      ],
+    );
   }
 }
