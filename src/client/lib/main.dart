@@ -314,6 +314,7 @@ class MainPageState extends State<MainPage>
     var widgets = new List<Widget>();
 
     widgets.add(Card(
+      elevation: 5,
       child: Container(
         padding: EdgeInsets.all(15.0),
         child: Center(
@@ -371,6 +372,7 @@ class MainPageState extends State<MainPage>
       games.forEach((app) async {
         list.add(
           Card(
+            elevation: 2,
             child: InkWell(
                 onTap: () => {},
                 child: Container(

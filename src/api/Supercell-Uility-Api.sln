@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30225.117
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Supercell-Uility-Api", "Supercell-Uility-Api.csproj", "{7E604E89-DF4F-42A7-81B9-7A36386719AB}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{7E604E89-DF4F-42A7-81B9-7A36386719AB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7E604E89-DF4F-42A7-81B9-7A36386719AB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7E604E89-DF4F-42A7-81B9-7A36386719AB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7E604E89-DF4F-42A7-81B9-7A36386719AB}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {FE392484-8B67-4C08-9C72-0F892439E233}
+	EndGlobalSection
+EndGlobal
