@@ -1,9 +1,11 @@
 import 'package:device_apps/device_apps.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:sc_utility/pages/changelog.dart';
 import 'package:sc_utility/pages/crclient.dart';
 import 'package:sc_utility/pages/eventpage.dart';
 import 'package:sc_utility/pages/settings.dart';
+import 'package:sc_utility/pages/statusPage.dart';
 import 'package:sc_utility/resources.dart';
 import 'package:sc_utility/translationProvider.dart';
 import 'package:sc_utility/utils/flutterextentions.dart';
@@ -11,7 +13,6 @@ import 'package:sc_utility/utils/rootutil.dart';
 import 'dart:async';
 import 'package:root_access/root_access.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:package_info/package_info.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 bool _rootStatus = false;
@@ -65,7 +66,8 @@ class MyAppState extends State<MyApp> {
       home: MainPage(),
       routes: {
         '/cr-client': (context) => CrClientPage(),
-        '/settings': (context) => SettingsPage()
+        '/settings': (context) => SettingsPage(),
+        '/changelog': (context) => ChangelogPage()
       },
     );
   }
@@ -92,8 +94,8 @@ class MainPageState extends State<MainPage>
 
   var tabs = [
     const Tab(
-      text: "Overview",
-      icon: const Icon(Icons.dashboard),
+      text: "Game Status",
+      icon: const Icon(Icons.videogame_asset),
     ),
     const Tab(
       text: "CR Status",
@@ -192,7 +194,14 @@ class MainPageState extends State<MainPage>
           body: TabBarView(
             controller: controller,
             children: <Widget>[
-              buildMainMenuCards(),
+              Builder(
+                builder: (context) => RefreshIndicator(
+                  onRefresh: () {
+                    return Future.value(true);
+                  },
+                  child: StatusPage(),
+                ),
+              ),
               Builder(
                 builder: (context) => RefreshIndicator(
                   onRefresh: () {
@@ -264,6 +273,9 @@ class MainPageState extends State<MainPage>
                         ),
                         onTap: () {
                           Navigator.pushNamed(context, '/settings');
+                        },
+                        onLongPress: () {
+                          Navigator.pushNamed(context, '/test');
                         },
                         enabled: true,
                       ),
