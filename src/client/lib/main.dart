@@ -114,7 +114,7 @@ class MainPageState extends State<MainPage>
         isLoading = false;
       });
 
-      FlutterExtensions.showPopupDialogWithActionAndCancel(
+      /*FlutterExtensions.showPopupDialogWithActionAndCancel(
           context,
           "Root error",
           "Root is required for this app, please make sure you give this app root access.",
@@ -125,7 +125,7 @@ class MainPageState extends State<MainPage>
                   isLoading = false;
                 })
               },
-          false);
+          false);*/
     }
   }
 
@@ -134,7 +134,7 @@ class MainPageState extends State<MainPage>
     await Permission.storage.request();
     await RootUtils.grantStoragePermissions();
 
-    games = getGames();
+    //games = getGames();
   }
 
   @override
@@ -194,14 +194,7 @@ class MainPageState extends State<MainPage>
           body: TabBarView(
             controller: controller,
             children: <Widget>[
-              Builder(
-                builder: (context) => RefreshIndicator(
-                  onRefresh: () {
-                    return Future.value(true);
-                  },
-                  child: StatusPage(),
-                ),
-              ),
+              StatusPage(),
               Builder(
                 builder: (context) => RefreshIndicator(
                   onRefresh: () {
@@ -316,7 +309,7 @@ class MainPageState extends State<MainPage>
     );
   }
 
-  Widget buildMainMenuCards() {
+  /*Widget buildMainMenuCards() {
     if (isLoading) {
       return Center(
         child: CircularProgressIndicator(),
@@ -450,7 +443,7 @@ class MainPageState extends State<MainPage>
     }
 
     return list;
-  }
+  }*/
 
   void launchURL(String url) async {
     if (await canLaunch(url)) {

@@ -43,7 +43,7 @@ namespace SupercellUilityApi.Controllers
             games.Add(new GameStatus
             {
                 GameName = "Brawl Stars",
-                Status = 4,
+                Status = 2,
                 LatestFingerprintSha = "rurtzi34n4t90834t7j9th7n349t63149t634t984",
                 LatestFingerprintVersion = "10.524.10",
                 LastUpdated = TimeUtils.CurrentUnixTimestamp

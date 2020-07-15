@@ -32,10 +32,9 @@ dependencies:
   photo_view: ^0.9.2
   device_apps: ^1.0.9
   share: ^0.6.3+6
-  dio: ^3.0.9
   permission_handler: ^5.0.0+hotfix.4
-  install_apk_plugin: ^1.0.1
   http: ^0.12.1
+  connectivity: ^0.4.9
 
 dev_dependencies:
   flutter_test:
