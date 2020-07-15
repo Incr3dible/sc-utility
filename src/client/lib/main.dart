@@ -267,9 +267,6 @@ class MainPageState extends State<MainPage>
                         onTap: () {
                           Navigator.pushNamed(context, '/settings');
                         },
-                        onLongPress: () {
-                          Navigator.pushNamed(context, '/test');
-                        },
                         enabled: true,
                       ),
                     ],
