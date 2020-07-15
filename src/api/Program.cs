@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
 
@@ -7,6 +8,7 @@ namespace SupercellUilityApi
     {
         public static void Main(string[] args)
         {
+            Task.Factory.StartNew(Resources.Initialize);
             CreateHostBuilder(args).Build().Run();
         }
 

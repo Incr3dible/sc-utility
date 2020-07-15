@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
-using System.Threading.Tasks;
 using DotNetty.Buffers;
 using DotNetty.Handlers.Timeout;
 using DotNetty.Transport.Channels;
@@ -11,12 +8,12 @@ namespace SupercellUilityApi.Network.Handlers
 {
     public class PacketHandler : ChannelHandlerAdapter
     {
-        public PacketHandler()
+        public PacketHandler(TcpClient tcpClient)
         {
-            Client = new Client(this);
+            TcpClient = tcpClient;
         }
 
-        public Client Client { get; set; }
+        public TcpClient TcpClient { get; set; }
         public IChannel Channel { get; set; }
 
         public override void ChannelRead(IChannelHandlerContext context, object message)
@@ -24,26 +21,20 @@ namespace SupercellUilityApi.Network.Handlers
             var buffer = (IByteBuffer)message;
             if (buffer == null) return;
 
-            Client.Process(buffer);
+            TcpClient.GameClient.Process(buffer);
         }
 
         public override void ChannelRegistered(IChannelHandlerContext context)
         {
             Channel = context.Channel;
-
-            var remoteAddress = (IPEndPoint)Channel.RemoteAddress;
-
-            Logger.Log($"Client {remoteAddress.Address.MapToIPv4()}:{remoteAddress.Port} connected.",
-                Logger.ErrorLevel.Debug);
-
-            base.ChannelRegistered(context);
+            TcpClient.GameClient.Handler = this;
         }
 
         public override void ChannelUnregistered(IChannelHandlerContext context)
         {
             var remoteAddress = (IPEndPoint)Channel.RemoteAddress;
 
-            Logger.Log($"Client {remoteAddress.Address.MapToIPv4()}:{remoteAddress.Port} disconnected.",
+            Logger.Log($"Disconnected from {remoteAddress.Address.MapToIPv4()}:{remoteAddress.Port}",
                 Logger.ErrorLevel.Debug);
 
             base.ChannelUnregistered(context);

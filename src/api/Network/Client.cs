@@ -3,19 +3,60 @@ using System.Diagnostics;
 using DotNetty.Buffers;
 using SupercellUilityApi.Network.Handlers;
 using SupercellUilityApi.Network.Protocol;
+using SupercellUilityApi.Network.Protocol.Messages.Client;
 
 namespace SupercellUilityApi.Network
 {
     public class Client
     {
-        public Client(PacketHandler handler)
+        public async void Login()
         {
-            Handler = handler;
+            var majorVersion = 0;
+            var minorVersion = 0;
+            var buildVersion = 0;
+
+            switch (CurrentGame)
+            {
+                // 3.2077.27
+                case Game.ClashRoyale:
+                    majorVersion = 3;
+                    buildVersion = 2077;
+                    break;
+
+                // 13.369.7
+                case Game.ClashofClans:
+                    majorVersion = 13;
+                    minorVersion = 0;
+                    buildVersion = 369;
+                    break;
+
+                // 28.189.1
+                case Game.BrawlStars:
+                    majorVersion = 28;
+                    buildVersion = 189;
+                    break;
+            }
+
+            await new ClientHelloMessage(this)
+            {
+                MajorVersion = majorVersion,
+                MinorVersion = minorVersion,
+                BuildVersion = buildVersion,
+                Sha = "gib sha sir"
+            }.SendAsync();
         }
 
         #region Objects
 
         public PacketHandler Handler { get; set; }
+        public Game CurrentGame { get; set; }
+
+        public enum Game
+        {
+            ClashRoyale,
+            ClashofClans,
+            BrawlStars
+        }
 
         #endregion Objects
 

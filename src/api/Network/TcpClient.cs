@@ -11,11 +11,38 @@ namespace SupercellUilityApi.Network
 {
     public class TcpClient
     {
-        public MultithreadEventLoopGroup Group { get; set; }
-        public Bootstrap Bootstrap { get; set; }
+        private MultithreadEventLoopGroup Group { get; set; }
+        private Bootstrap Bootstrap { get; set; }
+        private PacketHandler PacketHandler { get; set; }
 
-        public async Task ConnectAsync(string host)
+        public IChannel ServerChannel { get; set; }
+        public Client GameClient { get; set; }
+
+        public async Task ConnectAsync(Client.Game game)
         {
+            PacketHandler = new PacketHandler(this);
+            GameClient = new Client();
+
+            string host;
+
+            switch (game)
+            {
+                case Client.Game.ClashofClans:
+                    GameClient.CurrentGame = game;
+                    host = "gamea.clashofclans.com";
+                    break;
+                case Client.Game.ClashRoyale:
+                    GameClient.CurrentGame = Client.Game.ClashRoyale;
+                    host = "game.clashroyaleapp.com";
+                    break;
+                case Client.Game.BrawlStars:
+                    GameClient.CurrentGame = game;
+                    host = "game.brawlstarsgame.com";
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(game), game, null);
+            }
+
             try
             {
                 Group = new MultithreadEventLoopGroup();
@@ -30,23 +57,26 @@ namespace SupercellUilityApi.Network
                     .Handler(new ActionChannelInitializer<IChannel>(channel =>
                     {
                         var pipeline = channel.Pipeline;
-                        pipeline.AddFirst("FrameDecoder", new LengthFieldBasedFrameDecoder(ushort.MaxValue, 2, 3, 2, 0));
-                        pipeline.AddLast("PacketHandler", new PacketHandler());
+                        pipeline.AddFirst("FrameDecoder",
+                            new LengthFieldBasedFrameDecoder(int.MaxValue, 2, 3, 2, 0));
+                        pipeline.AddLast("PacketHandler", PacketHandler);
                         pipeline.AddLast("PacketEncoder", new PacketEncoder());
                     }));
 
-                var connectedChannel =
+                ServerChannel =
                     await Bootstrap.ConnectAsync(host, 9339);
-                var endpoint = (IPEndPoint)connectedChannel.RemoteAddress;
+                var endpoint = (IPEndPoint) ServerChannel.RemoteAddress;
 
                 Logger.Log(
                     $"Connected to {endpoint.Address.MapToIPv4()}:{endpoint.Port}.");
+
+                GameClient.Login();
             }
             catch (Exception)
             {
                 Logger.Log(
                     "Failed to connect.",
-                     Logger.ErrorLevel.Warning);
+                    Logger.ErrorLevel.Warning);
             }
         }
     }

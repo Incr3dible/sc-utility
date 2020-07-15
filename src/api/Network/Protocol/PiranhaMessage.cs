@@ -38,19 +38,20 @@ namespace SupercellUilityApi.Network.Protocol
         }
 
         /// <summary>
-        ///     Writes this message to the clients channel
+        ///     Writes this message to the server channel
         /// </summary>
         /// <returns></returns>
         public async Task SendAsync()
         {
             try
             {
-                await Client.Handler.Channel.WriteAndFlushAsync(this);
+                await Resources.TcpClient.ServerChannel.WriteAndFlushAsync(this);
 
                 Logger.Log($"[C] Message {Id} ({GetType().Name}) sent.", Logger.ErrorLevel.Debug);
             }
-            catch (Exception)
+            catch (Exception e)
             {
+                Console.WriteLine(e);
                 Logger.Log($"Failed to send {Id}.",Logger.ErrorLevel.Debug);
             }
         }
