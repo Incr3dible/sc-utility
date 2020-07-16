@@ -9,7 +9,7 @@ namespace SupercellUilityApi.Core
 {
     public class GameStatusManager
     {
-        private readonly Timer _refreshTimer = new Timer(5000);
+        private readonly Timer _refreshTimer = new Timer(Constants.StatusCheckInterval * 1000);
         public Dictionary<Client.Game, GameStatus> StatusList = new Dictionary<Client.Game, GameStatus>();
 
         public GameStatusManager()
@@ -18,16 +18,16 @@ namespace SupercellUilityApi.Core
             {
                 GameName = "Clash Royale",
                 LastUpdated = TimeUtils.CurrentUnixTimestamp,
-                LatestFingerprintVersion = "1.0.0",
-                LatestFingerprintSha = "unknown"
+                LatestFingerprintVersion = "3.2077.38",
+                LatestFingerprintSha = "78e6afda61f125c90d7c311b9fe26f526388dd59"
             });
 
             StatusList.Add(Client.Game.BrawlStars, new GameStatus
             {
                 GameName = "Brawl Stars",
                 LastUpdated = TimeUtils.CurrentUnixTimestamp,
-                LatestFingerprintVersion = "1.0.0",
-                LatestFingerprintSha = "unknown"
+                LatestFingerprintVersion = "28.187.1",
+                LatestFingerprintSha = "c33a3b511b50de0292708b790e3890fc657724ea"
             });
 
             CheckGames(null, null);
@@ -39,7 +39,7 @@ namespace SupercellUilityApi.Core
         }
 
         /// <summary>
-        /// Connect to all games in the list to check their status
+        ///     Connect to all games in the list to check their status
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="args"></param>
@@ -55,7 +55,7 @@ namespace SupercellUilityApi.Core
         }
 
         /// <summary>
-        /// Updates the status of a game depending on the gameserver
+        ///     Updates the status of a game depending on the gameserver
         /// </summary>
         /// <param name="game"></param>
         /// <param name="statusCode"></param>
@@ -77,29 +77,28 @@ namespace SupercellUilityApi.Core
 
                 if (diff < TimeSpan.FromHours(Constants.ContentUpdateTimeout).TotalMilliseconds)
                 {
-                    Logger.Log($"Content update is newer than {Constants.ContentUpdateTimeout} hours! Not updating status.",
+                    Logger.Log(
+                        $"Content update is newer than {Constants.ContentUpdateTimeout} hours! Not updating status.",
                         Logger.ErrorLevel.Debug);
                     return;
                 }
             }
 
             if (statusCode == 3)
-            {
                 if (fingerprint != null)
                 {
                     status.LatestFingerprintSha = fingerprint.Sha;
                     status.LatestFingerprintVersion = fingerprint.Version;
 
-                    Logger.Log($"Fingerprint updated for {game}", Logger.ErrorLevel.Debug);
+                    Logger.Log($"Fingerprint ({fingerprint.Sha}:{fingerprint.Version}) updated for {game}", Logger.ErrorLevel.Debug);
                 }
-            }
 
             status.Status = statusCode;
             status.LastUpdated = TimeUtils.CurrentUnixTimestamp;
         }
 
         /// <summary>
-        /// Returns the latest Fingerprint Hash for the game
+        ///     Returns the latest Fingerprint Hash for the game
         /// </summary>
         /// <param name="game"></param>
         /// <returns></returns>
