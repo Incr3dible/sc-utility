@@ -1,9 +1,12 @@
-﻿namespace SupercellUilityApi.Models
+﻿using System.Collections.Generic;
+using System.Text.Json.Serialization;
+
+namespace SupercellUilityApi.Models
 {
     public class Fingerprint
     {
-        public string Sha { get; set; }
-        public string Version { get; set; }
-        public long Timestamp { get; set; }
+        [JsonPropertyName("files")] public List<AssetFile> Files { get; set; }
+        [JsonPropertyName("sha")] public string Sha { get; set; }
+        [JsonPropertyName("version")] public string Version { get; set; }
     }
 }

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
 using DotNetty.Buffers;
-using SupercellUilityApi.Network.Handlers;
 using SupercellUilityApi.Network.Protocol;
 using SupercellUilityApi.Network.Protocol.Messages.Client;
 
@@ -9,7 +8,7 @@ namespace SupercellUilityApi.Network
 {
     public class Client
     {
-        public async void Login()
+        public async void Login(string fingerprintSha)
         {
             var majorVersion = 0;
             var minorVersion = 0;
@@ -42,23 +41,9 @@ namespace SupercellUilityApi.Network
                 MajorVersion = majorVersion,
                 MinorVersion = minorVersion,
                 BuildVersion = buildVersion,
-                Sha = "gib sha sir"
+                Sha = fingerprintSha
             }.SendAsync();
         }
-
-        #region Objects
-
-        public PacketHandler Handler { get; set; }
-        public Game CurrentGame { get; set; }
-
-        public enum Game
-        {
-            ClashRoyale,
-            ClashofClans,
-            BrawlStars
-        }
-
-        #endregion Objects
 
         /// <summary>
         ///     Process a message
@@ -108,5 +93,19 @@ namespace SupercellUilityApi.Network
                 Logger.Log($"Failed to process {id}, L: {length}: " + exception, Logger.ErrorLevel.Error);
             }
         }
+
+        #region Objects
+
+        public Game CurrentGame { get; set; }
+        public TcpClient TcpClient { get; set; }
+
+        public enum Game
+        {
+            ClashRoyale,
+            ClashofClans,
+            BrawlStars
+        }
+
+        #endregion Objects
     }
 }

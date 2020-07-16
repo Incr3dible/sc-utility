@@ -18,10 +18,15 @@ namespace SupercellUilityApi.Network
         public IChannel ServerChannel { get; set; }
         public Client GameClient { get; set; }
 
+        /// <summary>
+        ///     Connect to a game and send ClientHello
+        /// </summary>
+        /// <param name="game"></param>
+        /// <returns></returns>
         public async Task ConnectAsync(Client.Game game)
         {
             PacketHandler = new PacketHandler(this);
-            GameClient = new Client();
+            GameClient = new Client {TcpClient = this};
 
             string host;
 
@@ -68,9 +73,9 @@ namespace SupercellUilityApi.Network
                 var endpoint = (IPEndPoint) ServerChannel.RemoteAddress;
 
                 Logger.Log(
-                    $"Connected to {endpoint.Address.MapToIPv4()}:{endpoint.Port}.");
+                    $"Connected to {endpoint.Address.MapToIPv4()}:{endpoint.Port}.", Logger.ErrorLevel.Debug);
 
-                GameClient.Login();
+                GameClient.Login(Resources.GameStatusManager.GetLatestFingerprintSha(game));
             }
             catch (Exception)
             {

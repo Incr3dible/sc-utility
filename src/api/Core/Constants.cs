@@ -5,6 +5,6 @@
         /// <summary>
         /// The amount of hours the server waits until to check the server status again
         /// </summary>
-        public const int ContentUpdateTimeout = 0;
+        public const int ContentUpdateTimeout = 2;
     }
 }

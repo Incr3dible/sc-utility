@@ -27,7 +27,6 @@ namespace SupercellUilityApi.Network.Handlers
         public override void ChannelRegistered(IChannelHandlerContext context)
         {
             Channel = context.Channel;
-            TcpClient.GameClient.Handler = this;
         }
 
         public override void ChannelUnregistered(IChannelHandlerContext context)

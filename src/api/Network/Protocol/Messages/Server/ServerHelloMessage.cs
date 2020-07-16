@@ -1,5 +1,4 @@
-﻿using System;
-using DotNetty.Buffers;
+﻿using DotNetty.Buffers;
 
 namespace SupercellUilityApi.Network.Protocol.Messages.Server
 {
@@ -11,7 +10,7 @@ namespace SupercellUilityApi.Network.Protocol.Messages.Server
 
         public override void Process()
         {
-            Console.WriteLine("LOGIN");
+            Resources.GameStatusManager.SetStatus(Client.CurrentGame, 0);
         }
     }
 }

@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Text.Json;
 using DotNetty.Buffers;
 using SupercellUilityApi.Helpers;
+using SupercellUilityApi.Models;
 
 namespace SupercellUilityApi.Network.Protocol.Messages.Server
 {
@@ -23,7 +25,20 @@ namespace SupercellUilityApi.Network.Protocol.Messages.Server
 
         public override void Process()
         {
-            Console.WriteLine(ErrorCode);
+            if (ErrorCode == 7)
+            {
+                Resources.GameStatusManager.SetStatus(Client.CurrentGame, 3,
+                    JsonSerializer.Deserialize<Fingerprint>(Fingerprint));
+            }
+            else if (ErrorCode == 10)
+            {
+                Resources.GameStatusManager.SetStatus(Client.CurrentGame, 2);
+            }
+            else
+            {
+                Console.WriteLine(ErrorCode);
+                Resources.GameStatusManager.SetStatus(Client.CurrentGame, 1);
+            }
         }
     }
 }

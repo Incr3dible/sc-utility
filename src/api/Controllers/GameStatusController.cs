@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using SupercellUilityApi.Helpers;
@@ -20,7 +21,7 @@ namespace SupercellUilityApi.Controllers
         [HttpGet]
         public IEnumerable<GameStatus> Get()
         {
-            var games = new List<GameStatus>();
+            /*var games = new List<GameStatus>();
 
             games.Add(new GameStatus
             {
@@ -47,7 +48,9 @@ namespace SupercellUilityApi.Controllers
                 LatestFingerprintSha = "rurtzi34n4t90834t7j9th7n349t63149t634t984",
                 LatestFingerprintVersion = "10.524.10",
                 LastUpdated = TimeUtils.CurrentUnixTimestamp
-            });
+            });*/
+
+            var games = Resources.GameStatusManager.StatusList.Values.ToList();
 
             return games;
         }

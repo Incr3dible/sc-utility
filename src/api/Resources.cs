@@ -1,17 +1,17 @@
 ﻿using System.Threading.Tasks;
-using SupercellUilityApi.Network;
+using SupercellUilityApi.Core;
 
 namespace SupercellUilityApi
 {
     public static class Resources
     {
-        public static TcpClient TcpClient { get; set; }
+        public static GameStatusManager GameStatusManager { get; set; }
 
         public static async Task Initialize()
         {
-            TcpClient = new TcpClient();
+            GameStatusManager = new GameStatusManager();
 
-            await TcpClient.ConnectAsync(Client.Game.ClashofClans);
+            Logger.Log("Resources initialized.");
         }
     }
 }
