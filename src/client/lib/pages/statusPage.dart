@@ -76,7 +76,9 @@ class StatusPageState extends State<StatusPage> {
                           child: Icon(Icons.cloud_off),
                         ),
                         Text(
-                            "Swipe down to try again and check your internet connection.", textAlign: TextAlign.center,)
+                          "Swipe down to try again and check your internet connection.",
+                          textAlign: TextAlign.center,
+                        )
                       ],
                     )
                   ],

@@ -1,0 +1,6 @@
+{
+  "mysql_database": "scudb",
+  "mysql_password": "",
+  "mysql_server": "127.0.0.1",
+  "mysql_user": "root"
+}

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Timers;
+using SupercellUilityApi.Database;
 using SupercellUilityApi.Helpers;
 using SupercellUilityApi.Models;
 using SupercellUilityApi.Network;
@@ -60,7 +61,7 @@ namespace SupercellUilityApi.Core
         /// <param name="game"></param>
         /// <param name="statusCode"></param>
         /// <param name="fingerprint"></param>
-        public void SetStatus(Client.Game game, int statusCode, Fingerprint fingerprint = null)
+        public async void SetStatus(Client.Game game, int statusCode, Fingerprint fingerprint = null)
         {
             // 0 = Online
             // 1 = Offline
@@ -69,6 +70,7 @@ namespace SupercellUilityApi.Core
 
             if (!StatusList.ContainsKey(game)) return;
             var status = StatusList[game];
+            var oldStatusCode = status.Status;
 
             if (status.Status == 3)
             {
@@ -95,6 +97,11 @@ namespace SupercellUilityApi.Core
 
             status.Status = statusCode;
             status.LastUpdated = TimeUtils.CurrentUnixTimestamp;
+
+            if (oldStatusCode != statusCode)
+            {
+                await StatusDatabase.SaveGameStatus(status);
+            }
         }
 
         /// <summary>
