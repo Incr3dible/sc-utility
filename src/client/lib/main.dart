@@ -1,4 +1,3 @@
-import 'package:device_apps/device_apps.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:sc_utility/pages/changelog.dart';
@@ -8,7 +7,6 @@ import 'package:sc_utility/pages/settings.dart';
 import 'package:sc_utility/pages/statusPage.dart';
 import 'package:sc_utility/resources.dart';
 import 'package:sc_utility/translationProvider.dart';
-import 'package:sc_utility/utils/flutterextentions.dart';
 import 'package:sc_utility/utils/rootutil.dart';
 import 'dart:async';
 import 'package:root_access/root_access.dart';
@@ -86,7 +84,6 @@ class MainPage extends StatefulWidget {
 
 class MainPageState extends State<MainPage> {
   GlobalKey<ScaffoldState> scaffoldKey = new GlobalKey<ScaffoldState>();
-  List<ApplicationWithIcon> games;
   bool isLoading = true;
   Resources resources;
 

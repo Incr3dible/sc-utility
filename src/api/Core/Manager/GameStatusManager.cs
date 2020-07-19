@@ -6,7 +6,7 @@ using SupercellUilityApi.Helpers;
 using SupercellUilityApi.Models;
 using SupercellUilityApi.Network;
 
-namespace SupercellUilityApi.Core
+namespace SupercellUilityApi.Core.Manager
 {
     public class GameStatusManager
     {

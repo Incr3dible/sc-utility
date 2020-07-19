@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 using SupercellUilityApi.Core;
+using SupercellUilityApi.Core.Manager;
 using SupercellUilityApi.Database;
 
 namespace SupercellUilityApi
