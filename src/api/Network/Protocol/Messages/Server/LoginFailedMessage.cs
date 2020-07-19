@@ -19,8 +19,7 @@ namespace SupercellUilityApi.Network.Protocol.Messages.Server
         {
             ErrorCode = Client.CurrentGame == Network.Client.Game.ClashRoyale ? Reader.ReadVInt() : Reader.ReadInt();
 
-            if (ErrorCode == 7)
-                Fingerprint = Reader.ReadScString();
+            if (ErrorCode == 7) Fingerprint = Client.CurrentGame == Network.Client.Game.HayDayPop ? Reader.ReadCompressedString() : Reader.ReadScString();
         }
 
         public override void Process()
@@ -29,6 +28,14 @@ namespace SupercellUilityApi.Network.Protocol.Messages.Server
             {
                 Resources.GameStatusManager.SetStatus(Client.CurrentGame, 3,
                     JsonSerializer.Deserialize<Fingerprint>(Fingerprint));
+            }
+            else if (ErrorCode == 8)
+            {
+                Resources.GameVersionManager.VersionTooLow(Client.CurrentGame);
+            }
+            else if (ErrorCode == 9)
+            {
+                Resources.GameVersionManager.VersionTooHigh(Client.CurrentGame);
             }
             else if (ErrorCode == 10)
             {

@@ -31,6 +31,14 @@ namespace SupercellUilityApi.Core.Manager
                 LatestFingerprintSha = "c33a3b511b50de0292708b790e3890fc657724ea"
             });
 
+            StatusList.Add(Client.Game.HayDayPop, new GameStatus
+            {
+                GameName = "HayDay Pop",
+                LastUpdated = TimeUtils.CurrentUnixTimestamp,
+                LatestFingerprintVersion = "1.154.4",
+                LatestFingerprintSha = "6a621ca47c6fd1ef30fba8a0d6cbcf5732e34e5d"
+            });
+
             CheckGames(null, null);
 
             _refreshTimer.Elapsed += CheckGames;
@@ -46,9 +54,7 @@ namespace SupercellUilityApi.Core.Manager
         /// <param name="args"></param>
         public async void CheckGames(object sender, ElapsedEventArgs args)
         {
-            var games = new List<Client.Game> {Client.Game.BrawlStars, Client.Game.ClashRoyale};
-
-            foreach (var game in games)
+            foreach (var game in StatusList.Keys)
             {
                 var tcpClient = new TcpClient();
                 await tcpClient.ConnectAsync(game);

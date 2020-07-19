@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Net;
 using DotNetty.Buffers;
 using DotNetty.Handlers.Timeout;
 using DotNetty.Transport.Channels;
@@ -29,7 +28,7 @@ namespace SupercellUilityApi.Network.Handlers
             Channel = context.Channel;
         }
 
-        public override void ChannelUnregistered(IChannelHandlerContext context)
+        /*public override void ChannelUnregistered(IChannelHandlerContext context)
         {
             var remoteAddress = (IPEndPoint)Channel.RemoteAddress;
 
@@ -37,7 +36,7 @@ namespace SupercellUilityApi.Network.Handlers
                 Logger.ErrorLevel.Debug);
 
             base.ChannelUnregistered(context);
-        }
+        }*/
 
         public override void ExceptionCaught(IChannelHandlerContext context, Exception exception)
         {

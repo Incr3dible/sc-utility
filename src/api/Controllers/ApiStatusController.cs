@@ -6,22 +6,21 @@ namespace SupercellUilityApi.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class VersionController : ControllerBase
+    public class ApiStatusController : ControllerBase
     {
-        private readonly ILogger<VersionController> _logger;
+        private readonly ILogger<ApiStatusController> _logger;
 
-        public VersionController(ILogger<VersionController> logger)
+        public ApiStatusController(ILogger<ApiStatusController> logger)
         {
             _logger = logger;
         }
 
         [HttpGet]
-        public Version Get()
+        public ApiStatus Get()
         {
-            return new Version
+            return new ApiStatus
             {
-                ApiVersion = "1",
-                ClientVersion = "1.0.2"
+                TotalApiRequests = Resources.TotalRequests
             };
         }
     }

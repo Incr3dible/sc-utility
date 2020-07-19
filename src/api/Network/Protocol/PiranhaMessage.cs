@@ -47,7 +47,7 @@ namespace SupercellUilityApi.Network.Protocol
             {
                 await Client.TcpClient.ServerChannel.WriteAndFlushAsync(this);
 
-                Logger.Log($"[C] Message {Id} ({GetType().Name}) sent.", Logger.ErrorLevel.Debug);
+                Logger.Log($"[C] Message {Id} ({GetType().Name}) sent to {Client.CurrentGame}.", Logger.ErrorLevel.Debug);
             }
             catch (Exception e)
             {

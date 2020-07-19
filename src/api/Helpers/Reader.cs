@@ -1,5 +1,6 @@
 ﻿using System.Text;
 using DotNetty.Buffers;
+using SupercellUilityApi.Helpers.Compression.ZLib;
 
 namespace SupercellUilityApi.Helpers
 {
@@ -35,7 +36,27 @@ namespace SupercellUilityApi.Helpers
             for (var j = 0; j < 4 && (b & 0x80) != 0; j++, offset += 7)
                 i |= ((b = byteBuffer.ReadByte()) & 0x7F) << offset;
 
-            return (b & 0x80) != 0 ? -1 : i | (sign == 1 && offset < 32 ? i | (int)(0xFFFFFFFF << offset) : i);
+            return (b & 0x80) != 0 ? -1 : i | (sign == 1 && offset < 32 ? i | (int) (0xFFFFFFFF << offset) : i);
+        }
+
+        /// <summary>
+        ///     Decodes a compressed string
+        /// </summary>
+        /// <param name="byteBuffer"></param>
+        /// <param name="indicator"></param>
+        /// <returns></returns>
+        public static string ReadCompressedString(this IByteBuffer byteBuffer, bool indicator = true)
+        {
+            if (indicator)
+                byteBuffer.ReadByte();
+
+            var compressedLength = byteBuffer.ReadInt() - 4;
+            byteBuffer.ReadIntLE();
+
+            var bytes = new byte[compressedLength];
+            byteBuffer.ReadBytes(bytes, 0, compressedLength);
+
+            return ZlibStream.UncompressString(bytes);
         }
     }
 }

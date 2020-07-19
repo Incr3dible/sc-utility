@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Net;
 using System.Threading.Tasks;
 using DotNetty.Codecs;
 using DotNetty.Transport.Bootstrapping;
@@ -44,6 +43,10 @@ namespace SupercellUilityApi.Network
                     GameClient.CurrentGame = game;
                     host = "game.brawlstarsgame.com";
                     break;
+                case Client.Game.HayDayPop:
+                    GameClient.CurrentGame = game;
+                    host = "game.prod.haydaypop.com";
+                    break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(game), game, null);
             }
@@ -70,10 +73,10 @@ namespace SupercellUilityApi.Network
 
                 ServerChannel =
                     await Bootstrap.ConnectAsync(host, 9339);
-                var endpoint = (IPEndPoint) ServerChannel.RemoteAddress;
+                /*var endpoint = (IPEndPoint) ServerChannel.RemoteAddress;
 
                 Logger.Log(
-                    $"Connected to {endpoint.Address.MapToIPv4()}:{endpoint.Port}.", Logger.ErrorLevel.Debug);
+                    $"Connected to {endpoint.Address.MapToIPv4()}:{endpoint.Port}.", Logger.ErrorLevel.Debug);*/
 
                 GameClient.Login(Resources.GameStatusManager.GetLatestFingerprintSha(game));
             }

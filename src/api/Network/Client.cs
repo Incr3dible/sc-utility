@@ -10,37 +10,13 @@ namespace SupercellUilityApi.Network
     {
         public async void Login(string fingerprintSha)
         {
-            var majorVersion = 0;
-            var minorVersion = 0;
-            var buildVersion = 0;
-
-            switch (CurrentGame)
-            {
-                // 3.2077.27
-                case Game.ClashRoyale:
-                    majorVersion = 3;
-                    buildVersion = 2077;
-                    break;
-
-                // 13.369.7
-                case Game.ClashofClans:
-                    majorVersion = 13;
-                    minorVersion = 0;
-                    buildVersion = 369;
-                    break;
-
-                // 28.189.1
-                case Game.BrawlStars:
-                    majorVersion = 28;
-                    buildVersion = 189;
-                    break;
-            }
+            var version = Resources.GameVersionManager.GetGameVersion(CurrentGame);
 
             await new ClientHelloMessage(this)
             {
-                MajorVersion = majorVersion,
-                MinorVersion = minorVersion,
-                BuildVersion = buildVersion,
+                MajorVersion = version.Major,
+                MinorVersion = version.Minor,
+                BuildVersion = version.Build,
                 Sha = fingerprintSha
             }.SendAsync();
         }
@@ -60,7 +36,7 @@ namespace SupercellUilityApi.Network
 
             if (!MessageFactory.Messages.ContainsKey(id))
             {
-                Logger.Log($"Message ID: {id}, V: {version}, L: {length} is not known.",
+                Logger.Log($"[S] Message ID: {id}, V: {version}, L: {length} is not known.",
                     Logger.ErrorLevel.Warning);
                 return;
             }
@@ -84,7 +60,7 @@ namespace SupercellUilityApi.Network
 
 #if DEBUG
                 st.Stop();
-                Logger.Log($"Message {id}:{length} ({message.GetType().Name}) - ({st.ElapsedMilliseconds}ms)",
+                Logger.Log($"[S] Message {id}:{length} ({message.GetType().Name}) from {CurrentGame} - ({st.ElapsedMilliseconds}ms)",
                     Logger.ErrorLevel.Debug);
 #endif
             }
@@ -103,7 +79,8 @@ namespace SupercellUilityApi.Network
         {
             ClashRoyale,
             ClashofClans,
-            BrawlStars
+            BrawlStars,
+            HayDayPop
         }
 
         #endregion Objects
