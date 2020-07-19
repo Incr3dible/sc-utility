@@ -11,7 +11,7 @@ class TranslationProvider {
       "TID_NOTIFICATIONS": "Notifications",
       "TID_MAINTENANCE_NOTIFICATIONS": "Maintenance Notifications",
       "TID_MAINTENANCE_NOTIFICATION_DESC":
-          "receive a notification once a server is under maintenance",
+          "receive a notification once a server is under maintenance (SOON AVAILABLE)",
       "TID_LATEST_VERSION": "You are on the latest version",
       "TID_UP_TO_DATE": "Up-to-date",
       "TID_DOWNLOAD": "Download",
@@ -22,7 +22,11 @@ class TranslationProvider {
       "TID_MORE": "More",
       "TID_MORE_DESC":
           "do you need help or want to look at the code on Github?",
-      "TID_OPEN_SOURCE_DESC": "an open source project"
+      "TID_OPEN_SOURCE_DESC": "an open source project",
+      "TID_DISCLAIMER": "Disclaimer",
+      "TID_DISCLAIMER_DESC": "This content is not affiliated with, endorsed, sponsored, or specifically approved by Supercell and Supercell is not responsible for it.",
+      "TID_MAINTENANCE": "Maintenance",
+      "TID_CONTENT_UPDATE": "Content Update"
     },
     {
       "TID_SETTINGS": "Einstellungen",
@@ -33,7 +37,7 @@ class TranslationProvider {
       "TID_NOTIFICATIONS": "Benachrichtigungen",
       "TID_MAINTENANCE_NOTIFICATIONS": "Wartungsbenachrichtigungen",
       "TID_MAINTENANCE_NOTIFICATION_DESC":
-          "eine Benachrichtigung erhalten, sobald ein Server in Wartung ist",
+          "eine Benachrichtigung erhalten, sobald ein Server in Wartung ist (BALD VERFÜGBAR)",
       "TID_LATEST_VERSION": "Die App befindet sich auf der neuesten Version",
       "TID_UP_TO_DATE": "Auf dem neuesten Stand",
       "TID_DOWNLOAD": "Herunterladen",
@@ -45,7 +49,11 @@ class TranslationProvider {
       "TID_MORE": "Mehr",
       "TID_MORE_DESC":
           "brauchst du Hilfe oder möchtest den Code auf Github ansehen?",
-      "TID_OPEN_SOURCE_DESC": "ein Open-Source-Projekt"
+      "TID_OPEN_SOURCE_DESC": "ein Open-Source-Projekt",
+      "TID_DISCLAIMER": "Ausschlussklausel",
+      "TID_DISCLAIMER_DESC": "Dieser Inhalt ist nicht mit Supercell verbunden, unterstützt, gesponsert oder speziell von Supercell genehmigt und Supercell ist nicht dafür verantwortlich.",
+      "TID_MAINTENANCE": "Wartungspause",
+      "TID_CONTENT_UPDATE": "Inhalts-Update"
     },
   };
 

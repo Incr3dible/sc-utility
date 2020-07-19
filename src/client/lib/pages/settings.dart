@@ -187,6 +187,13 @@ class SettingsState extends State<SettingsPage> {
                     ),
                     Divider(),
                     ListTile(
+                      leading: Icon(Icons.flag),
+                      title: Text(TranslationProvider.get("TID_DISCLAIMER")),
+                      subtitle:
+                          Text(TranslationProvider.get("TID_DISCLAIMER_DESC")),
+                    ),
+                    Divider(),
+                    ListTile(
                       leading: Icon(Icons.info),
                       title: Text(
                         "Info",
@@ -238,7 +245,7 @@ class SettingsState extends State<SettingsPage> {
                 margin: EdgeInsets.all(20),
                 child: Center(
                     child: Text(
-                  "Built with ❤",
+                  "Made with ❤",
                   style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
                 )),
               )

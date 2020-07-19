@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:sc_utility/translationProvider.dart';
 import 'package:sc_utility/utils/flutterextentions.dart';
 import '../resources.dart';
 import '../api/models/GameStatus.dart';
@@ -108,17 +109,17 @@ class StatusPageState extends State<StatusPage> {
         break;
       case 2:
         statusColor = Colors.orange;
-        statusName = "Maintenance";
+        statusName = TranslationProvider.get("TID_MAINTENANCE");
         break;
       case 3:
-        statusName = "Content Update";
+        statusName = TranslationProvider.get("TID_CONTENT_UPDATE");
         statusColor = Colors.yellow;
         break;
     }
 
     return Container(
       child: Card(
-        elevation: 5,
+        elevation: 8,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10.0),
         ),
@@ -162,7 +163,7 @@ class StatusPageState extends State<StatusPage> {
               ],
             )),
       ),
-      margin: EdgeInsets.only(top: 5, bottom: 5),
+      margin: EdgeInsets.only(top: 8),
     );
   }
 }

@@ -84,24 +84,11 @@ class MainPage extends StatefulWidget {
   MainPageState createState() => MainPageState();
 }
 
-class MainPageState extends State<MainPage>
-    with SingleTickerProviderStateMixin {
+class MainPageState extends State<MainPage> {
   GlobalKey<ScaffoldState> scaffoldKey = new GlobalKey<ScaffoldState>();
-  TabController controller;
   List<ApplicationWithIcon> games;
   bool isLoading = true;
   Resources resources;
-
-  var tabs = [
-    const Tab(
-      text: "Game Status",
-      icon: const Icon(Icons.videogame_asset),
-    ),
-    const Tab(
-      text: "CR Status",
-      icon: const Icon(Icons.storage),
-    )
-  ];
 
   Future<void> initRootRequest() async {
     bool rootStatus = await RootAccess.rootAccess;
@@ -139,7 +126,6 @@ class MainPageState extends State<MainPage>
 
   @override
   void initState() {
-    controller = new TabController(length: tabs.length, vsync: this);
     resources = Resources.getInstance();
     resources.currentContext = context;
     resources.mainPage = this;
@@ -156,153 +142,129 @@ class MainPageState extends State<MainPage>
 
   @override
   Widget build(BuildContext context) {
-    return DefaultTabController(
-      length: tabs.length,
-      child: Scaffold(
-          key: scaffoldKey,
-          appBar: AppBar(
-            title: Text(title),
-            backgroundColor: Colors.blueGrey[900],
-            flexibleSpace: Container(
-                decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                        begin: Alignment.bottomLeft,
-                        end: Alignment.topRight,
-                        colors: <Color>[
-                  Colors.blueGrey[900],
-                  Colors.blueGrey[700]
-                ]))),
-            actions: <Widget>[
-              IconButton(
-                icon: Icon(Icons.info_outline),
-                onPressed: () {
-                  FlutterExtensions.showPopupDialog(
-                      context,
-                      "Supercell Utility",
-                      "This content is not affiliated with, endorsed, sponsored, or specifically approved by Supercell and Supercell is not responsible for it.");
-                },
+    return Scaffold(
+      key: scaffoldKey,
+      appBar: AppBar(
+        title: Text(title),
+        backgroundColor: Colors.blueGrey[900],
+        flexibleSpace: Container(
+            decoration: BoxDecoration(
+                gradient: LinearGradient(
+                    begin: Alignment.bottomLeft,
+                    end: Alignment.topRight,
+                    colors: <Color>[
+              Colors.blueGrey[900],
+              Colors.blueGrey[600]
+            ]))),
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.settings),
+            onPressed: () {
+              Navigator.pushNamed(context, '/settings');
+            },
+          ),
+        ],
+        centerTitle: true,
+      ),
+      body: StatusPage(),
+      drawer: Drawer(
+        child: Column(
+          children: <Widget>[
+            Flexible(
+              fit: FlexFit.tight,
+              child: ListView(
+                padding: EdgeInsets.zero,
+                children: <Widget>[
+                  UserAccountsDrawerHeader(
+                    decoration: BoxDecoration(
+                      color: Colors.blueGrey[900],
+                    ),
+                    accountEmail:
+                        Text(TranslationProvider.get("TID_OPEN_SOURCE_DESC")),
+                    accountName: Text(title),
+                  ),
+                  ListTile(
+                    enabled: _rootStatus,
+                    title: Text('CR Event Images (ROOT)'),
+                    leading: Icon(
+                      Icons.image,
+                    ),
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          new MaterialPageRoute(
+                            builder: (BuildContext context) => new EventPage(
+                                "Clash Royale",
+                                "com.supercell.clashroyale",
+                                "events"),
+                          ));
+                    },
+                  ),
+                  ListTile(
+                    enabled: _rootStatus,
+                    title: Text(
+                      'COC Event Images (ROOT)',
+                    ),
+                    leading: Icon(
+                      Icons.image,
+                    ),
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          new MaterialPageRoute(
+                            builder: (BuildContext context) => new EventPage(
+                                "Clash of Clans",
+                                "com.supercell.clashofclans",
+                                "events-coc"),
+                          ));
+                    },
+                  ),
+                  ListTile(
+                    title: Text(
+                      TranslationProvider.get("TID_SETTINGS"),
+                    ),
+                    leading: Icon(
+                      Icons.settings,
+                    ),
+                    onTap: () {
+                      Navigator.pushNamed(context, '/settings');
+                    },
+                    enabled: true,
+                  ),
+                ],
               ),
-            ],
-            centerTitle: true,
-            bottom: TabBar(
-              controller: controller,
-              isScrollable: false,
-              indicatorColor: Colors.blueGrey[900],
-              tabs: tabs,
             ),
-          ),
-          body: TabBarView(
-            controller: controller,
-            children: <Widget>[
-              StatusPage(),
-              Builder(
-                builder: (context) => RefreshIndicator(
-                  onRefresh: () {
-                    return onRefresh(context);
-                  },
-                  child: CrClientPage(),
-                ),
-              )
-            ],
-          ),
-          drawer: Drawer(
-            child: Column(
-              children: <Widget>[
-                Flexible(
-                  fit: FlexFit.tight,
-                  child: ListView(
-                    padding: EdgeInsets.zero,
-                    children: <Widget>[
-                      UserAccountsDrawerHeader(
-                        decoration: BoxDecoration(
-                          color: Colors.blueGrey[900],
-                        ),
-                        accountEmail: Text(
-                            TranslationProvider.get("TID_OPEN_SOURCE_DESC")),
-                        accountName: Text(title),
-                      ),
-                      ListTile(
-                        enabled: _rootStatus,
-                        title: Text('CR Event Images (ROOT)'),
-                        leading: Icon(
-                          Icons.image,
-                        ),
-                        onTap: () {
-                          Navigator.push(
-                              context,
-                              new MaterialPageRoute(
-                                builder: (BuildContext context) =>
-                                    new EventPage("Clash Royale",
-                                        "com.supercell.clashroyale", "events"),
-                              ));
-                        },
-                      ),
-                      ListTile(
-                        enabled: _rootStatus,
-                        title: Text(
-                          'COC Event Images (ROOT)',
-                        ),
-                        leading: Icon(
-                          Icons.image,
-                        ),
-                        onTap: () {
-                          Navigator.push(
-                              context,
-                              new MaterialPageRoute(
-                                builder: (BuildContext context) =>
-                                    new EventPage(
-                                        "Clash of Clans",
-                                        "com.supercell.clashofclans",
-                                        "events-coc"),
-                              ));
-                        },
-                      ),
-                      ListTile(
-                        title: Text(
-                          TranslationProvider.get("TID_SETTINGS"),
-                        ),
-                        leading: Icon(
-                          Icons.settings,
-                        ),
-                        onTap: () {
-                          Navigator.pushNamed(context, '/settings');
-                        },
-                        enabled: true,
-                      ),
-                    ],
-                  ),
-                ),
-                ListTile(
-                  leading: Icon(Icons.open_in_new),
-                  title: Text(TranslationProvider.get("TID_MORE")),
-                  subtitle: Text(TranslationProvider.get("TID_MORE_DESC")),
-                ),
-                Divider(),
-                ListTile(
-                  title: Text(
-                    'Discord',
-                  ),
-                  leading: Icon(
-                    Icons.chat,
-                  ),
-                  onTap: () {
-                    launchURL('https://discord.gg/XdTw2PZ');
-                  },
-                ),
-                ListTile(
-                  title: Text(
-                    'Github',
-                  ),
-                  leading: Icon(
-                    Icons.code,
-                  ),
-                  onTap: () {
-                    launchURL('https://github.com/Incr3dible/sc-utility');
-                  },
-                )
-              ],
+            ListTile(
+              leading: Icon(Icons.open_in_new),
+              title: Text(TranslationProvider.get("TID_MORE")),
+              subtitle: Text(TranslationProvider.get("TID_MORE_DESC")),
             ),
-          )),
+            Divider(),
+            ListTile(
+              title: Text(
+                'Discord',
+              ),
+              leading: Icon(
+                Icons.chat,
+              ),
+              onTap: () {
+                launchURL('https://discord.gg/XdTw2PZ');
+              },
+            ),
+            ListTile(
+              title: Text(
+                'Github',
+              ),
+              leading: Icon(
+                Icons.code,
+              ),
+              onTap: () {
+                launchURL('https://github.com/Incr3dible/sc-utility');
+              },
+            )
+          ],
+        ),
+      ),
     );
   }
 
