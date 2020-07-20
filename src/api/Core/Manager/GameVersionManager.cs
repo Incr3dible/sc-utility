@@ -6,31 +6,31 @@ namespace SupercellUilityApi.Core.Manager
 {
     public class GameVersionManager
     {
-        public Dictionary<Client.Game, GameVersion> VersionList = new Dictionary<Client.Game, GameVersion>();
+        public Dictionary<Enums.Game, GameVersion> VersionList = new Dictionary<Enums.Game, GameVersion>();
 
         public GameVersionManager()
         {
-            VersionList.Add(Client.Game.ClashRoyale, new GameVersion
+            VersionList.Add(Enums.Game.ClashRoyale, new GameVersion
             {
                 Major = 3,
                 Minor = 0,
                 Build = 2077
             });
 
-            VersionList.Add(Client.Game.BrawlStars, new GameVersion
+            VersionList.Add(Enums.Game.BrawlStars, new GameVersion
             {
                 Major = 28,
                 Minor = 0,
                 Build = 189
             });
 
-            VersionList.Add(Client.Game.HayDayPop, new GameVersion
+            VersionList.Add(Enums.Game.HayDayPop, new GameVersion
             {
                 Major = 1,
                 Build = 154
             });
 
-            VersionList.Add(Client.Game.ClashofClans, new GameVersion
+            VersionList.Add(Enums.Game.ClashofClans, new GameVersion
             {
                 Major = 13,
                 Minor = 0,
@@ -38,7 +38,7 @@ namespace SupercellUilityApi.Core.Manager
             });
         }
 
-        public void VersionTooLow(Client.Game game)
+        public void VersionTooLow(Enums.Game game)
         {
             if (!VersionList.ContainsKey(game)) return;
             var version = VersionList[game];
@@ -50,20 +50,14 @@ namespace SupercellUilityApi.Core.Manager
             {
                 version.Build += 10;
             }
-            /*else if (version.Build > 990)
-            {
-                version.Build = 0;
-                version.Minor++;
-            }*/
             else
             {
-                //version.Minor = 0;
                 version.Build = 0;
                 version.Major++;
             }
         }
 
-        public void VersionTooHigh(Client.Game game)
+        public void VersionTooHigh(Enums.Game game)
         {
             if (!VersionList.ContainsKey(game)) return;
             var version = VersionList[game];
@@ -82,7 +76,7 @@ namespace SupercellUilityApi.Core.Manager
             }
         }
 
-        public GameVersion GetGameVersion(Client.Game game)
+        public GameVersion GetGameVersion(Enums.Game game)
         {
             return !VersionList.ContainsKey(game) ? null : VersionList[game];
         }

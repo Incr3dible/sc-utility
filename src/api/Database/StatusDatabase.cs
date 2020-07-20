@@ -23,7 +23,16 @@ namespace SupercellUilityApi.Database
                 MaximumPoolSize = 20,
                 CharacterSet = "utf8mb4"
             }.ToString();
+
+            Count = CountSync();
+
+            if (Count > -1) return;
+
+            Logger.Log($"MysqlConnection for status failed [{Resources.Configuration.MySqlServer}]!");
+            Program.Exit();
         }
+
+        public static long Count { get; set; }
 
         public static async Task ExecuteAsync(MySqlCommand cmd)
         {
@@ -43,6 +52,35 @@ namespace SupercellUilityApi.Database
             {
                 if (cmd.Connection != null)
                     await cmd.Connection.CloseAsync();
+            }
+
+            #endregion
+        }
+
+        public static long CountSync()
+        {
+            #region CountSync
+
+            try
+            {
+                long seed;
+
+                using var connection = new MySqlConnection(_connectionString);
+                connection.Open();
+                using (var cmd = new MySqlCommand($"SELECT COUNT(*) FROM {Name}", connection))
+                {
+                    seed = Convert.ToInt64(cmd.ExecuteScalar());
+                }
+
+                connection.Close();
+
+                return seed;
+            }
+            catch (Exception exception)
+            {
+                Logger.Log(exception, Logger.ErrorLevel.Error);
+
+                return -1;
             }
 
             #endregion
@@ -72,7 +110,7 @@ namespace SupercellUilityApi.Database
             {
                 Logger.Log(exception, Logger.ErrorLevel.Error);
 
-                return 0;
+                return -1;
             }
 
             #endregion
@@ -99,7 +137,7 @@ namespace SupercellUilityApi.Database
             }
             catch (Exception exception)
             {
-                Logger.Log(exception,Logger.ErrorLevel.Error);
+                Logger.Log(exception, Logger.ErrorLevel.Error);
             }
 
             #endregion

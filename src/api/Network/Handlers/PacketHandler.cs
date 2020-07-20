@@ -28,16 +28,6 @@ namespace SupercellUilityApi.Network.Handlers
             Channel = context.Channel;
         }
 
-        /*public override void ChannelUnregistered(IChannelHandlerContext context)
-        {
-            var remoteAddress = (IPEndPoint)Channel.RemoteAddress;
-
-            Logger.Log($"Disconnected from {remoteAddress.Address.MapToIPv4()}:{remoteAddress.Port}",
-                Logger.ErrorLevel.Debug);
-
-            base.ChannelUnregistered(context);
-        }*/
-
         public override void ExceptionCaught(IChannelHandlerContext context, Exception exception)
         {
             if (exception.GetType() != typeof(ReadTimeoutException) &&

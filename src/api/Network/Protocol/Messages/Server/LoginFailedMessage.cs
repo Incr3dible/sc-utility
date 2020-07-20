@@ -1,5 +1,4 @@
-﻿using System;
-using System.Text.Json;
+﻿using System.Text.Json;
 using DotNetty.Buffers;
 using SupercellUilityApi.Helpers;
 using SupercellUilityApi.Models;
@@ -17,34 +16,35 @@ namespace SupercellUilityApi.Network.Protocol.Messages.Server
 
         public override void Decode()
         {
-            ErrorCode = Client.CurrentGame == Network.Client.Game.ClashRoyale ? Reader.ReadVInt() : Reader.ReadInt();
+            ErrorCode = Client.CurrentGame == Enums.Game.ClashRoyale ? Reader.ReadVInt() : Reader.ReadInt();
 
-            if (ErrorCode == 7) Fingerprint = Client.CurrentGame == Network.Client.Game.HayDayPop ? Reader.ReadCompressedString() : Reader.ReadScString();
+            if (ErrorCode == 7)
+                Fingerprint = Client.CurrentGame == Enums.Game.HayDayPop
+                    ? Reader.ReadCompressedString()
+                    : Reader.ReadScString();
         }
 
         public override void Process()
         {
-            if (ErrorCode == 7)
+            switch (ErrorCode)
             {
-                Resources.GameStatusManager.SetStatus(Client.CurrentGame, 3,
-                    JsonSerializer.Deserialize<Fingerprint>(Fingerprint));
-            }
-            else if (ErrorCode == 8)
-            {
-                Resources.GameVersionManager.VersionTooLow(Client.CurrentGame);
-            }
-            else if (ErrorCode == 9)
-            {
-                Resources.GameVersionManager.VersionTooHigh(Client.CurrentGame);
-            }
-            else if (ErrorCode == 10)
-            {
-                Resources.GameStatusManager.SetStatus(Client.CurrentGame, 2);
-            }
-            else
-            {
-                Console.WriteLine(ErrorCode);
-                Resources.GameStatusManager.SetStatus(Client.CurrentGame, 1);
+                case 7:
+                    Resources.GameStatusManager.SetStatus(Client.CurrentGame, (int) Enums.Status.Content,
+                        JsonSerializer.Deserialize<Fingerprint>(Fingerprint));
+                    break;
+                case 8:
+                    Resources.GameVersionManager.VersionTooLow(Client.CurrentGame);
+                    break;
+                case 9:
+                    Resources.GameVersionManager.VersionTooHigh(Client.CurrentGame);
+                    break;
+                case 10:
+                    Resources.GameStatusManager.SetStatus(Client.CurrentGame, (int) Enums.Status.Maintenance);
+                    break;
+                default:
+                    Logger.Log($"Unknown error code from {Client.CurrentGame}: {ErrorCode}", Logger.ErrorLevel.Error);
+                    Resources.GameStatusManager.SetStatus(Client.CurrentGame, (int) Enums.Status.Offline);
+                    break;
             }
         }
     }

@@ -1,4 +1,6 @@
 ﻿using System;
+using System.IO;
+using NLog;
 
 namespace SupercellUilityApi
 {
@@ -15,12 +17,23 @@ namespace SupercellUilityApi
         private static readonly object ConsoleSync = new object();
 #endif
 
+        private static NLog.Logger _logger;
+
+        public Logger()
+        {
+            Directory.CreateDirectory("Logs");
+
+            _logger = LogManager.GetCurrentClassLogger();
+        }
+
         public static void Log(object message, ErrorLevel logType = ErrorLevel.Info)
         {
             switch (logType)
             {
                 case ErrorLevel.Info:
                     {
+                        _logger.Info(message);
+
                         Console.ForegroundColor = ConsoleColor.DarkYellow;
                         Console.Write($"[{logType}] ");
                         Console.ResetColor();
@@ -30,6 +43,7 @@ namespace SupercellUilityApi
 
                 case ErrorLevel.Warning:
                     {
+                        _logger.Warn(message);
 #if DEBUG
                         lock (ConsoleSync)
                         {
@@ -44,6 +58,7 @@ namespace SupercellUilityApi
 
                 case ErrorLevel.Error:
                     {
+                        _logger.Error(message);
 #if DEBUG
 
                         lock (ConsoleSync)
@@ -60,6 +75,7 @@ namespace SupercellUilityApi
                 case ErrorLevel.Debug:
                     {
 #if DEBUG
+                        _logger.Debug(message);
 
                         lock (ConsoleSync)
                         {

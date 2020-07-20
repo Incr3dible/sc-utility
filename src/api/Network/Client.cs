@@ -72,16 +72,8 @@ namespace SupercellUilityApi.Network
 
         #region Objects
 
-        public Game CurrentGame { get; set; }
+        public Enums.Game CurrentGame { get; set; }
         public TcpClient TcpClient { get; set; }
-
-        public enum Game
-        {
-            ClashRoyale,
-            ClashofClans,
-            BrawlStars,
-            HayDayPop
-        }
 
         #endregion Objects
     }

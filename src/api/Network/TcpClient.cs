@@ -22,7 +22,7 @@ namespace SupercellUilityApi.Network
         /// </summary>
         /// <param name="game"></param>
         /// <returns></returns>
-        public async Task ConnectAsync(Client.Game game)
+        public async Task ConnectAsync(Enums.Game game)
         {
             PacketHandler = new PacketHandler(this);
             GameClient = new Client {TcpClient = this};
@@ -31,19 +31,19 @@ namespace SupercellUilityApi.Network
 
             switch (game)
             {
-                case Client.Game.ClashofClans:
+                case Enums.Game.ClashofClans:
                     GameClient.CurrentGame = game;
                     host = "gamea.clashofclans.com";
                     break;
-                case Client.Game.ClashRoyale:
-                    GameClient.CurrentGame = Client.Game.ClashRoyale;
+                case Enums.Game.ClashRoyale:
+                    GameClient.CurrentGame = Enums.Game.ClashRoyale;
                     host = "game.clashroyaleapp.com";
                     break;
-                case Client.Game.BrawlStars:
+                case Enums.Game.BrawlStars:
                     GameClient.CurrentGame = game;
                     host = "game.brawlstarsgame.com";
                     break;
-                case Client.Game.HayDayPop:
+                case Enums.Game.HayDayPop:
                     GameClient.CurrentGame = game;
                     host = "game.prod.haydaypop.com";
                     break;

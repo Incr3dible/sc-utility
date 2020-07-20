@@ -20,5 +20,10 @@ namespace SupercellUilityApi
             return Host.CreateDefaultBuilder(args)
                 .ConfigureWebHostDefaults(webBuilder => { webBuilder.UseStartup<Startup>(); });
         }
+
+        public static void Exit()
+        {
+            Environment.Exit(0);
+        }
     }
 }
