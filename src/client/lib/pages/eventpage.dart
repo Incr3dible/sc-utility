@@ -176,7 +176,6 @@ class EventPageState extends State<EventPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text("$gameName Event Images"),
-        backgroundColor: Colors.blueGrey[900],
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.info_outline),
@@ -257,10 +256,8 @@ class ImageViewState extends State<ImageView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-          backgroundColor: Colors.blueGrey[900], title: Text(image.name)),
+      appBar: AppBar(title: Text(image.name)),
       bottomNavigationBar: BottomNavigationBar(
-        backgroundColor: Colors.grey[900],
         unselectedItemColor: Colors.grey,
         currentIndex: _currentIndex,
         onTap: (int index) {

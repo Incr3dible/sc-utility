@@ -176,6 +176,14 @@ class MainPageState extends State<MainPage> {
                     decoration: BoxDecoration(
                       color: Theme.of(context).accentColor,
                     ),
+                    otherAccountsPictures: <Widget>[
+                      CircleAvatar(
+                        backgroundImage: AssetImage("assets/inc.jpeg"),
+                      ),
+                      CircleAvatar(
+                          backgroundImage: AssetImage("assets/kyle.jpeg"))
+                    ],
+                    currentAccountPicture: Image.asset("assets/icon.png"),
                     accountEmail:
                         Text(TranslationProvider.get("TID_OPEN_SOURCE_DESC")),
                     accountName: Text(title),
