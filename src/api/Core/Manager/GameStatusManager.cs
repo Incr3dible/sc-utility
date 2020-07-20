@@ -13,7 +13,7 @@ namespace SupercellUilityApi.Core.Manager
     {
         private readonly Timer _refreshTimer = new Timer(Constants.StatusCheckInterval * 1000);
         public Dictionary<Enums.Game, GameStatus> StatusList = new Dictionary<Enums.Game, GameStatus>();
-        private Dictionary<Enums.Game, TcpClient> ClientList = new Dictionary<Enums.Game, TcpClient>();
+        private readonly Dictionary<Enums.Game, TcpClient> _clientList = new Dictionary<Enums.Game, TcpClient>();
 
         public GameStatusManager()
         {
@@ -43,7 +43,7 @@ namespace SupercellUilityApi.Core.Manager
 
             foreach (var game in StatusList.Keys)
             {
-                ClientList.Add(game, new TcpClient());
+                _clientList.Add(game, new TcpClient());
             }
 
             CheckGames(null, null);
@@ -61,7 +61,7 @@ namespace SupercellUilityApi.Core.Manager
         /// <param name="args"></param>
         public async void CheckGames(object sender, ElapsedEventArgs args)
         {
-            foreach (var (game, client) in ClientList)
+            foreach (var (game, client) in _clientList)
             {
                 await client.ConnectAsync(game);
 
