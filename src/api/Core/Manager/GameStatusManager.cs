@@ -88,7 +88,7 @@ namespace SupercellUilityApi.Core.Manager
             }
 
             // Content Update is new and fingerprint is given
-            if (statusCode == (int)Enums.Status.Content && fingerprint != null)
+            if (statusCode == (int) Enums.Status.Content && fingerprint != null)
             {
                 if (status.LatestFingerprintSha == fingerprint.Sha)
                 {
@@ -108,6 +108,8 @@ namespace SupercellUilityApi.Core.Manager
 
             status.Status = statusCode;
             await StatusDatabase.SaveGameStatus(status);
+
+            Resources.Firebase.SendNotification("Status Update", $"{status.GameName}: {(Enums.Status) statusCode}");
         }
 
         /// <summary>
