@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sc_utility/translationProvider.dart';
 import '../resources.dart';
 
 class FlutterExtensions {
@@ -91,7 +92,7 @@ class FlutterExtensions {
               content: Text(text),
               actions: <Widget>[
                 FlatButton(
-                  child: Text("Cancel"),
+                  child: Text(TranslationProvider.get("TID_CANCEL")),
                   onPressed: () => {
                     Navigator.pop(context),
                     resources.isPopupOpen = false,

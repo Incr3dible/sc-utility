@@ -14,27 +14,23 @@ namespace SupercellUilityApi.Core.Manager
             {
                 Major = 3,
                 Minor = 0,
-                Build = 2077
+                Build = 2077,
+                Key = 29
             });
 
             VersionList.Add(Enums.Game.BrawlStars, new GameVersion
             {
                 Major = 28,
                 Minor = 0,
-                Build = 189
+                Build = 189,
+                Key = 10
             });
 
             VersionList.Add(Enums.Game.HayDayPop, new GameVersion
             {
                 Major = 1,
-                Build = 154
-            });
-
-            VersionList.Add(Enums.Game.ClashofClans, new GameVersion
-            {
-                Major = 13,
-                Minor = 0,
-                Build = 0
+                Build = 154,
+                Key = 10
             });
         }
 

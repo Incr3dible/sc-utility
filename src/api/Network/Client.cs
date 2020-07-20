@@ -17,7 +17,8 @@ namespace SupercellUilityApi.Network
                 MajorVersion = version.Major,
                 MinorVersion = version.Minor,
                 BuildVersion = version.Build,
-                Sha = fingerprintSha
+                Sha = fingerprintSha,
+                KeyVersion = version.Key
             }.SendAsync();
         }
 

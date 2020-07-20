@@ -80,10 +80,10 @@ namespace SupercellUilityApi.Network
 
                 GameClient.Login(Resources.GameStatusManager.GetLatestFingerprintSha(game));
             }
-            catch (Exception)
+            catch (Exception exc)
             {
                 Logger.Log(
-                    "Failed to connect.",
+                    $"Failed to connect ({game}): {exc}",
                     Logger.ErrorLevel.Warning);
             }
         }

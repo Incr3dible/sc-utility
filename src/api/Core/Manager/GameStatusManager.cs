@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using System.Timers;
 using SupercellUilityApi.Database;
 using SupercellUilityApi.Helpers;
@@ -12,6 +13,7 @@ namespace SupercellUilityApi.Core.Manager
     {
         private readonly Timer _refreshTimer = new Timer(Constants.StatusCheckInterval * 1000);
         public Dictionary<Enums.Game, GameStatus> StatusList = new Dictionary<Enums.Game, GameStatus>();
+        private Dictionary<Enums.Game, TcpClient> ClientList = new Dictionary<Enums.Game, TcpClient>();
 
         public GameStatusManager()
         {
@@ -39,6 +41,11 @@ namespace SupercellUilityApi.Core.Manager
                 LatestFingerprintSha = "6a621ca47c6fd1ef30fba8a0d6cbcf5732e34e5d"
             });
 
+            foreach (var game in StatusList.Keys)
+            {
+                ClientList.Add(game, new TcpClient());
+            }
+
             CheckGames(null, null);
 
             _refreshTimer.Elapsed += CheckGames;
@@ -54,10 +61,11 @@ namespace SupercellUilityApi.Core.Manager
         /// <param name="args"></param>
         public async void CheckGames(object sender, ElapsedEventArgs args)
         {
-            foreach (var game in StatusList.Keys)
+            foreach (var (game, client) in ClientList)
             {
-                var tcpClient = new TcpClient();
-                await tcpClient.ConnectAsync(game);
+                await client.ConnectAsync(game);
+
+                //await Task.Delay(1000);
             }
         }
 
