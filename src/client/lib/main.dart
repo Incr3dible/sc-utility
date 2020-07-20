@@ -44,7 +44,7 @@ class MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    Color themeColor = Colors.blueGrey;
+    Color themeColor = Colors.green;
 
     return MaterialApp(
       title: title,
@@ -143,16 +143,16 @@ class MainPageState extends State<MainPage> {
       key: scaffoldKey,
       appBar: AppBar(
         title: Text(title),
-        backgroundColor: Colors.blueGrey[900],
-        flexibleSpace: Container(
+        //backgroundColor: Colors.blueGrey[900],
+        /*flexibleSpace: Container(
             decoration: BoxDecoration(
                 gradient: LinearGradient(
                     begin: Alignment.bottomLeft,
                     end: Alignment.topRight,
                     colors: <Color>[
-              Colors.blueGrey[900],
-              Colors.blueGrey[600]
-            ]))),
+              Colors.green[800],
+              Colors.green[600]
+            ]))),*/
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.settings),
@@ -174,7 +174,7 @@ class MainPageState extends State<MainPage> {
                 children: <Widget>[
                   UserAccountsDrawerHeader(
                     decoration: BoxDecoration(
-                      color: Colors.blueGrey[900],
+                      color: Theme.of(context).accentColor,
                     ),
                     accountEmail:
                         Text(TranslationProvider.get("TID_OPEN_SOURCE_DESC")),

@@ -23,8 +23,8 @@ class ChangelogPageState extends State<ChangelogPage>
 
   var tabs = [
     const Tab(text: "Clash Royale"),
-    const Tab(text: "Clash of Clans"),
-    const Tab(text: "Brawl Stars")
+    const Tab(text: "Brawl Stars"),
+    const Tab(text: "HayDay Pop")
   ];
 
   @override
@@ -39,7 +39,7 @@ class ChangelogPageState extends State<ChangelogPage>
                   Navigator.pop(context);
                 },
               ),
-              title: Text("Fingerprint Changelog"),
+              title: Text("Fingerprint Changelog (SOON)"),
               bottom: TabBar(
                 controller: controller,
                 isScrollable: false,

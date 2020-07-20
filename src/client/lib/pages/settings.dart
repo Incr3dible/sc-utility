@@ -118,8 +118,6 @@ class SettingsState extends State<SettingsPage> {
                               onNotificationsChanged();
                             });
                           },
-                          activeTrackColor: Colors.blueGrey[600],
-                          activeColor: Colors.blueGrey[800],
                         ),
                       ),
                     ),
