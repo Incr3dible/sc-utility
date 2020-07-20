@@ -10,9 +10,30 @@ namespace SupercellUilityApi.Network
 {
     public class TcpClient
     {
-        private MultithreadEventLoopGroup Group { get; set; }
-        private Bootstrap Bootstrap { get; set; }
-        private PacketHandler PacketHandler { get; set; }
+        public TcpClient()
+        {
+            PacketHandler = new PacketHandler(this);
+            Group = new MultithreadEventLoopGroup();
+            Bootstrap = new Bootstrap();
+            Bootstrap.Group(Group);
+            Bootstrap.Channel<TcpSocketChannel>();
+
+            Bootstrap
+                .Option(ChannelOption.TcpNodelay, true)
+                .Option(ChannelOption.SoKeepalive, true)
+                .Handler(new ActionChannelInitializer<IChannel>(channel =>
+                {
+                    var pipeline = channel.Pipeline;
+                    pipeline.AddFirst("FrameDecoder",
+                        new LengthFieldBasedFrameDecoder(int.MaxValue, 2, 3, 2, 0));
+                    pipeline.AddLast("PacketHandler", PacketHandler);
+                    pipeline.AddLast("PacketEncoder", new PacketEncoder());
+                }));
+        }
+
+        private MultithreadEventLoopGroup Group { get; }
+        private Bootstrap Bootstrap { get; }
+        private PacketHandler PacketHandler { get; }
 
         public IChannel ServerChannel { get; set; }
         public Client GameClient { get; set; }
@@ -24,7 +45,6 @@ namespace SupercellUilityApi.Network
         /// <returns></returns>
         public async Task ConnectAsync(Enums.Game game)
         {
-            PacketHandler = new PacketHandler(this);
             GameClient = new Client {TcpClient = this};
 
             string host;
@@ -53,24 +73,6 @@ namespace SupercellUilityApi.Network
 
             try
             {
-                Group = new MultithreadEventLoopGroup();
-
-                Bootstrap = new Bootstrap();
-                Bootstrap.Group(Group);
-                Bootstrap.Channel<TcpSocketChannel>();
-
-                Bootstrap
-                    .Option(ChannelOption.TcpNodelay, true)
-                    .Option(ChannelOption.SoKeepalive, true)
-                    .Handler(new ActionChannelInitializer<IChannel>(channel =>
-                    {
-                        var pipeline = channel.Pipeline;
-                        pipeline.AddFirst("FrameDecoder",
-                            new LengthFieldBasedFrameDecoder(int.MaxValue, 2, 3, 2, 0));
-                        pipeline.AddLast("PacketHandler", PacketHandler);
-                        pipeline.AddLast("PacketEncoder", new PacketEncoder());
-                    }));
-
                 ServerChannel =
                     await Bootstrap.ConnectAsync(host, 9339);
                 /*var endpoint = (IPEndPoint) ServerChannel.RemoteAddress;
