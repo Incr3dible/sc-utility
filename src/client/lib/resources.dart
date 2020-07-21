@@ -2,9 +2,13 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:package_info/package_info.dart';
 import 'package:sc_utility/pages/statusPage.dart';
+import 'package:sc_utility/translationProvider.dart';
+import 'package:sc_utility/utils/flutterextentions.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sc_utility/network/Client.dart';
+import 'package:url_launcher/url_launcher.dart';
 
+import 'api/GithubApiClient.dart';
 import 'pages/crclient.dart';
 import 'main.dart';
 
@@ -55,8 +59,9 @@ class Resources {
     onResourcesLoaded();
   }
 
-  void onResourcesLoaded(){
+  void onResourcesLoaded() async {
     statusPage.requestStatusList();
+    await checkForUpdate(currentContext, true);
   }
 
   void clearPages() {
@@ -78,11 +83,48 @@ class Resources {
     return ThemeMode.system;
   }
 
-  int language(){
+  int language() {
     return prefs?.getInt("language") ?? 0;
   }
 
   String fingerprintSha() {
     return prefs.getString("sha") ?? "unknown";
+  }
+
+  Future checkForUpdate(
+      BuildContext context, bool onlyShowWhenUpdateAvailable) async {
+    var isUpdateAvailable = await GithubApiClient.isNewTagAvailable(
+        packageInfo.version.replaceAll(".debug", ""));
+
+    if (isUpdateAvailable == null) {
+      if (!onlyShowWhenUpdateAvailable)
+        FlutterExtensions.showPopupDialog(
+            context,
+            TranslationProvider.get("TID_CONNECTION_ERROR"),
+            TranslationProvider.get("TID_CONNECTION_ERROR_DESC"));
+    } else if (isUpdateAvailable) {
+      FlutterExtensions.showPopupDialogWithActionAndCancel(
+          context,
+          TranslationProvider.get("TID_UPDATE_AVAILABLE"),
+          TranslationProvider.get("TID_UPDATE_AVAILABLE_DESC"),
+          TranslationProvider.get("TID_DOWNLOAD"),
+          () =>
+              {launchURL("https://github.com/Incr3dible/sc-utility/releases")},
+          false);
+    } else {
+      if (!onlyShowWhenUpdateAvailable)
+        FlutterExtensions.showPopupDialog(
+            context,
+            TranslationProvider.get("TID_UP_TO_DATE"),
+            TranslationProvider.get("TID_LATEST_VERSION"));
+    }
+  }
+
+  void launchURL(String url) async {
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
+    }
   }
 }
