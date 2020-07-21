@@ -1,6 +1,7 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:package_info/package_info.dart';
+import 'package:sc_utility/pages/statusPage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sc_utility/network/Client.dart';
 
@@ -23,6 +24,7 @@ class Resources {
 
   BuildContext currentContext;
   MainPageState mainPage;
+  StatusPageState statusPage;
   MyAppState myApp;
   CrClientPageState clientPageState;
   PackageInfo packageInfo;
@@ -36,10 +38,10 @@ class Resources {
     if (initialized) return;
     print("Initializing resources...");
 
+    prefs = await SharedPreferences.getInstance();
+
     firebaseMessaging = FirebaseMessaging();
     firebaseMessaging.configure();
-
-    prefs = await SharedPreferences.getInstance();
 
     if (prefs.getBool("notifications") ?? true) {
       firebaseMessaging.subscribeToTopic("everyone");
@@ -48,8 +50,13 @@ class Resources {
     packageInfo = await PackageInfo.fromPlatform();
 
     print("Initialized resources.");
-
     initialized = true;
+
+    onResourcesLoaded();
+  }
+
+  void onResourcesLoaded(){
+    statusPage.requestStatusList();
   }
 
   void clearPages() {

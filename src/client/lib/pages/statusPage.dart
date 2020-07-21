@@ -19,10 +19,10 @@ class StatusPageState extends State<StatusPage> {
 
   @override
   void initState() {
-    resources = Resources.getInstance();
-    requestStatusList();
-
     super.initState();
+
+    resources = Resources.getInstance();
+    resources.statusPage = this;
   }
 
   void requestStatusList() async {
@@ -39,16 +39,17 @@ class StatusPageState extends State<StatusPage> {
         isLoading = false;
       });
     } else {
-      FlutterExtensions.showPopupDialogWithActionAndCancel(
-          context,
-          "Connection error",
-          "Couldn't connect to the server. Please try again.",
-          "Try again",
-          () => {requestStatusList()},
-          false);
       setState(() {
         isLoading = false;
       });
+
+      FlutterExtensions.showPopupDialogWithActionAndCancel(
+          context,
+          TranslationProvider.get("TID_CONNECTION_ERROR"),
+          TranslationProvider.get("TID_CONNECTION_ERROR_DESC"),
+          TranslationProvider.get("TID_TRY_AGAIN"),
+          () => {requestStatusList()},
+          false);
     }
   }
 
@@ -77,7 +78,7 @@ class StatusPageState extends State<StatusPage> {
                           child: Icon(Icons.cloud_off),
                         ),
                         Text(
-                          "Swipe down to try again and check your internet connection.",
+                          TranslationProvider.get("TID_SWIPE_RETRY"),
                           textAlign: TextAlign.center,
                         )
                       ],
@@ -150,7 +151,19 @@ class StatusPageState extends State<StatusPage> {
                     builder: (context) => IconButton(
                       icon: Icon(Icons.history),
                       onPressed: () {
-                        Navigator.pushNamed(context, "/changelog");
+                        //Navigator.pushNamed(context, "/changelog");
+                        Scaffold.of(context).showSnackBar(SnackBar(
+                          content: Row(
+                            children: [
+                              Container(
+                                child: Icon(Icons.do_not_disturb),
+                                padding: EdgeInsets.all(5),
+                              ),
+                              Text('COMING SOON')
+                            ],
+                          ),
+                          duration: Duration(seconds: 1),
+                        ));
                       },
                     ),
                   ),

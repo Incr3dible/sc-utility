@@ -24,10 +24,17 @@ class TranslationProvider {
           "do you need help or want to look at the code on Github?",
       "TID_OPEN_SOURCE_DESC": "an open source project",
       "TID_DISCLAIMER": "Disclaimer",
-      "TID_DISCLAIMER_DESC": "This content is not affiliated with, endorsed, sponsored, or specifically approved by Supercell and Supercell is not responsible for it.",
+      "TID_DISCLAIMER_DESC":
+          "This content is not affiliated with, endorsed, sponsored, or specifically approved by Supercell and Supercell is not responsible for it.",
       "TID_MAINTENANCE": "Maintenance",
       "TID_CONTENT_UPDATE": "Content Update",
-      "TID_CANCEL": "Cancel"
+      "TID_CANCEL": "Cancel",
+      "TID_CONNECTION_ERROR": "Connection error",
+      "TID_TRY_AGAIN": "Try again",
+      "TID_CONNECTION_ERROR_DESC":
+          "Couldn't connect to the server. Please try again.",
+      "TID_SWIPE_RETRY":
+          "Swipe down to try again and check your internet connection"
     },
     {
       "TID_SETTINGS": "Einstellungen",
@@ -52,10 +59,17 @@ class TranslationProvider {
           "brauchst du Hilfe oder möchtest den Code auf Github ansehen?",
       "TID_OPEN_SOURCE_DESC": "ein Open-Source-Projekt",
       "TID_DISCLAIMER": "Ausschlussklausel",
-      "TID_DISCLAIMER_DESC": "Dieser Inhalt ist nicht mit Supercell verbunden, unterstützt, gesponsert oder speziell von Supercell genehmigt und Supercell ist nicht dafür verantwortlich.",
+      "TID_DISCLAIMER_DESC":
+          "Dieser Inhalt ist nicht mit Supercell verbunden, unterstützt, gesponsert oder speziell von Supercell genehmigt und Supercell ist nicht dafür verantwortlich.",
       "TID_MAINTENANCE": "Wartungspause",
       "TID_CONTENT_UPDATE": "Inhalts-Update",
-      "TID_CANCEL": "Abbrechen"
+      "TID_CANCEL": "Abbrechen",
+      "TID_CONNECTION_ERROR": "Verbindungsfehler",
+      "TID_TRY_AGAIN": "Erneut versuchen",
+      "TID_CONNECTION_ERROR_DESC":
+          "Es konnte keine Verbindung zum Server hergestellt werden. Bitte versuche es noch einmal.",
+      "TID_SWIPE_RETRY":
+          "Um es erneut zu versuchen wische nach unten und überprüfe deine Internetverbindung"
     },
   };
 

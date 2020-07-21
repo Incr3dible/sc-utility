@@ -133,6 +133,12 @@ class MainPageState extends State<MainPage> {
     print('Initialized app.');
   }
 
+  void setUpdate() {
+    setState(() {
+      print("UPDATE");
+    });
+  }
+
   Future<Null> onRefresh(BuildContext context) async {
     resources.clientPageState.reload();
   }
@@ -272,142 +278,6 @@ class MainPageState extends State<MainPage> {
       ),
     );
   }
-
-  /*Widget buildMainMenuCards() {
-    if (isLoading) {
-      return Center(
-        child: CircularProgressIndicator(),
-      );
-    }
-
-    var widgets = new List<Widget>();
-
-    widgets.add(Card(
-      elevation: 5,
-      child: Container(
-        padding: EdgeInsets.all(15.0),
-        child: Center(
-          child: Text(
-            TranslationProvider.get("TID_WELCOME_MESSAGE"),
-            textAlign: TextAlign.center,
-            style: TextStyle(fontSize: 16),
-          ),
-        ),
-      ),
-    ));
-
-    widgets.addAll(buildGames());
-
-    return ListView.builder(
-        padding: EdgeInsets.only(top: 8, left: 5, right: 5),
-        itemCount: widgets.length,
-        itemBuilder: (BuildContext ctx, int index) {
-          return widgets[index];
-        });
-  }
-
-  List<ApplicationWithIcon> getGames() {
-    var games = {
-      "com.supercell.clashroyale",
-      "com.supercell.clashofclans",
-      "com.supercell.brawlstars",
-      "com.supercell.haydaypop",
-      "com.supercell.boombeach",
-      "com.supercell.hayday"
-    };
-
-    var list = new List<ApplicationWithIcon>();
-
-    games.forEach((element) async {
-      if (await DeviceApps.isAppInstalled(element)) {
-        list.add(await DeviceApps.getApp(element, true));
-
-        if (list.length == games.length) {
-          setState(() {
-            isLoading = false;
-          });
-        }
-      } else
-        games.remove(element);
-    });
-
-    return list;
-  }
-
-  List<Widget> buildGames() {
-    var list = new List<Widget>();
-
-    if (games != null)
-      games.forEach((app) async {
-        list.add(
-          Card(
-            elevation: 2,
-            child: InkWell(
-                onTap: () => {},
-                child: Container(
-                    padding: EdgeInsets.all(10.0),
-                    child: Row(
-                      children: <Widget>[
-                        Row(
-                          children: <Widget>[
-                            Container(
-                              child: Image.memory(app.icon),
-                              width: 60,
-                              padding: EdgeInsets.all(10.0),
-                            ),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  app.appName,
-                                  style: TextStyle(
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                                Text(
-                                  app.versionName.replaceAll("_", "."),
-                                  style: TextStyle(
-                                      fontSize: 13,
-                                      fontStyle: FontStyle.italic),
-                                )
-                              ],
-                            ),
-                          ],
-                        ),
-                        Spacer(),
-                        FlatButton(
-                            child: Row(
-                              children: <Widget>[
-                                Icon(
-                                  Icons.play_arrow,
-                                  color: Colors.green[500],
-                                ),
-                                Text(
-                                  'Open',
-                                )
-                              ],
-                            ),
-                            onPressed: () =>
-                                DeviceApps.openApp(app.packageName))
-                      ],
-                    ))),
-          ),
-        );
-      });
-
-    if (list.isEmpty) {
-      list.add(Card(
-        child: Container(
-          padding: EdgeInsets.all(10),
-          child: Center(
-            child: Text("NO GAMES INSTALLED"),
-          ),
-        ),
-      ));
-    }
-
-    return list;
-  }*/
 
   void launchURL(String url) async {
     if (await canLaunch(url)) {

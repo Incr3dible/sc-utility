@@ -45,6 +45,8 @@ class SettingsState extends State<SettingsPage> {
       language = value;
       resources.prefs.setInt("language", value);
     });
+
+    resources.mainPage.setUpdate();
   }
 
   void handleRadioValueChanged(int value) {
@@ -213,7 +215,13 @@ class SettingsState extends State<SettingsPage> {
                             isLoading = false;
                           });
 
-                          if (isUpdateAvailable) {
+                          if (isUpdateAvailable == null) {
+                            FlutterExtensions.showPopupDialog(
+                                context,
+                                TranslationProvider.get("TID_CONNECTION_ERROR"),
+                                TranslationProvider.get(
+                                    "TID_CONNECTION_ERROR_DESC"));
+                          } else if (isUpdateAvailable) {
                             FlutterExtensions
                                 .showPopupDialogWithActionAndCancel(
                                     context,
