@@ -25,6 +25,8 @@ namespace SupercellUilityApi.Controllers
                 return null;
             }
 
+            Resources.IncrementRequests();
+
             var history = new List<FingerprintLog>();
 
             history.Add(new FingerprintLog
@@ -43,7 +45,7 @@ namespace SupercellUilityApi.Controllers
 
             history.Add(new FingerprintLog
             {
-                Sha = "rurtzi34n4t90834t7j9th7n349t63149t634t984",
+                Sha = "this is just a test",
                 Version = "10.524.10",
                 Timestamp = TimeUtils.CurrentUnixTimestamp
             });
