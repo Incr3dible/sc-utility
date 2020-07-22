@@ -56,9 +56,8 @@ class ChangelogPageState extends State<ChangelogPage>
     var fingerprintList = await ApiClient.getFingerprintLog(gameName);
 
     if (fingerprintList != null) {
-      logList = fingerprintList;
-
       setState(() {
+        logList = fingerprintList;
         isLoading = false;
       });
     } else {

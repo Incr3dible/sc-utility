@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:sc_utility/pages/changelog.dart';
@@ -12,10 +14,15 @@ class StatusPage extends StatefulWidget {
   StatusPageState createState() => StatusPageState();
 }
 
-class StatusPageState extends State<StatusPage> {
+class StatusPageState extends State<StatusPage>
+    with SingleTickerProviderStateMixin {
   Resources resources;
   List<GameStatus> gameList = new List<GameStatus>();
-  bool isLoading = false;
+  bool isLoading = true;
+  bool isTimedOut = false;
+  Timer statusTimer;
+  AnimationController animationController;
+  Animation<double> opacityAnimation;
 
   @override
   void initState() {
@@ -23,6 +30,26 @@ class StatusPageState extends State<StatusPage> {
 
     resources = Resources.getInstance();
     resources.statusPage = this;
+
+    statusTimer = new Timer.periodic(Duration(seconds: 5), (timer) {
+      setState(() {
+        isTimedOut = true;
+      });
+    });
+
+    animationController = AnimationController(
+        duration: const Duration(milliseconds: 1500), vsync: this);
+    opacityAnimation =
+        Tween<double>(begin: 0.5, end: 1.0).animate(animationController)
+          ..addStatusListener((status) {
+            if (status == AnimationStatus.completed) {
+              animationController.reverse();
+            } else if (status == AnimationStatus.dismissed) {
+              animationController.forward();
+            }
+          });
+
+    animationController.forward();
   }
 
   void requestStatusList() async {
@@ -33,9 +60,8 @@ class StatusPageState extends State<StatusPage> {
     var statusList = await ApiClient.getGameStatus();
 
     if (statusList != null) {
-      gameList = statusList;
-
       setState(() {
+        gameList = statusList;
         isLoading = false;
       });
     } else {
@@ -63,35 +89,88 @@ class StatusPageState extends State<StatusPage> {
       onRefresh: () {
         return onRefresh(context);
       },
-      child: isLoading
-          ? Center(
-              child: CircularProgressIndicator(),
-            )
-          : gameList.length == 0
-              ? ListView(
-                  padding: EdgeInsets.all(20),
-                  children: <Widget>[
-                    Column(
-                      children: <Widget>[
-                        Padding(
-                          padding: EdgeInsets.all(20),
-                          child: Icon(Icons.cloud_off),
+      child: Column(
+        children: <Widget>[
+          buildLive(),
+          Flexible(
+            fit: FlexFit.tight,
+            child: isLoading
+                ? Center(
+                    child: CircularProgressIndicator(),
+                  )
+                : gameList.length == 0
+                    ? buildConnectionError()
+                    : ListView.builder(
+                        padding: EdgeInsets.only(left: 5, right: 5),
+                        itemCount: gameList.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          return buildGameStatus(gameList.elementAt(index));
+                        },
+                      ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget buildLive() {
+    return Container(
+      child: Card(
+        elevation: 8,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10.0),
+        ),
+        clipBehavior: Clip.antiAliasWithSaveLayer,
+        child: Container(
+          child: ListTile(
+            leading: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                AnimatedBuilder(
+                    animation: animationController,
+                    builder: (_, child) {
+                      return Opacity(
+                        opacity: opacityAnimation.value,
+                        child: Icon(
+                          Icons.brightness_1,
+                          color: Colors.red,
                         ),
-                        Text(
-                          TranslationProvider.get("TID_SWIPE_RETRY"),
-                          textAlign: TextAlign.center,
-                        )
-                      ],
-                    )
-                  ],
-                )
-              : ListView.builder(
-                  padding: EdgeInsets.only(top: 8, left: 5, right: 5),
-                  itemCount: gameList.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    return buildGameStatus(gameList.elementAt(index));
-                  },
-                ),
+                      );
+                    })
+              ],
+            ),
+            title: Text("LIVE"),
+            subtitle: Text("updating the status every 20 seconds"),
+            trailing: OutlineButton(
+              highlightedBorderColor: Colors.red,
+              onPressed: () {},
+              child: Text("PAUSE"),
+            ),
+          ),
+          padding: EdgeInsets.all(0),
+        ),
+      ),
+      margin: EdgeInsets.only(top: 8, left: 5, right: 5),
+    );
+  }
+
+  Widget buildConnectionError() {
+    return ListView(
+      padding: EdgeInsets.all(20),
+      children: <Widget>[
+        Column(
+          children: <Widget>[
+            Padding(
+              padding: EdgeInsets.all(20),
+              child: Icon(Icons.cloud_off),
+            ),
+            Text(
+              TranslationProvider.get("TID_SWIPE_RETRY"),
+              textAlign: TextAlign.center,
+            )
+          ],
+        )
+      ],
     );
   }
 
@@ -120,7 +199,7 @@ class StatusPageState extends State<StatusPage> {
 
     return Container(
       child: Card(
-        elevation: 8,
+        elevation: 4,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10.0),
         ),
