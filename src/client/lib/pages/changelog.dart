@@ -148,31 +148,43 @@ class ChangelogPageState extends State<ChangelogPage>
                     itemCount: logList.length,
                     itemBuilder: (BuildContext context, int index) {
                       var item = logList.elementAt(index);
-
-                      return ListTile(
-                        title: Text(item.sha),
-                        subtitle: Text(item.timestamp.toString()),
-                        trailing: IconButton(
-                          icon: Icon(Icons.content_copy),
-                          onPressed: () {
-                            Clipboard.setData(ClipboardData(text: item.sha));
-
-                            Scaffold.of(context).showSnackBar(SnackBar(
-                              content: Row(
-                                children: [
-                                  Container(
-                                    child: Icon(Icons.attach_file),
-                                    padding: EdgeInsets.all(5),
-                                  ),
-                                  Text('SHA copied to clipboard')
-                                ],
-                              ),
-                              duration: Duration(seconds: 1),
-                            ));
-                          },
-                        ),
-                      );
+                      return buildLogItem(item);
                     },
                   ));
+  }
+
+  Widget buildLogItem(FingerprintLog log) {
+    var date =
+        new DateTime.fromMillisecondsSinceEpoch(log.timestamp, isUtc: true)
+            .toLocal();
+    var dateString = date.month.toString() +
+        "/" +
+        date.day.toString() +
+        "/" +
+        date.year.toString();
+
+    return ListTile(
+      title: Text(log.sha),
+      subtitle: Text(dateString),
+      trailing: IconButton(
+        icon: Icon(Icons.content_copy),
+        onPressed: () {
+          Clipboard.setData(ClipboardData(text: log.sha));
+
+          Scaffold.of(context).showSnackBar(SnackBar(
+            content: Row(
+              children: [
+                Container(
+                  child: Icon(Icons.attach_file),
+                  padding: EdgeInsets.all(5),
+                ),
+                Text('SHA copied to clipboard')
+              ],
+            ),
+            duration: Duration(seconds: 1),
+          ));
+        },
+      ),
+    );
   }
 }
