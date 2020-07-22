@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using SupercellUilityApi.Core;
+using SupercellUilityApi.Core.Cache;
 using SupercellUilityApi.Core.Manager;
 using SupercellUilityApi.Database;
 
@@ -13,6 +14,8 @@ namespace SupercellUilityApi
         public static GameVersionManager GameVersionManager { get; set; }
         public static Configuration Configuration { get; set; }
         public static StatusDatabase StatusDatabase { get; set; }
+        public static FingerprintDatabase FingerprintDatabase { get; set; }
+        public static FingerprintCache FingerprintCache { get; set; }
         public static Firebase Firebase { get; set; }
         public static Logger Logger { get; set; }
         public static long TotalRequests { get; set; }
@@ -21,7 +24,7 @@ namespace SupercellUilityApi
         {
             Logger = new Logger();
             Logger.Log(
-                $"Starting [{DateTime.Now.ToLongTimeString()} ...");
+                $"Starting [{DateTime.Now.ToLongTimeString()}] ...");
 
             Configuration = new Configuration();
             Configuration.Initialize();
@@ -29,7 +32,10 @@ namespace SupercellUilityApi
             Firebase = new Firebase();
 
             StatusDatabase = new StatusDatabase();
-            Logger.Log($"Loaded MySql with {await StatusDatabase.CountAsync()} status(es)");
+            FingerprintDatabase = new FingerprintDatabase();
+            Logger.Log($"Loaded MySql with {await StatusDatabase.CountAsync()} status(es) & {await FingerprintDatabase.CountAsync()} fingerprint(s)");
+
+            FingerprintCache = new FingerprintCache();
 
             GameVersionManager = new GameVersionManager();
             GameStatusManager = new GameStatusManager();

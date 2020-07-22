@@ -61,7 +61,7 @@ class ChangelogPageState extends State<ChangelogPage>
         isLoading = false;
       });
     } else {
-      logList.clear();
+      logList = null;
 
       setState(() {
         isLoading = false;
@@ -124,7 +124,7 @@ class ChangelogPageState extends State<ChangelogPage>
             ? Center(
                 child: CircularProgressIndicator(),
               )
-            : logList.length == 0
+            : logList == null
                 ? ListView(
                     padding: EdgeInsets.all(20),
                     children: <Widget>[

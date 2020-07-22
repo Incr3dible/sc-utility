@@ -1,16 +1,17 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using MySql.Data.MySqlClient;
 using SupercellUilityApi.Models;
 
 namespace SupercellUilityApi.Database
 {
-    public class StatusDatabase
+    public class FingerprintDatabase
     {
-        private const string Name = "status";
+        private const string Name = "fingerprint";
         private static string _connectionString;
 
-        public StatusDatabase()
+        public FingerprintDatabase()
         {
             _connectionString = new MySqlConnectionStringBuilder
             {
@@ -19,8 +20,6 @@ namespace SupercellUilityApi.Database
                 UserID = Resources.Configuration.MySqlUserId,
                 Password = Resources.Configuration.MySqlPassword,
                 SslMode = MySqlSslMode.None,
-                MinimumPoolSize = 2,
-                MaximumPoolSize = 20,
                 CharacterSet = "utf8mb4"
             }.ToString();
 
@@ -116,7 +115,7 @@ namespace SupercellUilityApi.Database
             #endregion
         }
 
-        public static async Task SaveGameStatus(GameStatus gameStatus)
+        public static async Task SaveFingerprintLog(FingerprintLog log, string gameName)
         {
             #region SaveAsync
 
@@ -124,13 +123,12 @@ namespace SupercellUilityApi.Database
             {
                 await using var cmd =
                     new MySqlCommand(
-                        $"INSERT INTO {Name} (`Game`, `Status`, `Timestamp`, `FingerprintSha`, `FingerprintVersion`) VALUES (@game, @status, @timestamp, @fingerprintSha, @fingerprintVersion)");
+                        $"INSERT INTO {Name} (`Game`, `Sha`, `Version`, `Timestamp`) VALUES (@game, @sha, @version, @timestamp)");
 #pragma warning disable 618
-                cmd.Parameters?.AddWithValue("@game", gameStatus.GameName);
-                cmd.Parameters?.AddWithValue("@status", gameStatus.Status);
-                cmd.Parameters?.AddWithValue("@timestamp", gameStatus.LastUpdated);
-                cmd.Parameters?.AddWithValue("@fingerprintSha", gameStatus.LatestFingerprintSha);
-                cmd.Parameters?.AddWithValue("@fingerprintVersion", gameStatus.LatestFingerprintVersion);
+                cmd.Parameters?.AddWithValue("@game", gameName);
+                cmd.Parameters?.AddWithValue("@sha", log.Sha);
+                cmd.Parameters?.AddWithValue("@version", log.Version);
+                cmd.Parameters?.AddWithValue("@timestamp", log.Timestamp);
 #pragma warning restore 618
 
                 await ExecuteAsync(cmd);
@@ -139,6 +137,50 @@ namespace SupercellUilityApi.Database
             {
                 Logger.Log(exception, Logger.ErrorLevel.Error);
             }
+
+            #endregion
+        }
+
+        public static async Task<List<FingerprintLog>> GetFingerprintLogs(string gameName)
+        {
+            #region GetAsync
+
+            var list = new List<FingerprintLog>();
+
+            await using var cmd =
+                new MySqlCommand(
+                    $"SELECT * FROM {Name} WHERE Game = '{gameName}' ORDER BY `Id` DESC")
+                {
+                    Connection = new MySqlConnection(_connectionString)
+                };
+
+            try
+            {
+                await cmd.Connection.OpenAsync();
+
+                var reader = await cmd.ExecuteReaderAsync();
+
+                while (await reader.ReadAsync())
+                {
+                    list.Add(new FingerprintLog
+                    {
+                        Sha = reader["Sha"].ToString(),
+                        Version = reader["Version"].ToString(),
+                        Timestamp = long.Parse(reader["Timestamp"].ToString() ?? "0")
+                    });
+                }
+            }
+            catch (Exception exception)
+            {
+                Logger.Log(exception, Logger.ErrorLevel.Error);
+            }
+            finally
+            {
+                if (cmd.Connection != null)
+                    await cmd.Connection.CloseAsync();
+            }
+
+            return list;
 
             #endregion
         }

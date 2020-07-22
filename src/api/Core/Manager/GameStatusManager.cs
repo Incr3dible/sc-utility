@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using System.Timers;
 using SupercellUilityApi.Database;
 using SupercellUilityApi.Helpers;
@@ -11,9 +10,9 @@ namespace SupercellUilityApi.Core.Manager
 {
     public class GameStatusManager
     {
+        private readonly Dictionary<Enums.Game, TcpClient> _clientList = new Dictionary<Enums.Game, TcpClient>();
         private readonly Timer _refreshTimer = new Timer(Constants.StatusCheckInterval * 1000);
         public Dictionary<Enums.Game, GameStatus> StatusList = new Dictionary<Enums.Game, GameStatus>();
-        private readonly Dictionary<Enums.Game, TcpClient> _clientList = new Dictionary<Enums.Game, TcpClient>();
 
         public GameStatusManager()
         {
@@ -41,10 +40,7 @@ namespace SupercellUilityApi.Core.Manager
                 LatestFingerprintSha = "6a621ca47c6fd1ef30fba8a0d6cbcf5732e34e5d"
             });
 
-            foreach (var game in StatusList.Keys)
-            {
-                _clientList.Add(game, new TcpClient());
-            }
+            foreach (var game in StatusList.Keys) _clientList.Add(game, new TcpClient());
 
             CheckGames(null, null);
 
@@ -62,11 +58,9 @@ namespace SupercellUilityApi.Core.Manager
         public async void CheckGames(object sender, ElapsedEventArgs args)
         {
             foreach (var (game, client) in _clientList)
-            {
                 await client.ConnectAsync(game);
 
-                //await Task.Delay(1000);
-            }
+            //await Task.Delay(1000);
         }
 
         /// <summary>
@@ -108,6 +102,13 @@ namespace SupercellUilityApi.Core.Manager
                 status.LatestFingerprintVersion = fingerprint.Version;
 
                 Logger.Log($"Fingerprint ({fingerprint.Sha}:{fingerprint.Version}) updated for {game}");
+
+                await FingerprintDatabase.SaveFingerprintLog(new FingerprintLog
+                {
+                    Sha = fingerprint.Sha,
+                    Version = fingerprint.Version,
+                    Timestamp = TimeUtils.CurrentUnixTimestamp
+                }, status.GameName);
             }
 
             status.LastUpdated = TimeUtils.CurrentUnixTimestamp;

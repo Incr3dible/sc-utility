@@ -241,6 +241,10 @@ class StatusPageState extends State<StatusPage>
                   ),
                   title: Text("Status"),
                   subtitle: Text(statusName),
+                  /*trailing: IconButton(
+                    icon: Icon(Icons.report),
+                    onPressed: () {},
+                  ),*/
                 ),
                 ListTile(
                   trailing: Builder(
