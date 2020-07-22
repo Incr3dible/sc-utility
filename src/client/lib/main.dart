@@ -64,8 +64,7 @@ class MyAppState extends State<MyApp> {
       home: MainPage(),
       routes: {
         '/cr-client': (context) => CrClientPage(),
-        '/settings': (context) => SettingsPage(),
-        '/changelog': (context) => ChangelogPage()
+        '/settings': (context) => SettingsPage()
       },
     );
   }

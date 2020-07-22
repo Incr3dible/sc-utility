@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:sc_utility/network/logic/fingerprintLog.dart';
 import 'package:sc_utility/resources.dart';
 import '../network/Client.dart';
 
@@ -15,7 +14,6 @@ class CrClientPageState extends State<CrClientPage> {
   var isLoading = true;
   Color statusColor = Colors.green;
   String statusText = "Unknown";
-  FingerprintLog fingerprintLog = new FingerprintLog();
 
   @override
   void initState() {
@@ -23,7 +21,6 @@ class CrClientPageState extends State<CrClientPage> {
     resources = client.resources;
     resources.clientPageState = this;
     resources.currentContext = context;
-    fingerprintLog.fromJson(resources.prefs.getString("fingerprintLog"));
 
     prepare();
     super.initState();

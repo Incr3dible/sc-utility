@@ -41,10 +41,6 @@ class LoginFailedMessage extends Message {
       print(sha);
       print(version);
 
-      var log = resources.clientPageState.fingerprintLog;
-      log.addFingerprint(sha, version);
-      resources.prefs.setString("fingerprintLog", log.saveToJson());
-
       resources.prefs.setString("sha", sha);
       resources.prefs.setString("version", version);
 

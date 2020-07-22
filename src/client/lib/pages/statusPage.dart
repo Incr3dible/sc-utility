@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+import 'package:sc_utility/pages/changelog.dart';
 import 'package:sc_utility/translationProvider.dart';
 import 'package:sc_utility/utils/flutterextentions.dart';
 import '../resources.dart';
@@ -151,19 +151,11 @@ class StatusPageState extends State<StatusPage> {
                     builder: (context) => IconButton(
                       icon: Icon(Icons.history),
                       onPressed: () {
-                        //Navigator.pushNamed(context, "/changelog");
-                        Scaffold.of(context).showSnackBar(SnackBar(
-                          content: Row(
-                            children: [
-                              Container(
-                                child: Icon(Icons.do_not_disturb),
-                                padding: EdgeInsets.all(5),
-                              ),
-                              Text('COMING SOON')
-                            ],
-                          ),
-                          duration: Duration(seconds: 1),
-                        ));
+                        Navigator.push(
+                            context,
+                            new MaterialPageRoute(
+                                builder: (BuildContext context) =>
+                                    new ChangelogPage(status.gameName)));
                       },
                     ),
                   ),
