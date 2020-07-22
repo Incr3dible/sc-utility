@@ -35,7 +35,8 @@ class TranslationProvider {
           "Couldn't connect to the server. Please try again.",
       "TID_SWIPE_RETRY":
           "Swipe down to try again and check your internet connection",
-      "TID_FINGERPRINT_HISTORY": "Fingerprint History"
+      "TID_FINGERPRINT_HISTORY": "Fingerprint History",
+      "TID_LIVE_DESC": "refreshes every 10 seconds"
     },
     {
       "TID_SETTINGS": "Einstellungen",
@@ -71,7 +72,8 @@ class TranslationProvider {
           "Es konnte keine Verbindung zum Server hergestellt werden. Bitte versuche es noch einmal.",
       "TID_SWIPE_RETRY":
           "Um es erneut zu versuchen wische nach unten und überprüfe deine Internetverbindung",
-      "TID_FINGERPRINT_HISTORY": "Fingerprint Historie"
+      "TID_FINGERPRINT_HISTORY": "Fingerprint Historie",
+      "TID_LIVE_DESC": "aktualisierung alle 10 Sekunden"
     },
   };
 

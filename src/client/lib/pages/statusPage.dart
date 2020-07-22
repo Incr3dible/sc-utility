@@ -19,10 +19,10 @@ class StatusPageState extends State<StatusPage>
   Resources resources;
   List<GameStatus> gameList = new List<GameStatus>();
   bool isLoading = true;
-  bool isTimedOut = false;
   Timer statusTimer;
   AnimationController animationController;
   Animation<double> opacityAnimation;
+  bool liveModeOn = false;
 
   @override
   void initState() {
@@ -31,43 +31,43 @@ class StatusPageState extends State<StatusPage>
     resources = Resources.getInstance();
     resources.statusPage = this;
 
-    statusTimer = new Timer.periodic(Duration(seconds: 5), (timer) {
-      setState(() {
-        isTimedOut = true;
-      });
-    });
+    animationController =
+        AnimationController(duration: const Duration(seconds: 1), vsync: this);
 
-    animationController = AnimationController(
-        duration: const Duration(milliseconds: 1500), vsync: this);
-    opacityAnimation =
-        Tween<double>(begin: 0.5, end: 1.0).animate(animationController)
-          ..addStatusListener((status) {
-            if (status == AnimationStatus.completed) {
-              animationController.reverse();
-            } else if (status == AnimationStatus.dismissed) {
-              animationController.forward();
-            }
-          });
+    opacityAnimation = Tween<double>(begin: 0.4, end: 1.0)
+        .animate(animationController)
+          ..addStatusListener(handleStatusChanged);
 
     animationController.forward();
   }
 
-  void requestStatusList() async {
-    setState(() {
-      isLoading = true;
-    });
+  void handleStatusChanged(AnimationStatus status) {
+    if (status == AnimationStatus.completed) {
+      animationController.reverse();
+    } else if (status == AnimationStatus.dismissed) {
+      animationController.forward();
+    }
+  }
+
+  void requestStatusList({bool showLoading = true}) async {
+    if (showLoading)
+      setState(() {
+        isLoading = true;
+      });
 
     var statusList = await ApiClient.getGameStatus();
 
     if (statusList != null) {
       setState(() {
         gameList = statusList;
-        isLoading = false;
+
+        if (showLoading) isLoading = false;
       });
     } else {
-      setState(() {
-        isLoading = false;
-      });
+      if (showLoading)
+        setState(() {
+          isLoading = false;
+        });
 
       FlutterExtensions.showPopupDialogWithActionAndCancel(
           context,
@@ -113,6 +113,24 @@ class StatusPageState extends State<StatusPage>
     );
   }
 
+  void switchLiveMode() {
+    if (liveModeOn) {
+      statusTimer.cancel();
+      animationController.stop();
+    } else {
+      statusTimer = new Timer.periodic(Duration(seconds: 10), (timer) {
+        requestStatusList(showLoading: false);
+      });
+
+      animationController.forward();
+    }
+
+    setState(() {
+      liveModeOn = !liveModeOn;
+      debugPrint("LiveMode: " + liveModeOn.toString());
+    });
+  }
+
   Widget buildLive() {
     return Container(
       child: Card(
@@ -130,7 +148,7 @@ class StatusPageState extends State<StatusPage>
                     animation: animationController,
                     builder: (_, child) {
                       return Opacity(
-                        opacity: opacityAnimation.value,
+                        opacity: liveModeOn ? opacityAnimation.value : 1,
                         child: Icon(
                           Icons.brightness_1,
                           color: Colors.red,
@@ -140,14 +158,13 @@ class StatusPageState extends State<StatusPage>
               ],
             ),
             title: Text("LIVE"),
-            subtitle: Text("updating the status every 20 seconds"),
+            subtitle: Text(TranslationProvider.get("TID_LIVE_DESC")),
             trailing: OutlineButton(
               highlightedBorderColor: Colors.red,
-              onPressed: () {},
-              child: Text("PAUSE"),
+              onPressed: switchLiveMode,
+              child: Text(liveModeOn ? "STOP" : "START"),
             ),
           ),
-          padding: EdgeInsets.all(0),
         ),
       ),
       margin: EdgeInsets.only(top: 8, left: 5, right: 5),
