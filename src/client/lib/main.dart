@@ -263,6 +263,17 @@ class MainPageState extends State<MainPage> {
             ),
             ListTile(
               title: Text(
+                'API Status',
+              ),
+              leading: Icon(
+                Icons.announcement,
+              ),
+              onTap: () {
+                launchURL('https://status.incinc.xyz/');
+              },
+            ),
+            ListTile(
+              title: Text(
                 'Github',
               ),
               leading: Icon(

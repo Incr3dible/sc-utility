@@ -5,7 +5,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 class ApiClient {
-  static const String baseHost = "https://api.inccloud.tk";
+  static const String baseHost = "https://api.incinc.xyz";
 
   static Future<List<GameStatus>> getGameStatus() async {
     try {
