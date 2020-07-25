@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
 import 'package:sc_utility/translationProvider.dart';
 import '../resources.dart';
 

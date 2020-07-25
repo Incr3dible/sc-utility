@@ -2,11 +2,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:sc_utility/pages/changelog.dart';
 import 'package:sc_utility/pages/crclient.dart';
+import 'package:sc_utility/pages/customWebview.dart';
 import 'package:sc_utility/pages/eventpage.dart';
 import 'package:sc_utility/pages/settings.dart';
 import 'package:sc_utility/pages/statusPage.dart';
 import 'package:sc_utility/resources.dart';
 import 'package:sc_utility/translationProvider.dart';
+import 'package:sc_utility/utils/flutterextentions.dart';
 import 'package:sc_utility/utils/rootutil.dart';
 import 'dart:async';
 import 'package:root_access/root_access.dart';
@@ -156,7 +158,7 @@ class MainPageState extends State<MainPage> {
                     end: Alignment.topRight,
                     colors: <Color>[
               Colors.green[800],
-              Colors.green[600]
+              Colors.green[500]
             ]))),*/
         actions: <Widget>[
           IconButton(
@@ -181,13 +183,13 @@ class MainPageState extends State<MainPage> {
                     decoration: BoxDecoration(
                       color: Theme.of(context).accentColor,
                     ),
-                    otherAccountsPictures: <Widget>[
+                    /*otherAccountsPictures: <Widget>[
                       CircleAvatar(
                         backgroundImage: AssetImage("assets/inc.jpeg"),
                       ),
                       CircleAvatar(
                           backgroundImage: AssetImage("assets/kyle.jpeg"))
-                    ],
+                    ],*/
                     currentAccountPicture: Image.asset("assets/icon.png"),
                     accountEmail:
                         Text(TranslationProvider.get("TID_OPEN_SOURCE_DESC")),
@@ -269,7 +271,12 @@ class MainPageState extends State<MainPage> {
                 Icons.announcement,
               ),
               onTap: () {
-                launchURL('https://status.incinc.xyz/');
+                Navigator.push(
+                    context,
+                    new MaterialPageRoute(
+                        builder: (BuildContext context) =>
+                            new CustomWebviewPage(
+                                "https://status.incinc.xyz/", "API Status")));
               },
             ),
             ListTile(
@@ -280,7 +287,13 @@ class MainPageState extends State<MainPage> {
                 Icons.code,
               ),
               onTap: () {
-                launchURL('https://github.com/Incr3dible/sc-utility');
+                Navigator.push(
+                    context,
+                    new MaterialPageRoute(
+                        builder: (BuildContext context) =>
+                            new CustomWebviewPage(
+                                "https://github.com/Incr3dible/sc-utility",
+                                "Github")));
               },
             )
           ],
