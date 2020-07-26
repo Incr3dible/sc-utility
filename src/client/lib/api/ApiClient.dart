@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:flutter/cupertino.dart';
 import 'package:sc_utility/api/models/FingerprintLog.dart';
 import 'package:sc_utility/api/models/eventImageUrl.dart';
@@ -80,6 +79,33 @@ class ApiClient {
       }
     } catch (exception) {
       debugPrint("POST /event - " + exception.toString());
+      return null;
+    }
+  }
+
+  static Future<List<EventImageUrl>> getEventImages(String gameName) async {
+    try {
+      var request = await http
+          .get(baseHost + "/event?gameName=" + gameName)
+          .timeout(Duration(seconds: 5));
+
+      if (request.statusCode == 200) {
+        var list = (json.decode(request.body) as List)
+            .map((p) => EventImageUrl.fromJson(p))
+            .toList();
+
+        debugPrint("GET /event?gameName=" + gameName + " - 200");
+        return list;
+      } else {
+        debugPrint("GET /event?gameName=" +
+            gameName +
+            " - " +
+            request.statusCode.toString());
+        return null;
+      }
+    } catch (exception) {
+      debugPrint(
+          "GET /event?gameName=" + gameName + " - " + exception.toString());
       return null;
     }
   }

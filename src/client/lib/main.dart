@@ -197,7 +197,7 @@ class MainPageState extends State<MainPage> {
                         Text(TranslationProvider.get("TID_OPEN_SOURCE_DESC")),
                     accountName: Text(title),
                   ),
-                  ListTile(
+                  /*ListTile(
                     enabled: _rootStatus,
                     title: Text('CR Event Images (ROOT)'),
                     leading: Icon(
@@ -232,6 +232,11 @@ class MainPageState extends State<MainPage> {
                                 "events-coc"),
                           ));
                     },
+                  ),*/
+                  ListTile(
+                    leading: Icon(Icons.collections),
+                    title: Text("Event Gallery"),
+                    onTap: () {},
                   ),
                   ListTile(
                     enabled: _rootStatus,
