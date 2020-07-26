@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using SupercellUilityApi.Core;
 using SupercellUilityApi.Models;
 
 namespace SupercellUilityApi.Controllers
@@ -19,6 +21,11 @@ namespace SupercellUilityApi.Controllers
         [HttpPost]
         public IActionResult Post([FromBody] EventImageUrl value)
         {
+            if (!Constants.EventGames.Contains(value.GameName))
+            {
+                return BadRequest();
+            }
+
             Console.WriteLine(value.GameName);
             Console.WriteLine(value.ImageUrl);
 

@@ -234,12 +234,12 @@ class MainPageState extends State<MainPage> {
                     },
                   ),
                   ListTile(
-                    //enabled: _rootStatus,
+                    enabled: _rootStatus,
                     title: Text(
-                      'Event Image Finder (ROOT)',
+                      'Event Compass (ROOT)',
                     ),
                     leading: Icon(
-                      Icons.image,
+                      Icons.cloud_upload,
                     ),
                     onTap: () {
                       Navigator.pushNamed(context, '/event-finder');

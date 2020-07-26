@@ -18,8 +18,7 @@ class TranslationProvider {
       "TID_UPDATE_AVAILABLE": "Update available",
       "TID_UPDATE_AVAILABLE_DESC": "A new update for this app is available!",
       "TID_MORE": "More",
-      "TID_MORE_DESC":
-          "here you can find out more about this project",
+      "TID_MORE_DESC": "here you can find out more about this project",
       "TID_OPEN_SOURCE_DESC": "an open source project",
       "TID_DISCLAIMER": "Disclaimer",
       "TID_DISCLAIMER_DESC":
@@ -34,7 +33,10 @@ class TranslationProvider {
       "TID_SWIPE_RETRY":
           "Swipe down to try again and check your internet connection",
       "TID_FINGERPRINT_HISTORY": "Fingerprint History",
-      "TID_LIVE_DESC": "refreshes every 10 seconds"
+      "TID_LIVE_DESC": "refreshes every 10 seconds",
+      "TID_EVENT_DESC":
+          "Thank you for contributing to this project as root user. Users without root can also see this images now through the event gallery in this app.",
+      "TID_UPLOAD": "Uploading..."
     },
     {
       "TID_SETTINGS": "Einstellungen",
@@ -53,8 +55,7 @@ class TranslationProvider {
       "TID_UPDATE_AVAILABLE_DESC":
           "Ein neues Update für diese App ist verfügbar!",
       "TID_MORE": "Mehr",
-      "TID_MORE_DESC":
-          "hier findest du mehr zu diesem Projekt",
+      "TID_MORE_DESC": "hier findest du mehr zu diesem Projekt",
       "TID_OPEN_SOURCE_DESC": "ein Open-Source-Projekt",
       "TID_DISCLAIMER": "Ausschlussklausel",
       "TID_DISCLAIMER_DESC":
@@ -69,7 +70,10 @@ class TranslationProvider {
       "TID_SWIPE_RETRY":
           "Um es erneut zu versuchen wische nach unten und überprüfe deine Internetverbindung",
       "TID_FINGERPRINT_HISTORY": "Fingerprint Historie",
-      "TID_LIVE_DESC": "aktualisierung alle 10 Sekunden"
+      "TID_LIVE_DESC": "aktualisierung alle 10 Sekunden",
+      "TID_EVENT_DESC":
+          "Danke, dass du als Root-User zu diesem Projekt beigetragen hast. Benutzer ohne root können diese Bilder jetzt auch über die Eventgalerie in dieser App sehen.",
+      "TID_UPLOAD": "Hochladen..."
     },
   };
 
