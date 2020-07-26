@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:sc_utility/pages/changelog.dart';
 import 'package:sc_utility/pages/crclient.dart';
 import 'package:sc_utility/pages/customWebview.dart';
+import 'package:sc_utility/pages/eventGallery.dart';
 import 'package:sc_utility/pages/eventImageFinder.dart';
 import 'package:sc_utility/pages/eventpage.dart';
 import 'package:sc_utility/pages/settings.dart';
@@ -68,7 +69,8 @@ class MyAppState extends State<MyApp> {
       routes: {
         '/cr-client': (context) => CrClientPage(),
         '/settings': (context) => SettingsPage(),
-        '/event-finder': (context) => EventImageFinderPage()
+        '/event-finder': (context) => EventImageFinderPage(),
+        '/event-gallery': (context) => EventGalleryPage()
       },
     );
   }
@@ -236,7 +238,9 @@ class MainPageState extends State<MainPage> {
                   ListTile(
                     leading: Icon(Icons.collections),
                     title: Text("Event Gallery"),
-                    onTap: () {},
+                    onTap: () {
+                      Navigator.pushNamed(context, '/event-gallery');
+                    },
                   ),
                   ListTile(
                     enabled: _rootStatus,

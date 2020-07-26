@@ -33,7 +33,67 @@ namespace SupercellUilityApi.Controllers
                 {
                     GameName = "Clash Royale",
                     ImageUrl = "https://event-assets.clashroyale.com/00e9b381-0e5a-4212-84d6-f27dec4f98f2_fisherman_teaser_challenge.png"
-                }
+                },
+                new EventImageUrl
+                {
+                    GameName = "Clash Royale",
+                    ImageUrl = "https://event-assets.clashroyale.com/00d185b3-6a66-4590-b135-111db091acb9_party_mode_2v2.png"
+                },
+                new EventImageUrl
+                {
+                    GameName = "Clash Royale",
+                    ImageUrl = "https://event-assets.clashroyale.com/00e9b381-0e5a-4212-84d6-f27dec4f98f2_fisherman_teaser_challenge.png"
+                },
+                new EventImageUrl
+                {
+                    GameName = "Clash Royale",
+                    ImageUrl = "https://event-assets.clashroyale.com/00d185b3-6a66-4590-b135-111db091acb9_party_mode_2v2.png"
+                },
+                new EventImageUrl
+                {
+                    GameName = "Clash Royale",
+                    ImageUrl = "https://event-assets.clashroyale.com/00e9b381-0e5a-4212-84d6-f27dec4f98f2_fisherman_teaser_challenge.png"
+                },
+                new EventImageUrl
+                {
+                    GameName = "Clash Royale",
+                    ImageUrl = "https://event-assets.clashroyale.com/00d185b3-6a66-4590-b135-111db091acb9_party_mode_2v2.png"
+                },
+                new EventImageUrl
+                {
+                    GameName = "Clash Royale",
+                    ImageUrl = "https://event-assets.clashroyale.com/00e9b381-0e5a-4212-84d6-f27dec4f98f2_fisherman_teaser_challenge.png"
+                },
+                new EventImageUrl
+                {
+                    GameName = "Clash Royale",
+                    ImageUrl = "https://event-assets.clashroyale.com/00d185b3-6a66-4590-b135-111db091acb9_party_mode_2v2.png"
+                },
+                new EventImageUrl
+                {
+                    GameName = "Clash Royale",
+                    ImageUrl = "https://event-assets.clashroyale.com/00e9b381-0e5a-4212-84d6-f27dec4f98f2_fisherman_teaser_challenge.png"
+                },
+                new EventImageUrl
+                {
+                    GameName = "Clash Royale",
+                    ImageUrl = "https://event-assets.clashroyale.com/00d185b3-6a66-4590-b135-111db091acb9_party_mode_2v2.png"
+                },
+                new EventImageUrl
+                {
+                    GameName = "Clash Royale",
+                    ImageUrl = "https://event-assets.clashroyale.com/00e9b381-0e5a-4212-84d6-f27dec4f98f2_fisherman_teaser_challenge.png"
+                },
+                new EventImageUrl
+                {
+                    GameName = "Clash Royale",
+                    ImageUrl = "https://event-assets.clashroyale.com/00d185b3-6a66-4590-b135-111db091acb9_party_mode_2v2.png"
+                },
+                new EventImageUrl
+                {
+                    GameName = "Clash Royale",
+                    ImageUrl = "https://event-assets.clashroyale.com/00e9b381-0e5a-4212-84d6-f27dec4f98f2_fisherman_teaser_challenge.png"
+                },
             };
         }
 
