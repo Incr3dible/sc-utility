@@ -10,6 +10,7 @@ class EventImageFinderPage extends StatefulWidget {
 
 class EventImageFinderPageState extends State<EventImageFinderPage> {
   bool isLoading = true;
+  bool errorOccurred = false;
 
   var games = {
     new Game("Clash Royale", "com.supercell.clashroyale"),
@@ -38,7 +39,14 @@ class EventImageFinderPageState extends State<EventImageFinderPage> {
 
       for (var i = 0; i < events.length; i++) {
         var event = events.elementAt(i);
-        await ApiClient.addEventImage(game.name, event);
+        var result = await ApiClient.addEventImage(game.name, event);
+
+        if (result == null) {
+          setState(() {
+            errorOccurred = true;
+          });
+          break;
+        }
       }
     });
 
@@ -79,31 +87,21 @@ class EventImageFinderPageState extends State<EventImageFinderPage> {
             },
           ),
         ),
-        body: isLoading
+        body: errorOccurred
             ? Center(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-                    CircularProgressIndicator(),
                     Padding(
-                      padding: EdgeInsets.all(20),
-                      child: Text( TranslationProvider.get("TID_UPLOAD")),
-                    )
-                  ],
-                ),
-              )
-            : Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Icon(
-                      Icons.cloud_done,
-                      size: 40,
-                    ),
+                        padding: EdgeInsets.all(10),
+                        child: Icon(
+                          Icons.error,
+                          size: 40,
+                        )),
                     Padding(
                       padding: EdgeInsets.all(10),
                       child: Text(
-                        TranslationProvider.get("TID_EVENT_DESC"),
+                        TranslationProvider.get("TID_UNKNOWN_ERROR"),
                         textAlign: TextAlign.center,
                       ),
                     ),
@@ -117,7 +115,48 @@ class EventImageFinderPageState extends State<EventImageFinderPage> {
                         ))
                   ],
                 ),
-              ));
+              )
+            : isLoading
+                ? Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        CircularProgressIndicator(),
+                        Padding(
+                          padding: EdgeInsets.all(20),
+                          child: Text(TranslationProvider.get("TID_UPLOAD")),
+                        )
+                      ],
+                    ),
+                  )
+                : Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Padding(
+                            padding: EdgeInsets.all(10),
+                            child: Icon(
+                              Icons.cloud_done,
+                              size: 40,
+                            )),
+                        Padding(
+                          padding: EdgeInsets.all(10),
+                          child: Text(
+                            TranslationProvider.get("TID_EVENT_DESC"),
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+                        Padding(
+                            padding: EdgeInsets.all(10),
+                            child: OutlineButton(
+                              onPressed: () {
+                                Navigator.pop(context);
+                              },
+                              child: Text("OK"),
+                            ))
+                      ],
+                    ),
+                  ));
   }
 }
 

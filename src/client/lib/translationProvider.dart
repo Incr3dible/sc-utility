@@ -36,7 +36,8 @@ class TranslationProvider {
       "TID_LIVE_DESC": "refreshes every 10 seconds",
       "TID_EVENT_DESC":
           "Thank you for contributing to this project as root user. Users without root can also see this images now through the event gallery in this app.",
-      "TID_UPLOAD": "Uploading..."
+      "TID_UPLOAD": "Uploading...",
+      "TID_UNKNOWN_ERROR": "An unknown error occurred"
     },
     {
       "TID_SETTINGS": "Einstellungen",
@@ -73,7 +74,8 @@ class TranslationProvider {
       "TID_LIVE_DESC": "aktualisierung alle 10 Sekunden",
       "TID_EVENT_DESC":
           "Danke, dass du als Root-User zu diesem Projekt beigetragen hast. Benutzer ohne root können diese Bilder jetzt auch über die Eventgalerie in dieser App sehen.",
-      "TID_UPLOAD": "Hochladen..."
+      "TID_UPLOAD": "Hochladen...",
+      "TID_UNKNOWN_ERROR": "Ein unbekannter Fehler ist aufgetreten"
     },
   };
 

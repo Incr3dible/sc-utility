@@ -1,5 +1,5 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using SupercellUilityApi.Core;
@@ -19,17 +19,19 @@ namespace SupercellUilityApi.Controllers
         }
 
         [HttpPost]
-        public IActionResult Post([FromBody] EventImageUrl value)
+        public async Task<IActionResult> Post([FromBody] EventImageUrl value)
         {
-            if (!Constants.EventGames.Contains(value.GameName))
+            if (!Constants.EventGames.Contains(value.GameName)) return BadRequest();
+
+            var exists = await value.EventExists();
+
+            if (exists)
             {
-                return BadRequest();
+                // TODO: SAVE TO DB
+                return Ok();
             }
 
-            Console.WriteLine(value.GameName);
-            Console.WriteLine(value.ImageUrl);
-
-            return Ok();
+            return NotFound();
         }
     }
 }
