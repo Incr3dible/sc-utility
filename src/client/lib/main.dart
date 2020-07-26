@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:sc_utility/pages/changelog.dart';
 import 'package:sc_utility/pages/crclient.dart';
 import 'package:sc_utility/pages/customWebview.dart';
+import 'package:sc_utility/pages/eventImageFinder.dart';
 import 'package:sc_utility/pages/eventpage.dart';
 import 'package:sc_utility/pages/settings.dart';
 import 'package:sc_utility/pages/statusPage.dart';
@@ -66,7 +67,8 @@ class MyAppState extends State<MyApp> {
       home: MainPage(),
       routes: {
         '/cr-client': (context) => CrClientPage(),
-        '/settings': (context) => SettingsPage()
+        '/settings': (context) => SettingsPage(),
+        '/event-finder': (context) => EventImageFinderPage()
       },
     );
   }
@@ -229,6 +231,18 @@ class MainPageState extends State<MainPage> {
                                 "com.supercell.clashofclans",
                                 "events-coc"),
                           ));
+                    },
+                  ),
+                  ListTile(
+                    //enabled: _rootStatus,
+                    title: Text(
+                      'Event Image Finder (ROOT)',
+                    ),
+                    leading: Icon(
+                      Icons.image,
+                    ),
+                    onTap: () {
+                      Navigator.pushNamed(context, '/event-finder');
                     },
                   ),
                   ListTile(

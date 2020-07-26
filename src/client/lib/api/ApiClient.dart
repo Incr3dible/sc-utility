@@ -1,11 +1,15 @@
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:sc_utility/api/models/FingerprintLog.dart';
+import 'package:sc_utility/api/models/eventImageUrl.dart';
 import 'models/GameStatus.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 class ApiClient {
-  static const String baseHost = "https://api.incinc.xyz";
+  //static const String baseHost = "https://api.incinc.xyz";
+  static const String baseHost = "http://192.168.2.150:5000";
 
   static Future<List<GameStatus>> getGameStatus() async {
     try {
@@ -51,8 +55,31 @@ class ApiClient {
         return null;
       }
     } catch (exception) {
-      debugPrint(
-          "GET /fingerprintHistory?gameName=" + gameName + " - " + exception.toString());
+      debugPrint("GET /fingerprintHistory?gameName=" +
+          gameName +
+          " - " +
+          exception.toString());
+      return null;
+    }
+  }
+
+  static Future<bool> addEventImage(String gameName, String imageUrl) async {
+    try {
+      var request = await http.post(baseHost + "/event",
+          body: jsonEncode(new EventImageUrl(gameName, imageUrl).toJson()),
+          headers: {
+            HttpHeaders.contentTypeHeader: "application/json"
+          }).timeout(Duration(seconds: 5));
+
+      if (request.statusCode == 200) {
+        debugPrint("POST /event - 200");
+        return true;
+      } else {
+        debugPrint("POST /event - " + request.statusCode.toString());
+        return false;
+      }
+    } catch (exception) {
+      debugPrint("POST /event - " + exception.toString());
       return null;
     }
   }
