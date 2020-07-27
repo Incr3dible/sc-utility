@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:sc_utility/api/ApiClient.dart';
 import 'package:sc_utility/api/models/eventImageUrl.dart';
-import 'package:sc_utility/utils/flutterextentions.dart';
 import 'package:share/share.dart';
 
 import '../translationProvider.dart';
@@ -62,40 +61,7 @@ class EventGalleryPageState extends State<EventGalleryPage>
       images = new List<Widget>();
 
       events.forEach((element) {
-        var widget = Card(
-            elevation: 5,
-            clipBehavior: Clip.antiAlias,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10.0),
-            ),
-            child: InkWell(
-              onTap: () => {
-                Navigator.push(
-                    context,
-                    new MaterialPageRoute(
-                      builder: (BuildContext context) => new ImageView(element),
-                    ))
-              },
-              child: Container(
-                  padding: EdgeInsets.all(5),
-                  child: Image.network(
-                    element.imageUrl,
-                    loadingBuilder: (BuildContext context, Widget child,
-                        ImageChunkEvent loadingProgress) {
-                      if (loadingProgress == null) return child;
-                      return Center(
-                        child: CircularProgressIndicator(
-                          value: loadingProgress.expectedTotalBytes != null
-                              ? loadingProgress.cumulativeBytesLoaded /
-                                  loadingProgress.expectedTotalBytes
-                              : null,
-                        ),
-                      );
-                    },
-                  )),
-            ));
-
-        images.add(widget);
+        images.add(buildImage(element));
       });
     }
 
@@ -125,6 +91,77 @@ class EventGalleryPageState extends State<EventGalleryPage>
               controller: controller,
               children: games.map((e) => buildImages()).toList()),
         ));
+  }
+
+  Widget buildImage(EventImageUrl eventImage) {
+    var date = new DateTime.fromMillisecondsSinceEpoch(eventImage.timestamp,
+            isUtc: true)
+        .toLocal();
+    var dateString = date.month.toString() +
+        "/" +
+        date.day.toString() +
+        "/" +
+        date.year.toString();
+
+    return Card(
+      elevation: 5,
+      clipBehavior: Clip.antiAlias,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10.0),
+      ),
+      child: InkWell(
+          onTap: () => {
+                Navigator.push(
+                    context,
+                    new MaterialPageRoute(
+                      builder: (BuildContext context) =>
+                          new ImageView(eventImage),
+                    ))
+              },
+          child: Stack(
+            children: <Widget>[
+              Center(
+                child: Container(
+                  padding: EdgeInsets.all(5),
+                  child: Image.network(
+                    eventImage.imageUrl,
+                    fit: BoxFit.fill,
+                    loadingBuilder: (BuildContext context, Widget child,
+                        ImageChunkEvent loadingProgress) {
+                      if (loadingProgress == null) return child;
+                      return Center(
+                        child: CircularProgressIndicator(
+                          value: loadingProgress.expectedTotalBytes != null
+                              ? loadingProgress.cumulativeBytesLoaded /
+                                  loadingProgress.expectedTotalBytes
+                              : null,
+                        ),
+                      );
+                    },
+                  ),
+                ),
+              ),
+              Positioned.fill(
+                child: Align(
+                  alignment: Alignment.bottomRight,
+                  child: Container(
+                    decoration: new BoxDecoration(
+                        color: Colors.green,
+                        borderRadius: new BorderRadius.only(
+                          topLeft: const Radius.circular(10.0),
+                        )),
+                    padding: EdgeInsets.all(5),
+                    child: Text(
+                      dateString,
+                      style:
+                          TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                ),
+              )
+            ],
+          )),
+    );
   }
 
   Widget buildImages() {
@@ -160,7 +197,8 @@ class EventGalleryPageState extends State<EventGalleryPage>
                 primary: false,
                 slivers: <Widget>[
                   SliverPadding(
-                    padding: const EdgeInsets.only(left: 10, right: 10, top: 5),
+                    padding: const EdgeInsets.only(
+                        left: 10, right: 10, top: 5, bottom: 5),
                     sliver: SliverGrid.count(
                         mainAxisSpacing: 1,
                         childAspectRatio: 3 / 2,
