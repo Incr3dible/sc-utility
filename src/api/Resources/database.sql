@@ -21,3 +21,11 @@ CREATE TABLE IF NOT EXISTS `fingerprint` (
 	`Timestamp` bigint(20),
 	PRIMARY KEY (`Id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE IF NOT EXISTS `event` (
+	`Id` bigint(20) NOT NULL AUTO_INCREMENT,
+	`Game` text CHARACTER SET utf8mb4,
+	`Image` text CHARACTER SET utf8mb4,
+	`Timestamp` bigint(20),
+	PRIMARY KEY (`Id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;

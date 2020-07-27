@@ -6,7 +6,11 @@ class EventGalleryPage extends StatefulWidget {
   EventGalleryPageState createState() => EventGalleryPageState();
 }
 
-class EventGalleryPageState extends State<EventGalleryPage> {
+class EventGalleryPageState extends State<EventGalleryPage>
+    with SingleTickerProviderStateMixin {
+  TabController controller;
+  int currentIndex = 0;
+  String gameName;
   bool isLoading = true;
   var images = new List<Widget>();
 
@@ -14,8 +18,31 @@ class EventGalleryPageState extends State<EventGalleryPage> {
   void initState() {
     super.initState();
 
+    controller = new TabController(length: tabs.length, vsync: this);
+    controller.addListener(onGameChanged);
+
+    gameName = games[0];
     requestEventImages();
   }
+
+  void onGameChanged() async {
+    if (currentIndex == controller.index) return;
+    currentIndex = controller.index;
+
+    gameName = games[currentIndex];
+
+    requestEventImages();
+  }
+
+  static const games = ["Clash Royale", "Clash of Clans"];
+
+  var tabs = games
+      .map(
+        (e) => Tab(
+          text: e,
+        ),
+      )
+      .toList();
 
   void requestEventImages() async {
     setState(() {
@@ -23,7 +50,7 @@ class EventGalleryPageState extends State<EventGalleryPage> {
       images.clear();
     });
 
-    var events = await ApiClient.getEventImages("Clash Royale");
+    var events = await ApiClient.getEventImages(gameName);
 
     events.forEach((element) {
       var widget = Card(
@@ -61,39 +88,50 @@ class EventGalleryPageState extends State<EventGalleryPage> {
 
   @override
   Widget build(BuildContext context) {
+    return DefaultTabController(
+        length: tabs.length,
+        child: Scaffold(
+          floatingActionButton: FloatingActionButton(
+            child: Icon(Icons.refresh),
+            onPressed: () {
+              requestEventImages();
+            },
+          ),
+          appBar: AppBar(
+            title: Text("Event Gallery"),
+            bottom: TabBar(
+              controller: controller,
+              isScrollable: false,
+              tabs: tabs,
+            ),
+          ),
+          body: TabBarView(
+              controller: controller,
+              children: games.map((e) => buildImages()).toList()),
+        ));
+  }
+
+  Widget buildImages() {
     final mediaQuery = MediaQuery.of(context);
 
-    return Scaffold(
-      floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.refresh),
-        onPressed: () {
-          requestEventImages();
-        },
-      ),
-      appBar: AppBar(
-        title: Text("Event Gallery"),
-      ),
-      body: isLoading
-          ? Center(
-              child: CircularProgressIndicator(),
-            )
-          : CustomScrollView(
-              primary: false,
-              slivers: <Widget>[
-                SliverPadding(
-                  padding: const EdgeInsets.only(left: 10, right: 10, top: 5),
-                  sliver: SliverGrid.count(
-                      mainAxisSpacing: 1,
-                      childAspectRatio: 3 / 2,
-                      crossAxisSpacing: 5,
-                      crossAxisCount:
-                          mediaQuery.orientation == Orientation.portrait
-                              ? 2
-                              : 4,
-                      children: images),
-                ),
-              ],
-            ),
-    );
+    return isLoading
+        ? Center(
+            child: CircularProgressIndicator(),
+          )
+        : CustomScrollView(
+            primary: false,
+            slivers: <Widget>[
+              SliverPadding(
+                padding: const EdgeInsets.only(left: 10, right: 10, top: 5),
+                sliver: SliverGrid.count(
+                    mainAxisSpacing: 1,
+                    childAspectRatio: 3 / 2,
+                    crossAxisSpacing: 5,
+                    crossAxisCount:
+                        mediaQuery.orientation == Orientation.portrait ? 2 : 4,
+                    children: images),
+              ),
+            ],
+          );
   }
 }

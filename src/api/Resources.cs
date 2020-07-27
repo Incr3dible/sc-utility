@@ -14,6 +14,8 @@ namespace SupercellUilityApi
         public static GameVersionManager GameVersionManager { get; set; }
         public static Configuration Configuration { get; set; }
         public static StatusDatabase StatusDatabase { get; set; }
+        public static EventDatabase EventDatabase { get; set; }
+        public static EventCache EventCache { get; set; }
         public static FingerprintDatabase FingerprintDatabase { get; set; }
         public static FingerprintCache FingerprintCache { get; set; }
         public static Firebase Firebase { get; set; }
@@ -33,8 +35,11 @@ namespace SupercellUilityApi
 
             StatusDatabase = new StatusDatabase();
             FingerprintDatabase = new FingerprintDatabase();
-            Logger.Log($"Loaded MySql with {await StatusDatabase.CountAsync()} status(es) & {await FingerprintDatabase.CountAsync()} fingerprint(s)");
+            EventDatabase = new EventDatabase();
+            Logger.Log(
+                $"Loaded MySql with {await StatusDatabase.CountAsync()} status(es), {await FingerprintDatabase.CountAsync()} fingerprint(s) & {await EventDatabase.CountAsync()} event(s)");
 
+            EventCache = new EventCache();
             FingerprintCache = new FingerprintCache();
 
             GameVersionManager = new GameVersionManager();
