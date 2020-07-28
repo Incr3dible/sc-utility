@@ -3,6 +3,7 @@ import 'package:photo_view/photo_view.dart';
 import 'package:sc_utility/api/ApiClient.dart';
 import 'package:sc_utility/api/models/eventImageUrl.dart';
 import 'package:share/share.dart';
+import 'package:sc_utility/utils/flutterextentions.dart';
 
 import '../translationProvider.dart';
 
@@ -17,7 +18,7 @@ class EventGalleryPageState extends State<EventGalleryPage>
   int currentIndex = 0;
   String gameName;
   bool isLoading = true;
-  var images = new List<Widget>();
+  //var images = new List<Widget>();
 
   @override
   void initState() {
@@ -36,7 +37,7 @@ class EventGalleryPageState extends State<EventGalleryPage>
 
     gameName = games[currentIndex];
 
-    requestEventImages();
+    if (images.elementAt(currentIndex).length == 0) requestEventImages();
   }
 
   static const games = ["Clash Royale", "Clash of Clans"];
@@ -49,19 +50,21 @@ class EventGalleryPageState extends State<EventGalleryPage>
       )
       .toList();
 
+  List<List<Widget>> images = games.map((e) => new List<Widget>()).toList();
+
   void requestEventImages() async {
     setState(() {
       isLoading = true;
-      images = null;
+      images.update(currentIndex, null);
     });
 
     var events = await ApiClient.getEventImages(gameName);
 
     if (events != null) {
-      images = new List<Widget>();
+      images.update(currentIndex, new List<Widget>());
 
       events.forEach((element) {
-        images.add(buildImage(element));
+        images.elementAt(currentIndex).add(buildImage(element));
       });
     }
 
@@ -80,7 +83,7 @@ class EventGalleryPageState extends State<EventGalleryPage>
         length: tabs.length,
         child: Scaffold(
           appBar: AppBar(
-            title: Text("Event Gallery"),
+            title: Text(TranslationProvider.get("TID_EVENT_GALLERY")),
             bottom: TabBar(
               controller: controller,
               isScrollable: false,
@@ -89,7 +92,7 @@ class EventGalleryPageState extends State<EventGalleryPage>
           ),
           body: TabBarView(
               controller: controller,
-              children: games.map((e) => buildImages()).toList()),
+              children: images.map((e) => buildImages(e)).toList()),
         ));
   }
 
@@ -166,7 +169,7 @@ class EventGalleryPageState extends State<EventGalleryPage>
     );
   }
 
-  Widget buildImages() {
+  Widget buildImages(List<Widget> images) {
     final mediaQuery = MediaQuery.of(context);
 
     return isLoading

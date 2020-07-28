@@ -122,3 +122,10 @@ class FlutterExtensions {
     }
   }
 }
+
+extension ListUpdate<T> on List {
+  void update(int pos, T t) {
+    removeAt(pos);
+    insert(pos, t);
+  }
+}
