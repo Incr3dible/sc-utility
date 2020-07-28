@@ -33,9 +33,9 @@ namespace SupercellUilityApi.Controllers
             Resources.IncrementRequests();
 
             if (!Constants.EventGames.Contains(value.GameName)) return BadRequest();
+            if (Resources.EventCache.ContainsUrl(value.GameName, value.GetHost() + value.ImageUrl)) return Ok();
 
             var exists = await value.EventExists();
-
             if (!exists) return NotFound();
 
             await EventDatabase.SaveEvent(value);

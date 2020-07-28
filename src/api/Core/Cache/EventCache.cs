@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Timers;
 using SupercellUilityApi.Database;
 using SupercellUilityApi.Models;
@@ -38,6 +39,14 @@ namespace SupercellUilityApi.Core.Cache
             {
                 if (Events.ContainsKey(gameName)) Events[gameName] = eventImages;
                 else Events.Add(gameName, eventImages);
+            }
+        }
+
+        public bool ContainsUrl(string gameName, string imageUrl)
+        {
+            lock (_syncObject)
+            {
+                return Events.ContainsKey(gameName) && Events[gameName].Any(x => x.ImageUrl == imageUrl);
             }
         }
 
