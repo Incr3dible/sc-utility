@@ -8,7 +8,7 @@ import '../resources.dart';
 import '../translationProvider.dart';
 
 class ChangelogPage extends StatefulWidget {
-  String gameName;
+  final String gameName;
 
   ChangelogPage(this.gameName);
 

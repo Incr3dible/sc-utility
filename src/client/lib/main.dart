@@ -1,17 +1,16 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:sc_utility/pages/crclient.dart';
-import 'package:sc_utility/pages/customWebview.dart';
-import 'package:sc_utility/pages/eventGallery.dart';
-import 'package:sc_utility/pages/eventImageFinder.dart';
-import 'package:sc_utility/pages/settings.dart';
+import 'package:sc_utility/pages/customWebviewPage.dart';
+import 'package:sc_utility/pages/eventGalleryPage.dart';
+import 'package:sc_utility/pages/eventImageFinderPage.dart';
+import 'package:sc_utility/pages/settingsPage.dart';
 import 'package:sc_utility/pages/statusPage.dart';
 import 'package:sc_utility/resources.dart';
 import 'package:sc_utility/translationProvider.dart';
 import 'dart:async';
 import 'package:root_access/root_access.dart';
 import 'package:sc_utility/utils/flutterextentions.dart';
-import 'package:url_launcher/url_launcher.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 bool _rootStatus = false;
@@ -186,7 +185,7 @@ class MainPageState extends State<MainPage> {
                   ),
                   ListTile(
                     leading: Icon(Icons.collections),
-                    title: Text("Event Gallery"),
+                    title: Text(TranslationProvider.get("TID_EVENT_GALLERY")),
                     onTap: () {
                       Navigator.pushNamed(context, '/event-gallery');
                     },

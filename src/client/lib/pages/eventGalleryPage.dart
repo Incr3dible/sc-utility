@@ -153,8 +153,10 @@ class EventGalleryPageState extends State<EventGalleryPage>
                     padding: EdgeInsets.all(5),
                     child: Text(
                       dateString,
-                      style:
-                          TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: Colors.white),
+                      style: TextStyle(
+                          fontSize: 12,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white),
                     ),
                   ),
                 ),
@@ -215,7 +217,7 @@ class EventGalleryPageState extends State<EventGalleryPage>
 }
 
 class ImageView extends StatefulWidget {
-  EventImageUrl image;
+  final EventImageUrl image;
   ImageView(this.image);
 
   @override

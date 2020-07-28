@@ -1,13 +1,12 @@
 import 'dart:async';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:sc_utility/pages/changelog.dart';
 import 'package:sc_utility/translationProvider.dart';
 import 'package:sc_utility/utils/flutterextentions.dart';
 import '../resources.dart';
 import '../api/models/GameStatus.dart';
 import '../api/ApiClient.dart';
+import 'changelogPage.dart';
 
 class StatusPage extends StatefulWidget {
   @override
