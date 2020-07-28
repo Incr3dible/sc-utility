@@ -1,25 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
 import 'package:sc_utility/utils/flutterextentions.dart';
-import 'package:url_launcher/url_launcher.dart';
 
-class CustomWebviewPage extends StatefulWidget {
-  String url;
-  String name;
+class CustomWebViewPage extends StatefulWidget {
+  final String url;
+  final String name;
 
-  CustomWebviewPage(this.url, this.name);
+  CustomWebViewPage(this.url, this.name);
 
   @override
-  CustomWebviewPageState createState() => CustomWebviewPageState(url, name);
+  CustomWebViewPageState createState() => CustomWebViewPageState(url, name);
 }
 
-class CustomWebviewPageState extends State<CustomWebviewPage> {
+class CustomWebViewPageState extends State<CustomWebViewPage> {
   final flutterWebViewPlugin = FlutterWebviewPlugin();
 
   String url;
   String name;
 
-  CustomWebviewPageState(this.url, this.name);
+  CustomWebViewPageState(this.url, this.name);
 
   @override
   Widget build(BuildContext context) {

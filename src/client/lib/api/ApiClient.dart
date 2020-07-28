@@ -71,7 +71,7 @@ class ApiClient {
           }).timeout(Duration(seconds: 5));
 
       if (request.statusCode == 200) {
-        debugPrint("POST /event - 200");
+        //debugPrint("POST /event - 200");
         return true;
       } else {
         debugPrint("POST /event - " + request.statusCode.toString());

@@ -245,7 +245,7 @@ class MainPageState extends State<MainPage> {
                 Navigator.push(
                   context,
                   new MaterialPageRoute(
-                    builder: (BuildContext context) => new CustomWebviewPage(
+                    builder: (BuildContext context) => new CustomWebViewPage(
                         "https://status.incinc.xyz/", "API Status"),
                   ),
                 );
@@ -262,7 +262,7 @@ class MainPageState extends State<MainPage> {
                 Navigator.push(
                   context,
                   new MaterialPageRoute(
-                    builder: (BuildContext context) => new CustomWebviewPage(
+                    builder: (BuildContext context) => new CustomWebViewPage(
                         "https://github.com/Incr3dible/sc-utility", "Github"),
                   ),
                 );
