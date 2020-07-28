@@ -16,7 +16,7 @@ namespace SupercellUilityApi.Controllers
             _logger = logger;
         }
 
-        [HttpGet("{gameName}")]
+        [HttpGet]
         public IEnumerable<FingerprintLog> Get(string gameName)
         {
             if (gameName == null) return null;
