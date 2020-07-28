@@ -1,19 +1,16 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:sc_utility/pages/changelog.dart';
 import 'package:sc_utility/pages/crclient.dart';
 import 'package:sc_utility/pages/customWebview.dart';
 import 'package:sc_utility/pages/eventGallery.dart';
 import 'package:sc_utility/pages/eventImageFinder.dart';
-import 'package:sc_utility/pages/eventpage.dart';
 import 'package:sc_utility/pages/settings.dart';
 import 'package:sc_utility/pages/statusPage.dart';
 import 'package:sc_utility/resources.dart';
 import 'package:sc_utility/translationProvider.dart';
-import 'package:sc_utility/utils/flutterextentions.dart';
-import 'package:sc_utility/utils/rootutil.dart';
 import 'dart:async';
 import 'package:root_access/root_access.dart';
+import 'package:sc_utility/utils/flutterextentions.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:permission_handler/permission_handler.dart';
 
@@ -121,9 +118,7 @@ class MainPageState extends State<MainPage> {
   void prepare() async {
     await initRootRequest();
     await Permission.storage.request();
-    await RootUtils.grantStoragePermissions();
-
-    //games = getGames();
+    //await RootUtils.grantStoragePermissions();
   }
 
   @override
@@ -154,16 +149,6 @@ class MainPageState extends State<MainPage> {
       key: scaffoldKey,
       appBar: AppBar(
         title: Text(title),
-        //backgroundColor: Colors.blueGrey[900],
-        /*flexibleSpace: Container(
-            decoration: BoxDecoration(
-                gradient: LinearGradient(
-                    begin: Alignment.bottomLeft,
-                    end: Alignment.topRight,
-                    colors: <Color>[
-              Colors.green[800],
-              Colors.green[500]
-            ]))),*/
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.settings),
@@ -199,42 +184,6 @@ class MainPageState extends State<MainPage> {
                         Text(TranslationProvider.get("TID_OPEN_SOURCE_DESC")),
                     accountName: Text(title),
                   ),
-                  /*ListTile(
-                    enabled: _rootStatus,
-                    title: Text('CR Event Images (ROOT)'),
-                    leading: Icon(
-                      Icons.image,
-                    ),
-                    onTap: () {
-                      Navigator.push(
-                          context,
-                          new MaterialPageRoute(
-                            builder: (BuildContext context) => new EventPage(
-                                "Clash Royale",
-                                "com.supercell.clashroyale",
-                                "events"),
-                          ));
-                    },
-                  ),
-                  ListTile(
-                    enabled: _rootStatus,
-                    title: Text(
-                      'COC Event Images (ROOT)',
-                    ),
-                    leading: Icon(
-                      Icons.image,
-                    ),
-                    onTap: () {
-                      Navigator.push(
-                          context,
-                          new MaterialPageRoute(
-                            builder: (BuildContext context) => new EventPage(
-                                "Clash of Clans",
-                                "com.supercell.clashofclans",
-                                "events-coc"),
-                          ));
-                    },
-                  ),*/
                   ListTile(
                     leading: Icon(Icons.collections),
                     title: Text("Event Gallery"),
@@ -283,7 +232,7 @@ class MainPageState extends State<MainPage> {
                 Icons.chat,
               ),
               onTap: () {
-                launchURL('https://discord.gg/XdTw2PZ');
+                FlutterExtensions.launchUrl('https://discord.gg/XdTw2PZ');
               },
             ),
             ListTile(
@@ -295,11 +244,12 @@ class MainPageState extends State<MainPage> {
               ),
               onTap: () {
                 Navigator.push(
-                    context,
-                    new MaterialPageRoute(
-                        builder: (BuildContext context) =>
-                            new CustomWebviewPage(
-                                "https://status.incinc.xyz/", "API Status")));
+                  context,
+                  new MaterialPageRoute(
+                    builder: (BuildContext context) => new CustomWebviewPage(
+                        "https://status.incinc.xyz/", "API Status"),
+                  ),
+                );
               },
             ),
             ListTile(
@@ -311,25 +261,17 @@ class MainPageState extends State<MainPage> {
               ),
               onTap: () {
                 Navigator.push(
-                    context,
-                    new MaterialPageRoute(
-                        builder: (BuildContext context) =>
-                            new CustomWebviewPage(
-                                "https://github.com/Incr3dible/sc-utility",
-                                "Github")));
+                  context,
+                  new MaterialPageRoute(
+                    builder: (BuildContext context) => new CustomWebviewPage(
+                        "https://github.com/Incr3dible/sc-utility", "Github"),
+                  ),
+                );
               },
             )
           ],
         ),
       ),
     );
-  }
-
-  void launchURL(String url) async {
-    if (await canLaunch(url)) {
-      await launch(url);
-    } else {
-      throw 'Could not launch $url';
-    }
   }
 }

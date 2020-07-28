@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
+import 'package:sc_utility/utils/flutterextentions.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class CustomWebviewPage extends StatefulWidget {
@@ -66,7 +67,7 @@ class CustomWebviewPageState extends State<CustomWebviewPage> {
             IconButton(
               icon: const Icon(Icons.open_in_new),
               onPressed: () {
-                launchURL(url);
+                FlutterExtensions.launchUrl(url);
                 Navigator.pop(context);
               },
             ),
@@ -74,13 +75,5 @@ class CustomWebviewPageState extends State<CustomWebviewPage> {
         ),
       ),
     );
-  }
-
-  void launchURL(String url) async {
-    if (await canLaunch(url)) {
-      await launch(url);
-    } else {
-      throw 'Could not launch $url';
-    }
   }
 }

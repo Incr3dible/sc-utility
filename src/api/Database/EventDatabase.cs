@@ -187,7 +187,7 @@ namespace SupercellUilityApi.Database
 
             await using var cmd =
                 new MySqlCommand(
-                    $"SELECT * FROM {Name} WHERE Game = '{gameName}' ORDER BY `Id` DESC")
+                    $"SELECT * FROM {Name} WHERE Game = '{gameName}' ORDER BY `Timestamp` DESC")
                 {
                     Connection = new MySqlConnection(_connectionString)
                 };

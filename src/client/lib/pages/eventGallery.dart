@@ -146,7 +146,7 @@ class EventGalleryPageState extends State<EventGalleryPage>
                   alignment: Alignment.bottomRight,
                   child: Container(
                     decoration: new BoxDecoration(
-                        color: Colors.green,
+                        color: Theme.of(context).accentColor,
                         borderRadius: new BorderRadius.only(
                           topLeft: const Radius.circular(10.0),
                         )),
@@ -154,7 +154,7 @@ class EventGalleryPageState extends State<EventGalleryPage>
                     child: Text(
                       dateString,
                       style:
-                          TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
+                          TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: Colors.white),
                     ),
                   ),
                 ),

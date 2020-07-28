@@ -6,7 +6,6 @@ import 'package:sc_utility/translationProvider.dart';
 import 'package:sc_utility/utils/flutterextentions.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sc_utility/network/Client.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 import 'api/GithubApiClient.dart';
 import 'pages/crclient.dart';
@@ -108,8 +107,10 @@ class Resources {
           TranslationProvider.get("TID_UPDATE_AVAILABLE"),
           TranslationProvider.get("TID_UPDATE_AVAILABLE_DESC"),
           TranslationProvider.get("TID_DOWNLOAD"),
-          () =>
-              {launchURL("https://github.com/Incr3dible/sc-utility/releases")},
+          () => {
+                FlutterExtensions.launchUrl(
+                    "https://github.com/Incr3dible/sc-utility/releases")
+              },
           false);
     } else {
       if (!onlyShowWhenUpdateAvailable)
@@ -117,14 +118,6 @@ class Resources {
             context,
             TranslationProvider.get("TID_UP_TO_DATE"),
             TranslationProvider.get("TID_LATEST_VERSION"));
-    }
-  }
-
-  void launchURL(String url) async {
-    if (await canLaunch(url)) {
-      await launch(url);
-    } else {
-      throw 'Could not launch $url';
     }
   }
 }
