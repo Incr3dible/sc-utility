@@ -18,7 +18,6 @@ class EventGalleryPageState extends State<EventGalleryPage>
   int currentIndex = 0;
   String gameName;
   bool isLoading = true;
-  //var images = new List<Widget>();
 
   @override
   void initState() {

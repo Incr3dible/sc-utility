@@ -21,7 +21,6 @@ class ChangelogPageState extends State<ChangelogPage>
   Resources resources;
   TabController controller;
   String gameName;
-  List<FingerprintLog> logList = new List<FingerprintLog>();
   bool isLoading = false;
   int currentIndex;
 
@@ -45,7 +44,7 @@ class ChangelogPageState extends State<ChangelogPage>
     currentIndex = controller.index;
 
     gameName = games[currentIndex];
-    requestLog(gameName);
+    if (logList.elementAt(currentIndex).length == 0) requestLog(gameName);
   }
 
   void requestLog(String gameName) async {
@@ -57,11 +56,11 @@ class ChangelogPageState extends State<ChangelogPage>
 
     if (fingerprintList != null) {
       setState(() {
-        logList = fingerprintList;
+        logList.update(currentIndex, fingerprintList);
         isLoading = false;
       });
     } else {
-      logList = null;
+      logList.update(currentIndex, null);
 
       setState(() {
         isLoading = false;
@@ -78,6 +77,9 @@ class ChangelogPageState extends State<ChangelogPage>
   }
 
   static const games = ["Clash Royale", "Brawl Stars", "HayDay Pop"];
+
+  List<List<FingerprintLog>> logList =
+      games.map((e) => new List<FingerprintLog>()).toList();
 
   var tabs = games
       .map(
@@ -108,14 +110,14 @@ class ChangelogPageState extends State<ChangelogPage>
             ),
             body: TabBarView(
                 controller: controller,
-                children: games.map((e) => buildChangelog()).toList())));
+                children: logList.map((e) => buildChangelog(e)).toList())));
   }
 
   Future<Null> onRefresh(BuildContext context) async {
     requestLog(gameName);
   }
 
-  Widget buildChangelog() {
+  Widget buildChangelog(List<FingerprintLog> logs) {
     return RefreshIndicator(
         onRefresh: () {
           return onRefresh(context);
@@ -124,7 +126,7 @@ class ChangelogPageState extends State<ChangelogPage>
             ? Center(
                 child: CircularProgressIndicator(),
               )
-            : logList == null
+            : logs == null
                 ? ListView(
                     padding: EdgeInsets.all(20),
                     children: <Widget>[
@@ -144,9 +146,9 @@ class ChangelogPageState extends State<ChangelogPage>
                   )
                 : ListView.builder(
                     padding: EdgeInsets.only(top: 8, left: 5, right: 5),
-                    itemCount: logList.length,
+                    itemCount: logs.length,
                     itemBuilder: (BuildContext context, int index) {
-                      var item = logList.elementAt(index);
+                      var item = logs.elementAt(index);
                       return buildLogItem(item);
                     },
                   ));
