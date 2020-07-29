@@ -171,50 +171,53 @@ class EventGalleryPageState extends State<EventGalleryPage>
   Widget buildImages(List<Widget> images) {
     final mediaQuery = MediaQuery.of(context);
 
-    return isLoading
-        ? Center(
-            child: CircularProgressIndicator(),
-          )
-        : images == null
-            ? RefreshIndicator(
-                onRefresh: () {
-                  return onRefresh(context);
-                },
-                child: ListView(
-                  padding: EdgeInsets.all(20),
-                  children: <Widget>[
-                    Column(
+    return RefreshIndicator(
+        onRefresh: () {
+          return onRefresh(context);
+        },
+        child: isLoading
+            ? Center(
+                child: CircularProgressIndicator(),
+              )
+            : images == null
+                ? RefreshIndicator(
+                    onRefresh: () {
+                      return onRefresh(context);
+                    },
+                    child: ListView(
+                      padding: EdgeInsets.all(20),
                       children: <Widget>[
-                        Padding(
-                          padding: EdgeInsets.all(20),
-                          child: Icon(Icons.cloud_off),
-                        ),
-                        Text(
-                          TranslationProvider.get("TID_SWIPE_RETRY"),
-                          textAlign: TextAlign.center,
+                        Column(
+                          children: <Widget>[
+                            Padding(
+                              padding: EdgeInsets.all(20),
+                              child: Icon(Icons.cloud_off),
+                            ),
+                            Text(
+                              TranslationProvider.get("TID_SWIPE_RETRY"),
+                              textAlign: TextAlign.center,
+                            )
+                          ],
                         )
                       ],
-                    )
-                  ],
-                ))
-            : CustomScrollView(
-                primary: false,
-                slivers: <Widget>[
-                  SliverPadding(
-                    padding: const EdgeInsets.only(
-                        left: 10, right: 10, top: 5, bottom: 5),
-                    sliver: SliverGrid.count(
-                        mainAxisSpacing: 1,
-                        childAspectRatio: 3 / 2,
-                        crossAxisSpacing: 5,
-                        crossAxisCount:
-                            mediaQuery.orientation == Orientation.portrait
-                                ? 2
-                                : 4,
-                        children: images),
-                  ),
-                ],
-              );
+                    ))
+                : CustomScrollView(
+                    primary: false,
+                    slivers: <Widget>[
+                      SliverPadding(
+                        padding: const EdgeInsets.all(10),
+                        sliver: SliverGrid.count(
+                            mainAxisSpacing: 1,
+                            childAspectRatio: 3 / 2,
+                            crossAxisSpacing: 5,
+                            crossAxisCount:
+                                mediaQuery.orientation == Orientation.portrait
+                                    ? 2
+                                    : 4,
+                            children: images),
+                      ),
+                    ],
+                  ));
   }
 }
 
