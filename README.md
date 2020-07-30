@@ -1,4 +1,4 @@
-# SC-Utility 
+# SC-Utility - checkout the latest [release](https://github.com/Incr3dible/sc-utility/releases)
 
 <p align="center">
     <i>An application built with Flutter & ASP.NET Core for SC-Games</i><br />
