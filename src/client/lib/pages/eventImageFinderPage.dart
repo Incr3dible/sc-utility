@@ -30,7 +30,10 @@ class EventImageFinderPageState extends State<EventImageFinderPage> {
     await Future.forEach(games, (game) async {
       var isInstalled = await gameInstalled(game.package);
 
-      if (!isInstalled) {
+      if (isInstalled == null) {
+        print(game.name + " cache is empty!");
+        return;
+      } else if (!isInstalled) {
         print(game.name + " is not installed!");
         return;
       }

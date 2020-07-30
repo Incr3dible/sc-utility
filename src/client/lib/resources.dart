@@ -92,20 +92,23 @@ class Resources {
 
   Future checkForUpdate(
       BuildContext context, bool onlyShowWhenUpdateAvailable) async {
-    var isUpdateAvailable = await GithubApiClient.isNewTagAvailable(
+    var appUpdate = await GithubApiClient.isNewTagAvailable(
         packageInfo.version.replaceAll(".debug", ""));
 
-    if (isUpdateAvailable == null) {
+    if (appUpdate == null) {
       if (!onlyShowWhenUpdateAvailable)
         FlutterExtensions.showPopupDialog(
             context,
             TranslationProvider.get("TID_CONNECTION_ERROR"),
             TranslationProvider.get("TID_CONNECTION_ERROR_DESC"));
-    } else if (isUpdateAvailable) {
+    } else if (appUpdate.isUpdateAvailable) {
       FlutterExtensions.showPopupDialogWithActionAndCancel(
           context,
           TranslationProvider.get("TID_UPDATE_AVAILABLE"),
-          TranslationProvider.get("TID_UPDATE_AVAILABLE_DESC"),
+          TranslationProvider.get("TID_UPDATE_AVAILABLE_DESC") +
+              " (v" +
+              appUpdate.latestVersion +
+              ")",
           TranslationProvider.get("TID_DOWNLOAD"),
           () => {
                 FlutterExtensions.launchUrl(
