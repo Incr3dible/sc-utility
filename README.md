@@ -1,5 +1,10 @@
 # SC-Utility 
-### an application built with Flutter for SC-Games
+
+<p align="center">
+    <i>An application built with Flutter & ASP.NET Core for SC-Games</i><br />
+    <br />
+    <img src="https://raw.githubusercontent.com/Incr3dible/sc-utility/master/demo-min.jpg">
+</p>
 
 ## Features
  - **Events**
