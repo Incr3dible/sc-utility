@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using System.Timers;
 using SupercellUilityApi.Database;
 using SupercellUilityApi.Helpers;
@@ -14,31 +15,14 @@ namespace SupercellUilityApi.Core.Manager
         private readonly Timer _refreshTimer = new Timer(Constants.StatusCheckInterval * 1000);
         public Dictionary<Enums.Game, GameStatus> StatusList = new Dictionary<Enums.Game, GameStatus>();
 
-        public GameStatusManager()
+        /// <summary>
+        ///     Initialize this instance
+        /// </summary>
+        public async void Initialize()
         {
-            StatusList.Add(Enums.Game.ClashRoyale, new GameStatus
-            {
-                GameName = "Clash Royale",
-                LastUpdated = TimeUtils.CurrentUnixTimestamp,
-                LatestFingerprintVersion = "3.2077.38",
-                LatestFingerprintSha = "78e6afda61f125c90d7c311b9fe26f526388dd59"
-            });
-
-            StatusList.Add(Enums.Game.BrawlStars, new GameStatus
-            {
-                GameName = "Brawl Stars",
-                LastUpdated = TimeUtils.CurrentUnixTimestamp,
-                LatestFingerprintVersion = "28.187.1",
-                LatestFingerprintSha = "c33a3b511b50de0292708b790e3890fc657724ea"
-            });
-
-            StatusList.Add(Enums.Game.HayDayPop, new GameStatus
-            {
-                GameName = "HayDay Pop",
-                LastUpdated = TimeUtils.CurrentUnixTimestamp,
-                LatestFingerprintVersion = "1.154.4",
-                LatestFingerprintSha = "6a621ca47c6fd1ef30fba8a0d6cbcf5732e34e5d"
-            });
+            StatusList.Add(Enums.Game.ClashRoyale, await CreateGameStatus("Clash Royale"));
+            StatusList.Add(Enums.Game.BrawlStars, await CreateGameStatus("Brawl Stars"));
+            StatusList.Add(Enums.Game.HayDayPop, await CreateGameStatus("HayDay Pop"));
 
             foreach (var game in StatusList.Keys) _clientList.Add(game, new TcpClient());
 
@@ -48,6 +32,30 @@ namespace SupercellUilityApi.Core.Manager
             _refreshTimer.Start();
 
             Logger.Log("GameStatusManager started.");
+        }
+
+        public async Task<GameStatus> CreateGameStatus(string gameName)
+        {
+            var status = new GameStatus
+            {
+                GameName = gameName,
+                LastUpdated = TimeUtils.CurrentUnixTimestamp
+            };
+
+            var fingerprint = await FingerprintDatabase.GetLatestFingerprint(gameName);
+
+            if (fingerprint == null)
+            {
+                status.LatestFingerprintSha = "unknown";
+                status.LatestFingerprintVersion = "unknown";
+            }
+            else
+            {
+                status.LatestFingerprintVersion = fingerprint.Version;
+                status.LatestFingerprintSha = fingerprint.Sha;
+            }
+
+            return status;
         }
 
         /// <summary>

@@ -43,7 +43,9 @@ namespace SupercellUilityApi
             FingerprintCache = new FingerprintCache();
 
             GameVersionManager = new GameVersionManager();
+
             GameStatusManager = new GameStatusManager();
+            GameStatusManager.Initialize();
 
             Logger.Log("Resources initialized.");
         }

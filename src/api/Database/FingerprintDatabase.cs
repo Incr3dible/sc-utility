@@ -85,6 +85,35 @@ namespace SupercellUilityApi.Database
             #endregion
         }
 
+        public static long MaxId(string gameName)
+        {
+            #region MaxId
+
+            try
+            {
+                long seed;
+
+                using var connection = new MySqlConnection(_connectionString);
+                connection.Open();
+
+                using (var cmd = new MySqlCommand($"SELECT coalesce(MAX(Id), 0) FROM {Name} WHERE Game = '{gameName}'", connection))
+                {
+                    seed = Convert.ToInt64(cmd.ExecuteScalar());
+                }
+
+                connection.Close();
+
+                return seed;
+            }
+            catch (Exception exception)
+            {
+                Logger.Log(exception, Logger.ErrorLevel.Error);
+                return -1;
+            }
+
+            #endregion
+        }
+
         public static async Task<long> CountAsync()
         {
             #region CountAsync
@@ -161,14 +190,12 @@ namespace SupercellUilityApi.Database
                 var reader = await cmd.ExecuteReaderAsync();
 
                 while (await reader.ReadAsync())
-                {
                     list.Add(new FingerprintLog
                     {
                         Sha = reader["Sha"].ToString(),
                         Version = reader["Version"].ToString(),
                         Timestamp = long.Parse(reader["Timestamp"].ToString() ?? "0")
                     });
-                }
             }
             catch (Exception exception)
             {
@@ -181,6 +208,49 @@ namespace SupercellUilityApi.Database
             }
 
             return list;
+
+            #endregion
+        }
+
+        public static async Task<FingerprintLog> GetLatestFingerprint(string gameName)
+        {
+            #region GetAsync
+
+            var id = MaxId(gameName);
+            if (id <= -1) return null;
+
+            await using var cmd =
+                new MySqlCommand(
+                    $"SELECT * FROM {Name} WHERE Id = '{id}'")
+                {
+                    Connection = new MySqlConnection(_connectionString)
+                };
+
+            try
+            {
+                await cmd.Connection.OpenAsync();
+
+                var reader = await cmd.ExecuteReaderAsync();
+
+                while (await reader.ReadAsync())
+                    return new FingerprintLog
+                    {
+                        Sha = reader["Sha"].ToString(),
+                        Version = reader["Version"].ToString(),
+                        Timestamp = long.Parse(reader["Timestamp"].ToString() ?? "0")
+                    };
+            }
+            catch (Exception exception)
+            {
+                Logger.Log(exception, Logger.ErrorLevel.Error);
+            }
+            finally
+            {
+                if (cmd.Connection != null)
+                    await cmd.Connection.CloseAsync();
+            }
+
+            return null;
 
             #endregion
         }
