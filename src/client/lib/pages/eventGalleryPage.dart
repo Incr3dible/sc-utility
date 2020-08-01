@@ -72,10 +72,6 @@ class EventGalleryPageState extends State<EventGalleryPage>
     });
   }
 
-  Future<Null> onRefresh(BuildContext context) async {
-    requestEventImages();
-  }
-
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -88,6 +84,14 @@ class EventGalleryPageState extends State<EventGalleryPage>
               isScrollable: false,
               tabs: tabs,
             ),
+            actions: <Widget>[
+              IconButton(
+                icon: Icon(Icons.refresh),
+                onPressed: () {
+                  requestEventImages();
+                },
+              )
+            ],
           ),
           body: TabBarView(
               controller: controller,
@@ -171,53 +175,45 @@ class EventGalleryPageState extends State<EventGalleryPage>
   Widget buildImages(List<Widget> images) {
     final mediaQuery = MediaQuery.of(context);
 
-    return RefreshIndicator(
-        onRefresh: () {
-          return onRefresh(context);
-        },
-        child: isLoading
-            ? Center(
-                child: CircularProgressIndicator(),
-              )
-            : images == null
-                ? RefreshIndicator(
-                    onRefresh: () {
-                      return onRefresh(context);
-                    },
-                    child: ListView(
-                      padding: EdgeInsets.all(20),
-                      children: <Widget>[
-                        Column(
-                          children: <Widget>[
-                            Padding(
-                              padding: EdgeInsets.all(20),
-                              child: Icon(Icons.cloud_off),
-                            ),
-                            Text(
-                              TranslationProvider.get("TID_SWIPE_RETRY"),
-                              textAlign: TextAlign.center,
-                            )
-                          ],
-                        )
-                      ],
-                    ))
-                : CustomScrollView(
-                    primary: false,
-                    slivers: <Widget>[
-                      SliverPadding(
-                        padding: const EdgeInsets.all(10),
-                        sliver: SliverGrid.count(
-                            mainAxisSpacing: 1,
-                            childAspectRatio: 3 / 2,
-                            crossAxisSpacing: 5,
-                            crossAxisCount:
-                                mediaQuery.orientation == Orientation.portrait
-                                    ? 2
-                                    : 4,
-                            children: images),
+    return isLoading
+        ? Center(
+            child: CircularProgressIndicator(),
+          )
+        : images == null
+            ? ListView(
+                padding: EdgeInsets.all(20),
+                children: <Widget>[
+                  Column(
+                    children: <Widget>[
+                      Padding(
+                        padding: EdgeInsets.all(20),
+                        child: Icon(Icons.cloud_off),
                       ),
+                      Text(
+                        TranslationProvider.get("TID_SWIPE_RETRY"),
+                        textAlign: TextAlign.center,
+                      )
                     ],
-                  ));
+                  )
+                ],
+              )
+            : CustomScrollView(
+                primary: false,
+                slivers: <Widget>[
+                  SliverPadding(
+                    padding: const EdgeInsets.all(10),
+                    sliver: SliverGrid.count(
+                        mainAxisSpacing: 1,
+                        childAspectRatio: 3 / 2,
+                        crossAxisSpacing: 5,
+                        crossAxisCount:
+                            mediaQuery.orientation == Orientation.portrait
+                                ? 2
+                                : 4,
+                        children: images),
+                  ),
+                ],
+              );
   }
 }
 
