@@ -164,27 +164,29 @@ class ChangelogPageState extends State<ChangelogPage>
         "/" +
         date.year.toString();
 
-    return ListTile(
-      title: Text(log.sha),
-      subtitle: Text(dateString),
-      trailing: IconButton(
-        icon: Icon(Icons.content_copy),
-        onPressed: () {
-          Clipboard.setData(ClipboardData(text: log.sha));
+    return Builder(
+      builder: (BuildContext context) => ListTile(
+        title: Text(log.sha),
+        subtitle: Text(dateString),
+        trailing: IconButton(
+          icon: Icon(Icons.content_copy),
+          onPressed: () {
+            Clipboard.setData(ClipboardData(text: log.sha));
 
-          Scaffold.of(context).showSnackBar(SnackBar(
-            content: Row(
-              children: [
-                Container(
-                  child: Icon(Icons.attach_file),
-                  padding: EdgeInsets.all(5),
-                ),
-                Text('SHA copied to clipboard')
-              ],
-            ),
-            duration: Duration(seconds: 1),
-          ));
-        },
+            Scaffold.of(context).showSnackBar(SnackBar(
+              content: Row(
+                children: [
+                  Container(
+                    child: Icon(Icons.attach_file),
+                    padding: EdgeInsets.all(5),
+                  ),
+                  Text('SHA copied to clipboard')
+                ],
+              ),
+              duration: Duration(seconds: 1),
+            ));
+          },
+        ),
       ),
     );
   }
