@@ -26,6 +26,9 @@ class ChangelogPageState extends State<ChangelogPage>
 
   ChangelogPageState(this.gameName);
 
+  bool compareModeOn = false;
+  List<FingerprintLog> compareList = new List<FingerprintLog>();
+
   @override
   void initState() {
     resources = Resources.getInstance();
@@ -95,18 +98,44 @@ class ChangelogPageState extends State<ChangelogPage>
         length: tabs.length,
         child: Scaffold(
             appBar: AppBar(
-              leading: IconButton(
-                icon: Icon(Icons.close),
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-              ),
-              title: Text(TranslationProvider.get("TID_FINGERPRINT_HISTORY")),
-              bottom: TabBar(
-                controller: controller,
-                isScrollable: false,
-                tabs: tabs,
-              ),
+              leading: compareModeOn
+                  ? IconButton(
+                      icon: Icon(Icons.arrow_back),
+                      onPressed: () {
+                        setState(() {
+                          compareModeOn = false;
+                        });
+                      },
+                    )
+                  : IconButton(
+                      icon: Icon(Icons.close),
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                    ),
+              actions: <Widget>[
+                IconButton(
+                  icon: Icon(Icons.compare_arrows),
+                  onPressed: () {
+                    setState(() {
+                      compareModeOn = !compareModeOn;
+                      compareList.clear();
+                    });
+                  },
+                )
+              ],
+              title: Text(compareModeOn
+                  ? compareList.length.toString()
+                  : TranslationProvider.get("TID_FINGERPRINT_HISTORY")),
+              bottom: compareModeOn
+                  ? PreferredSize(
+                      preferredSize: Size.fromHeight(0),
+                      child: SizedBox.shrink())
+                  : TabBar(
+                      controller: controller,
+                      isScrollable: false,
+                      tabs: tabs,
+                    ),
             ),
             body: TabBarView(
                 controller: controller,
@@ -168,25 +197,44 @@ class ChangelogPageState extends State<ChangelogPage>
       builder: (BuildContext context) => ListTile(
         title: Text(log.sha),
         subtitle: Text(dateString),
-        trailing: IconButton(
-          icon: Icon(Icons.content_copy),
-          onPressed: () {
-            Clipboard.setData(ClipboardData(text: log.sha));
+        trailing: compareModeOn
+            ? Checkbox(
+                onChanged: compareList.length == 2 && !compareList.contains(log)
+                    ? null
+                    : (bool value) {
+                        setState(() {
+                          if (value) {
+                            compareList.add(log);
 
-            Scaffold.of(context).showSnackBar(SnackBar(
-              content: Row(
-                children: [
-                  Container(
-                    child: Icon(Icons.attach_file),
-                    padding: EdgeInsets.all(5),
-                  ),
-                  Text('SHA copied to clipboard')
-                ],
+                            if (compareList.length == 2) {
+                              print("READY TO COMPARE");
+                            }
+                          } else {
+                            compareList.remove(log);
+                          }
+                        });
+                      },
+                value: compareList.contains(log),
+              )
+            : IconButton(
+                icon: Icon(Icons.content_copy),
+                onPressed: () {
+                  Clipboard.setData(ClipboardData(text: log.sha));
+
+                  Scaffold.of(context).showSnackBar(SnackBar(
+                    content: Row(
+                      children: [
+                        Container(
+                          child: Icon(Icons.attach_file),
+                          padding: EdgeInsets.all(5),
+                        ),
+                        Text('SHA copied to clipboard')
+                      ],
+                    ),
+                    duration: Duration(seconds: 1),
+                  ));
+                },
               ),
-              duration: Duration(seconds: 1),
-            ));
-          },
-        ),
       ),
     );
   }
