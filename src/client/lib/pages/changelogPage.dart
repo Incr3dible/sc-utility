@@ -116,6 +116,8 @@ class ChangelogPageState extends State<ChangelogPage>
                     ),
               actions: <Widget>[
                 IconButton(
+                  tooltip:
+                      TranslationProvider.get("TID_FINGERPRINT_COMPARISON"),
                   icon: Icon(Icons.compare_arrows),
                   onPressed: () {
                     setState(() {

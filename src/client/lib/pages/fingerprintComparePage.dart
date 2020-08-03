@@ -3,8 +3,8 @@ import 'package:flutter/services.dart';
 import 'package:sc_utility/api/models/AssetFile.dart';
 import 'package:sc_utility/api/models/Fingerprint.dart';
 import 'package:sc_utility/api/models/FingerprintLog.dart';
+import 'package:sc_utility/translationProvider.dart';
 import 'package:sc_utility/utils/fingerprintUtils.dart';
-import 'package:sc_utility/utils/flutterextentions.dart';
 
 class FingerprintComparePage extends StatefulWidget {
   final List<FingerprintLog> logs;
@@ -33,13 +33,13 @@ class FingerprintComparePageState extends State<FingerprintComparePage>
 
   var tabs = {
     Tab(
-      text: "Added",
+      text: TranslationProvider.get("TID_ADDED"),
     ),
     Tab(
-      text: "Changed",
+      text: TranslationProvider.get("TID_CHANGED"),
     ),
     Tab(
-      text: "Removed",
+      text: TranslationProvider.get("TID_REMOVED"),
     ),
   }.toList();
 
@@ -67,31 +67,27 @@ class FingerprintComparePageState extends State<FingerprintComparePage>
 
     if (fingerprints.length == 2) {
       compareFingerprints(fingerprints.elementAt(0), fingerprints.elementAt(1));
-    } else
-      print("ERROR");
-  }
-
-  void compareFingerprints(
-      Fingerprint oldFingerprint, Fingerprint newFingerprint) {
-    print(oldFingerprint.version);
-    print(newFingerprint.version);
-
-    addedFiles = FingerprintUtils.getAddedFiles(oldFingerprint, newFingerprint);
-    removedFiles =
-        FingerprintUtils.getRemovedFiles(oldFingerprint, newFingerprint);
-    changedFiles =
-        FingerprintUtils.getChangedFiles(oldFingerprint, newFingerprint);
+    }
 
     setState(() {
       isLoading = false;
     });
   }
 
+  void compareFingerprints(
+      Fingerprint oldFingerprint, Fingerprint newFingerprint) {
+    addedFiles = FingerprintUtils.getAddedFiles(oldFingerprint, newFingerprint);
+    removedFiles =
+        FingerprintUtils.getRemovedFiles(oldFingerprint, newFingerprint);
+    changedFiles =
+        FingerprintUtils.getChangedFiles(oldFingerprint, newFingerprint);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Fingerprint Comparison"),
+        title: Text(TranslationProvider.get("TID_FINGERPRINT_COMPARISON")),
         bottom: TabBar(
           controller: controller,
           isScrollable: false,

@@ -38,7 +38,11 @@ class TranslationProvider {
           "Thank you for contributing to this project as root user. Users without root can also see this images now through the event gallery in this app.",
       "TID_UPLOAD": "Uploading...",
       "TID_UNKNOWN_ERROR": "An unknown error occurred",
-      "TID_EVENT_GALLERY": "Event Gallery"
+      "TID_EVENT_GALLERY": "Event Gallery",
+      "TID_FINGERPRINT_COMPARISON": "Fingerprint Comparison",
+      "TID_ADDED": "Added",
+      "TID_CHANGED": "Changed",
+      "TID_REMOVED": "Removed"
     },
     {
       "TID_SETTINGS": "Einstellungen",
@@ -71,13 +75,17 @@ class TranslationProvider {
           "Es konnte keine Verbindung zum Server hergestellt werden. Bitte versuche es noch einmal.",
       "TID_SWIPE_RETRY":
           "Um es erneut zu versuchen wische nach unten und überprüfe deine Internetverbindung",
-      "TID_FINGERPRINT_HISTORY": "Fingerprint Historie",
+      "TID_FINGERPRINT_HISTORY": "Fingerabdruckverlauf",
       "TID_LIVE_DESC": "aktualisierung alle 10 Sekunden",
       "TID_EVENT_DESC":
           "Danke, dass du als Root-User zu diesem Projekt beigetragen hast. Benutzer ohne root können diese Bilder jetzt auch über die Eventgalerie in dieser App sehen.",
       "TID_UPLOAD": "Hochladen...",
       "TID_UNKNOWN_ERROR": "Ein unbekannter Fehler ist aufgetreten",
-      "TID_EVENT_GALLERY": "Eventgalerie"
+      "TID_EVENT_GALLERY": "Eventgalerie",
+      "TID_FINGERPRINT_COMPARISON": "Fingerabdruckvergleich",
+      "TID_ADDED": "Hinzugefügt",
+      "TID_CHANGED": "Geändert",
+      "TID_REMOVED": "Entfernt"
     },
   };
 
