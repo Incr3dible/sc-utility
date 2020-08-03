@@ -53,6 +53,10 @@ class FingerprintComparePageState extends State<FingerprintComparePage>
   }
 
   void downloadFingerprints() async {
+    setState(() {
+      isLoading = true;
+    });
+
     var fingerprints = new List<Fingerprint>();
     logs.sort((a, b) => a.isNewer(b.version));
 
@@ -109,8 +113,36 @@ class FingerprintComparePageState extends State<FingerprintComparePage>
     );
   }
 
+  Future<Null> onRefresh(BuildContext context) async {
+    downloadFingerprints();
+  }
+
   Widget buildList(List<AssetFile> files, Color color) {
-    if (files == null || files?.length == 0) {
+    if (files == null) {
+      return RefreshIndicator(
+          onRefresh: () {
+            return onRefresh(context);
+          },
+          child: ListView(
+            padding: EdgeInsets.all(20),
+            children: <Widget>[
+              Column(
+                children: <Widget>[
+                  Padding(
+                    padding: EdgeInsets.all(20),
+                    child: Icon(Icons.cloud_off),
+                  ),
+                  Text(
+                    TranslationProvider.get("TID_SWIPE_RETRY"),
+                    textAlign: TextAlign.center,
+                  )
+                ],
+              )
+            ],
+          ));
+    }
+
+    if (files?.length == 0) {
       return Center(
         child: Text(TranslationProvider.get("TID_NO_CHANGES")),
       );
