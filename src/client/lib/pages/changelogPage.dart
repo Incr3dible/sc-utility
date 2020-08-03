@@ -198,6 +198,22 @@ class ChangelogPageState extends State<ChangelogPage>
       builder: (BuildContext context) => ListTile(
         title: Text(log.sha),
         subtitle: Text(dateString),
+        onLongPress: () {
+          setState(() {
+            if (!compareModeOn) {
+              compareList.clear();
+              compareList.add(log);
+              compareModeOn = true;
+            }
+          });
+        },
+        onTap: () {
+          setState(() {
+            if (compareList.contains(log)) {
+              compareList.remove(log);
+            }
+          });
+        },
         trailing: compareModeOn
             ? Checkbox(
                 onChanged: compareList.length == 2 && !compareList.contains(log)

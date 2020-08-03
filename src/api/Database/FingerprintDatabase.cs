@@ -85,9 +85,9 @@ namespace SupercellUilityApi.Database
             #endregion
         }
 
-        public static long MaxId(string gameName)
+        public static long MaxTimestamp(string gameName)
         {
-            #region MaxId
+            #region MaxTimestamp
 
             try
             {
@@ -96,7 +96,7 @@ namespace SupercellUilityApi.Database
                 using var connection = new MySqlConnection(_connectionString);
                 connection.Open();
 
-                using (var cmd = new MySqlCommand($"SELECT coalesce(MAX(Id), 0) FROM {Name} WHERE Game = '{gameName}'", connection))
+                using (var cmd = new MySqlCommand($"SELECT coalesce(MAX(Timestamp), 0) FROM {Name} WHERE Game = '{gameName}'", connection))
                 {
                     seed = Convert.ToInt64(cmd.ExecuteScalar());
                 }
@@ -178,7 +178,7 @@ namespace SupercellUilityApi.Database
 
             await using var cmd =
                 new MySqlCommand(
-                    $"SELECT * FROM {Name} WHERE Game = '{gameName}' ORDER BY `Id` DESC")
+                    $"SELECT * FROM {Name} WHERE Game = '{gameName}' ORDER BY `Timestamp` DESC")
                 {
                     Connection = new MySqlConnection(_connectionString)
                 };
@@ -216,12 +216,12 @@ namespace SupercellUilityApi.Database
         {
             #region GetAsync
 
-            var id = MaxId(gameName);
-            if (id <= -1) return null;
+            var timestamp = MaxTimestamp(gameName);
+            if (timestamp <= -1) return null;
 
             await using var cmd =
                 new MySqlCommand(
-                    $"SELECT * FROM {Name} WHERE Id = '{id}'")
+                    $"SELECT * FROM {Name} WHERE Timestamp = '{timestamp}'")
                 {
                     Connection = new MySqlConnection(_connectionString)
                 };
