@@ -71,6 +71,10 @@ class FingerprintUtils {
         return "http://df70a89d32075567ba62-1e50fe9ed7ef652688e6e5fff773074c.r40.cf1.rackcdn.com/";
       case "Brawl Stars":
         return "http://a678dbc1c015a893c9fd-4e8cc3b1ad3a3c940c504815caefa967.r87.cf2.rackcdn.com/";
+      case "HayDay Pop":
+        return "https://d3br6iao8asuhe.cloudfront.net/";
+      case "HayDay":
+        return "https://c12049120.ssl.cf2.rackcdn.com/";
       default:
         return null;
     }

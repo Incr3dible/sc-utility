@@ -112,7 +112,7 @@ class FingerprintComparePageState extends State<FingerprintComparePage>
   Widget buildList(List<AssetFile> files, Color color) {
     if (files == null || files?.length == 0) {
       return Center(
-        child: Text("Empty here..."),
+        child: Text(TranslationProvider.get("TID_NO_CHANGES")),
       );
     }
 
