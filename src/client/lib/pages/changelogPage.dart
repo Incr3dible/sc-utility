@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:sc_utility/api/ApiClient.dart';
 import 'package:sc_utility/api/models/FingerprintLog.dart';
+import 'package:sc_utility/pages/fingerprintComparePage.dart';
 import 'package:sc_utility/utils/flutterextentions.dart';
 import '../resources.dart';
 import '../translationProvider.dart';
@@ -207,7 +208,18 @@ class ChangelogPageState extends State<ChangelogPage>
                             compareList.add(log);
 
                             if (compareList.length == 2) {
-                              print("READY TO COMPARE");
+                              Navigator.push(
+                                context,
+                                new MaterialPageRoute(
+                                  builder: (BuildContext context) =>
+                                      new FingerprintComparePage(
+                                          compareList, gameName),
+                                ),
+                              );
+
+                              setState(() {
+                                compareModeOn = false;
+                              });
                             }
                           } else {
                             compareList.remove(log);
