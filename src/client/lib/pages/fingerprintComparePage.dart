@@ -149,6 +149,7 @@ class FingerprintComparePageState extends State<FingerprintComparePage>
     }
 
     return ListView.builder(
+        padding: EdgeInsets.only(top: 8, left: 5, right: 5),
         itemCount: files.length,
         itemBuilder: (BuildContext context, int index) {
           var file = files.elementAt(index);
