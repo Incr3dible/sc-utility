@@ -40,5 +40,3 @@ lib/generated_plugin_registrant.dart
 
 android/key.properties
 android/local.properties
-
-google-services.json
