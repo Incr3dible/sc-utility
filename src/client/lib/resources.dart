@@ -7,7 +7,6 @@ import 'package:sc_utility/utils/flutterextentions.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'api/GithubApiClient.dart';
-import 'pages/crclient.dart';
 import 'main.dart';
 
 class Resources {

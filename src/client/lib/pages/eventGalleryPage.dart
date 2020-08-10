@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:photo_view/photo_view.dart';
 import 'package:sc_utility/api/ApiClient.dart';
 import 'package:sc_utility/api/models/eventImageUrl.dart';
 import 'package:share/share.dart';
@@ -244,10 +243,13 @@ class ImageViewState extends State<ImageView> {
           )
         ],
       ),
-      body: Container(
-          child: PhotoView(
-        imageProvider: NetworkImage(image.imageUrl),
-      )),
+      body: InteractiveViewer(
+        child: Center(
+          child: Container(
+            child: Image.network(image.imageUrl),
+          ),
+        ),
+      ),
     );
   }
 }

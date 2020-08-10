@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:sc_utility/pages/crclient.dart';
 import 'package:sc_utility/pages/customWebviewPage.dart';
 import 'package:sc_utility/pages/eventGalleryPage.dart';
 import 'package:sc_utility/pages/eventImageFinderPage.dart';
@@ -136,7 +135,7 @@ class MainPageState extends State<MainPage> {
       print("UPDATE");
     });
   }
-  
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
