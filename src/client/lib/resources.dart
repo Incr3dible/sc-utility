@@ -5,7 +5,6 @@ import 'package:sc_utility/pages/statusPage.dart';
 import 'package:sc_utility/translationProvider.dart';
 import 'package:sc_utility/utils/flutterextentions.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:sc_utility/network/Client.dart';
 
 import 'api/GithubApiClient.dart';
 import 'pages/crclient.dart';
@@ -29,7 +28,6 @@ class Resources {
   MainPageState mainPage;
   StatusPageState statusPage;
   MyAppState myApp;
-  CrClientPageState clientPageState;
   PackageInfo packageInfo;
 
   bool isPopupOpen = false;

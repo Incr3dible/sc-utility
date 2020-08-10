@@ -63,7 +63,6 @@ class MyAppState extends State<MyApp> {
       themeMode: themeMode,
       home: MainPage(),
       routes: {
-        '/cr-client': (context) => CrClientPage(),
         '/settings': (context) => SettingsPage(),
         '/event-finder': (context) => EventImageFinderPage(),
         '/event-gallery': (context) => EventGalleryPage()
@@ -137,11 +136,7 @@ class MainPageState extends State<MainPage> {
       print("UPDATE");
     });
   }
-
-  Future<Null> onRefresh(BuildContext context) async {
-    resources.clientPageState.reload();
-  }
-
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
