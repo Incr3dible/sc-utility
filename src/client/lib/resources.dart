@@ -35,7 +35,6 @@ class Resources {
   bool isPopupOpen = false;
   FirebaseMessaging firebaseMessaging;
   SharedPreferences prefs;
-  Client client;
 
   Future<void> init() async {
     if (initialized) return;
