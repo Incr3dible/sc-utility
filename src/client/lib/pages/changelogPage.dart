@@ -45,9 +45,10 @@ class ChangelogPageState extends State<ChangelogPage>
 
   void onGameChanged() async {
     if (currentIndex == controller.index) return;
-    currentIndex = controller.index;
 
+    currentIndex = controller.index;
     gameName = games[currentIndex];
+
     if (logList.elementAt(currentIndex).length == 0) requestLog(gameName);
   }
 
@@ -64,9 +65,8 @@ class ChangelogPageState extends State<ChangelogPage>
         isLoading = false;
       });
     } else {
-      logList.update(currentIndex, null);
-
       setState(() {
+        logList.update(currentIndex, null);
         isLoading = false;
       });
 
@@ -140,9 +140,13 @@ class ChangelogPageState extends State<ChangelogPage>
                       tabs: tabs,
                     ),
             ),
-            body: TabBarView(
-                controller: controller,
-                children: logList.map((e) => buildChangelog(e)).toList())));
+            body: isLoading
+                ? Center(
+                    child: CircularProgressIndicator(),
+                  )
+                : TabBarView(
+                    controller: controller,
+                    children: logList.map((e) => buildChangelog(e)).toList())));
   }
 
   Future<Null> onRefresh(BuildContext context) async {
@@ -154,36 +158,32 @@ class ChangelogPageState extends State<ChangelogPage>
         onRefresh: () {
           return onRefresh(context);
         },
-        child: isLoading
-            ? Center(
-                child: CircularProgressIndicator(),
-              )
-            : logs == null
-                ? ListView(
-                    padding: EdgeInsets.all(20),
+        child: logs == null
+            ? ListView(
+                padding: EdgeInsets.all(20),
+                children: <Widget>[
+                  Column(
                     children: <Widget>[
-                      Column(
-                        children: <Widget>[
-                          Padding(
-                            padding: EdgeInsets.all(20),
-                            child: Icon(Icons.cloud_off),
-                          ),
-                          Text(
-                            TranslationProvider.get("TID_SWIPE_RETRY"),
-                            textAlign: TextAlign.center,
-                          )
-                        ],
+                      Padding(
+                        padding: EdgeInsets.all(20),
+                        child: Icon(Icons.cloud_off),
+                      ),
+                      Text(
+                        TranslationProvider.get("TID_SWIPE_RETRY"),
+                        textAlign: TextAlign.center,
                       )
                     ],
                   )
-                : ListView.builder(
-                    padding: EdgeInsets.only(top: 8, left: 5, right: 5),
-                    itemCount: logs.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      var item = logs.elementAt(index);
-                      return buildLogItem(item);
-                    },
-                  ));
+                ],
+              )
+            : ListView.builder(
+                padding: EdgeInsets.only(top: 8, left: 5, right: 5),
+                itemCount: logs.length,
+                itemBuilder: (BuildContext context, int index) {
+                  var item = logs.elementAt(index);
+                  return buildLogItem(item);
+                },
+              ));
   }
 
   Widget buildLogItem(FingerprintLog log) {

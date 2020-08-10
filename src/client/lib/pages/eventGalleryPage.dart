@@ -31,8 +31,8 @@ class EventGalleryPageState extends State<EventGalleryPage>
 
   void onGameChanged() async {
     if (currentIndex == controller.index) return;
-    currentIndex = controller.index;
 
+    currentIndex = controller.index;
     gameName = games[currentIndex];
 
     if (images.elementAt(currentIndex).length == 0) requestEventImages();
@@ -92,9 +92,13 @@ class EventGalleryPageState extends State<EventGalleryPage>
               )
             ],
           ),
-          body: TabBarView(
-              controller: controller,
-              children: images.map((e) => buildImages(e)).toList()),
+          body: isLoading
+              ? Center(
+                  child: CircularProgressIndicator(),
+                )
+              : TabBarView(
+                  controller: controller,
+                  children: images.map((e) => buildImages(e)).toList()),
         ));
   }
 
@@ -174,45 +178,39 @@ class EventGalleryPageState extends State<EventGalleryPage>
   Widget buildImages(List<Widget> images) {
     final mediaQuery = MediaQuery.of(context);
 
-    return isLoading
-        ? Center(
-            child: CircularProgressIndicator(),
-          )
-        : images == null
-            ? ListView(
-                padding: EdgeInsets.all(20),
+    return images == null
+        ? ListView(
+            padding: EdgeInsets.all(20),
+            children: <Widget>[
+              Column(
                 children: <Widget>[
-                  Column(
-                    children: <Widget>[
-                      Padding(
-                        padding: EdgeInsets.all(20),
-                        child: Icon(Icons.cloud_off),
-                      ),
-                      Text(
-                        TranslationProvider.get("TID_SWIPE_RETRY"),
-                        textAlign: TextAlign.center,
-                      )
-                    ],
+                  Padding(
+                    padding: EdgeInsets.all(20),
+                    child: Icon(Icons.cloud_off),
+                  ),
+                  Text(
+                    TranslationProvider.get("TID_SWIPE_RETRY"),
+                    textAlign: TextAlign.center,
                   )
                 ],
               )
-            : CustomScrollView(
-                primary: false,
-                slivers: <Widget>[
-                  SliverPadding(
-                    padding: const EdgeInsets.all(10),
-                    sliver: SliverGrid.count(
-                        mainAxisSpacing: 1,
-                        childAspectRatio: 3 / 2,
-                        crossAxisSpacing: 5,
-                        crossAxisCount:
-                            mediaQuery.orientation == Orientation.portrait
-                                ? 2
-                                : 4,
-                        children: images),
-                  ),
-                ],
-              );
+            ],
+          )
+        : CustomScrollView(
+            primary: false,
+            slivers: <Widget>[
+              SliverPadding(
+                padding: const EdgeInsets.all(10),
+                sliver: SliverGrid.count(
+                    mainAxisSpacing: 1,
+                    childAspectRatio: 3 / 2,
+                    crossAxisSpacing: 5,
+                    crossAxisCount:
+                        mediaQuery.orientation == Orientation.portrait ? 2 : 4,
+                    children: images),
+              ),
+            ],
+          );
   }
 }
 
