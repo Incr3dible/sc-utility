@@ -38,6 +38,8 @@ class StatusPageState extends State<StatusPage>
           ..addStatusListener(handleStatusChanged);
 
     animationController.forward();
+
+    switchLiveMode();
   }
 
   void handleStatusChanged(AnimationStatus status) {
