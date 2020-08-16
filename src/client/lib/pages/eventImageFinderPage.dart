@@ -88,9 +88,9 @@ class EventImageFinderPageState extends State<EventImageFinderPage> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text("Event Image Finder"),
+          title: const Text("Event Image Finder"),
           leading: IconButton(
-            icon: Icon(Icons.close),
+            icon: const Icon(Icons.close),
             onPressed: () async {
               Navigator.pop(context);
             },
@@ -101,21 +101,21 @@ class EventImageFinderPageState extends State<EventImageFinderPage> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-                    Padding(
+                    const Padding(
                         padding: EdgeInsets.all(10),
                         child: Icon(
                           Icons.error,
                           size: 40,
                         )),
                     Padding(
-                      padding: EdgeInsets.all(10),
+                      padding: const EdgeInsets.all(10),
                       child: Text(
                         TranslationProvider.get("TID_UNKNOWN_ERROR"),
                         textAlign: TextAlign.center,
                       ),
                     ),
                     Padding(
-                        padding: EdgeInsets.all(10),
+                        padding: const EdgeInsets.all(10),
                         child: OutlineButton(
                           onPressed: () {
                             Navigator.pop(context);
@@ -130,9 +130,9 @@ class EventImageFinderPageState extends State<EventImageFinderPage> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
-                        CircularProgressIndicator(),
+                        const CircularProgressIndicator(),
                         Padding(
-                          padding: EdgeInsets.all(20),
+                          padding: const EdgeInsets.all(20),
                           child: Text(TranslationProvider.get("TID_UPLOAD")),
                         )
                       ],
@@ -142,21 +142,21 @@ class EventImageFinderPageState extends State<EventImageFinderPage> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
-                        Padding(
+                        const Padding(
                             padding: EdgeInsets.all(10),
                             child: Icon(
                               Icons.cloud_done,
                               size: 40,
                             )),
                         Padding(
-                          padding: EdgeInsets.all(10),
+                          padding: const EdgeInsets.all(10),
                           child: Text(
                             TranslationProvider.get("TID_EVENT_DESC"),
                             textAlign: TextAlign.center,
                           ),
                         ),
                         Padding(
-                            padding: EdgeInsets.all(10),
+                            padding: const EdgeInsets.all(10),
                             child: OutlineButton(
                               onPressed: () {
                                 Navigator.pop(context);

@@ -101,7 +101,7 @@ class ChangelogPageState extends State<ChangelogPage>
             appBar: AppBar(
               leading: compareModeOn
                   ? IconButton(
-                      icon: Icon(Icons.arrow_back),
+                      icon: const Icon(Icons.arrow_back),
                       onPressed: () {
                         setState(() {
                           compareModeOn = false;
@@ -109,7 +109,7 @@ class ChangelogPageState extends State<ChangelogPage>
                       },
                     )
                   : IconButton(
-                      icon: Icon(Icons.close),
+                      icon: const Icon(Icons.close),
                       onPressed: () {
                         Navigator.pop(context);
                       },
@@ -118,7 +118,7 @@ class ChangelogPageState extends State<ChangelogPage>
                 IconButton(
                   tooltip:
                       TranslationProvider.get("TID_FINGERPRINT_COMPARISON"),
-                  icon: Icon(Icons.compare_arrows),
+                  icon: const Icon(Icons.compare_arrows),
                   onPressed: () {
                     setState(() {
                       compareModeOn = !compareModeOn;
@@ -131,7 +131,7 @@ class ChangelogPageState extends State<ChangelogPage>
                   ? compareList.length.toString()
                   : TranslationProvider.get("TID_FINGERPRINT_HISTORY")),
               bottom: compareModeOn
-                  ? PreferredSize(
+                  ? const PreferredSize(
                       preferredSize: Size.fromHeight(0),
                       child: SizedBox.shrink())
                   : TabBar(
@@ -141,7 +141,7 @@ class ChangelogPageState extends State<ChangelogPage>
                     ),
             ),
             body: isLoading
-                ? Center(
+                ? const Center(
                     child: CircularProgressIndicator(),
                   )
                 : TabBarView(
@@ -160,11 +160,11 @@ class ChangelogPageState extends State<ChangelogPage>
         },
         child: logs == null
             ? ListView(
-                padding: EdgeInsets.all(20),
+                padding: const EdgeInsets.all(20),
                 children: <Widget>[
                   Column(
                     children: <Widget>[
-                      Padding(
+                      const Padding(
                         padding: EdgeInsets.all(20),
                         child: Icon(Icons.cloud_off),
                       ),
@@ -177,7 +177,7 @@ class ChangelogPageState extends State<ChangelogPage>
                 ],
               )
             : ListView.builder(
-                padding: EdgeInsets.only(top: 8, left: 5, right: 5),
+                padding: const EdgeInsets.only(top: 8, left: 5, right: 5),
                 itemCount: logs.length,
                 itemBuilder: (BuildContext context, int index) {
                   var item = logs.elementAt(index);
@@ -247,7 +247,7 @@ class ChangelogPageState extends State<ChangelogPage>
                 value: compareList.contains(log),
               )
             : IconButton(
-                icon: Icon(Icons.content_copy),
+                icon: const Icon(Icons.content_copy),
                 onPressed: () {
                   Clipboard.setData(ClipboardData(text: log.sha));
 
@@ -255,13 +255,13 @@ class ChangelogPageState extends State<ChangelogPage>
                     content: Row(
                       children: [
                         Container(
-                          child: Icon(Icons.attach_file),
-                          padding: EdgeInsets.all(5),
+                          child: const Icon(Icons.attach_file),
+                          padding: const EdgeInsets.all(5),
                         ),
-                        Text('SHA copied to clipboard')
+                        const Text('SHA copied to clipboard')
                       ],
                     ),
-                    duration: Duration(seconds: 1),
+                    duration: const Duration(seconds: 1),
                   ));
                 },
               ),

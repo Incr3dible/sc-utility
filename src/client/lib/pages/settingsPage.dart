@@ -101,8 +101,8 @@ class SettingsState extends State<SettingsPage> {
                           })
                         },
                         leading: notificationsOn
-                            ? Icon(Icons.notifications_active)
-                            : Icon(Icons.notifications_off),
+                            ? const Icon(Icons.notifications_active)
+                            : const Icon(Icons.notifications_off),
                         title: Text(
                           TranslationProvider.get(
                               "TID_MAINTENANCE_NOTIFICATIONS"),
@@ -122,7 +122,7 @@ class SettingsState extends State<SettingsPage> {
                     ),
                     Divider(),
                     ListTile(
-                        leading: Icon(Icons.style),
+                        leading: const Icon(Icons.style),
                         title: Text(
                           TranslationProvider.get("TID_THEME"),
                         )),
@@ -131,7 +131,7 @@ class SettingsState extends State<SettingsPage> {
                         children: [
                           ChoiceChip(
                             selectedColor: Theme.of(context).accentColor,
-                            labelStyle: TextStyle(color: Colors.white),
+                            labelStyle: const TextStyle(color: Colors.white),
                             label: Text(TranslationProvider.get("TID_LIGHT")),
                             selected: nightModeState == 0,
                             onSelected: (value) {
@@ -160,7 +160,7 @@ class SettingsState extends State<SettingsPage> {
                                 color: nightModeState > 0
                                     ? Colors.white
                                     : Colors.black),
-                            label: Text("System"),
+                            label: const Text("System"),
                             selected: nightModeState == 2,
                             onSelected: (value) {
                               setState(() {
@@ -173,7 +173,7 @@ class SettingsState extends State<SettingsPage> {
                     ),
                     Divider(),
                     ListTile(
-                        leading: Icon(Icons.language),
+                        leading: const Icon(Icons.language),
                         title: Text(TranslationProvider.get("TID_LANGUAGE"))),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -184,20 +184,20 @@ class SettingsState extends State<SettingsPage> {
                     ),
                     Divider(),
                     ListTile(
-                      leading: Icon(Icons.flag),
+                      leading: const Icon(Icons.flag),
                       title: Text(TranslationProvider.get("TID_DISCLAIMER")),
                       subtitle:
                           Text(TranslationProvider.get("TID_DISCLAIMER_DESC")),
                     ),
                     Divider(),
                     ListTile(
-                      leading: Icon(Icons.info),
-                      title: Text(
+                      leading: const Icon(Icons.info),
+                      title: const Text(
                         "Info",
                       ),
                       subtitle: Text("Version: $version Build: $build"),
                       trailing: IconButton(
-                        icon: Icon(Icons.update),
+                        icon: const Icon(Icons.update),
                         onPressed: () async {
                           setState(() {
                             isLoading = true;
@@ -215,8 +215,8 @@ class SettingsState extends State<SettingsPage> {
                 ),
               ),
               Container(
-                margin: EdgeInsets.all(20),
-                child: Center(
+                margin: const EdgeInsets.all(20),
+                child: const Center(
                     child: Text(
                   "Made with ❤",
                   style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
@@ -227,11 +227,11 @@ class SettingsState extends State<SettingsPage> {
           isLoading
               ? Container(
                   color: Colors.black54,
-                  child: Center(
+                  child: const Center(
                     child: CircularProgressIndicator(),
                   ),
                 )
-              : SizedBox.shrink()
+              : const SizedBox.shrink()
         ]));
   }
 
@@ -244,7 +244,7 @@ class SettingsState extends State<SettingsPage> {
               onLanguageChanged(index);
             },
           ),
-          margin: EdgeInsets.only(left: 10, right: 10, bottom: 10),
+          margin: const EdgeInsets.only(left: 10, right: 10, bottom: 10),
           width: 45,
           height: 30,
           decoration: BoxDecoration(
@@ -257,7 +257,7 @@ class SettingsState extends State<SettingsPage> {
                 child: Align(
                 alignment: Alignment.bottomRight,
                 child: Container(
-                  child: Icon(
+                  child: const Icon(
                     Icons.done,
                     size: 20,
                     color: Colors.white,
@@ -268,7 +268,7 @@ class SettingsState extends State<SettingsPage> {
                   ),
                 ),
               ))
-            : SizedBox.shrink()
+            : const SizedBox.shrink()
       ],
     );
   }

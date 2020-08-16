@@ -99,7 +99,7 @@ class FingerprintComparePageState extends State<FingerprintComparePage>
         ),
       ),
       body: isLoading
-          ? Center(
+          ? const Center(
               child: CircularProgressIndicator(),
             )
           : TabBarView(
@@ -124,11 +124,11 @@ class FingerprintComparePageState extends State<FingerprintComparePage>
             return onRefresh(context);
           },
           child: ListView(
-            padding: EdgeInsets.all(20),
+            padding: const EdgeInsets.all(20),
             children: <Widget>[
               Column(
                 children: <Widget>[
-                  Padding(
+                  const Padding(
                     padding: EdgeInsets.all(20),
                     child: Icon(Icons.cloud_off),
                   ),
@@ -149,7 +149,7 @@ class FingerprintComparePageState extends State<FingerprintComparePage>
     }
 
     return ListView.builder(
-        padding: EdgeInsets.only(top: 8, left: 5, right: 5),
+        padding: const EdgeInsets.only(top: 8, left: 5, right: 5),
         itemCount: files.length,
         itemBuilder: (BuildContext context, int index) {
           var file = files.elementAt(index);
@@ -161,7 +161,7 @@ class FingerprintComparePageState extends State<FingerprintComparePage>
             title: Text(file.file),
             subtitle: Text(file.sha),
             trailing: IconButton(
-              icon: Icon(Icons.content_copy),
+              icon: const Icon(Icons.content_copy),
               onPressed: () {
                 Clipboard.setData(ClipboardData(text: file.file));
 
@@ -169,13 +169,13 @@ class FingerprintComparePageState extends State<FingerprintComparePage>
                   content: Row(
                     children: [
                       Container(
-                        child: Icon(Icons.attach_file),
-                        padding: EdgeInsets.all(5),
+                        child: const Icon(Icons.attach_file),
+                        padding: const EdgeInsets.all(5),
                       ),
-                      Text('Filename copied to clipboard')
+                      const Text('Filename copied to clipboard')
                     ],
                   ),
-                  duration: Duration(seconds: 1),
+                  duration: const Duration(seconds: 1),
                 ));
               },
             ),

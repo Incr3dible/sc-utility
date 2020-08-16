@@ -96,13 +96,13 @@ class StatusPageState extends State<StatusPage>
           Flexible(
             fit: FlexFit.tight,
             child: isLoading
-                ? Center(
+                ? const Center(
                     child: CircularProgressIndicator(),
                   )
                 : gameList.length == 0
                     ? buildConnectionError()
                     : ListView.builder(
-                        padding: EdgeInsets.only(left: 5, right: 5),
+                        padding: const EdgeInsets.only(left: 5, right: 5),
                         itemCount: gameList.length,
                         itemBuilder: (BuildContext context, int index) {
                           return buildGameStatus(gameList.elementAt(index));
@@ -150,7 +150,7 @@ class StatusPageState extends State<StatusPage>
                     builder: (_, child) {
                       return Opacity(
                         opacity: liveModeOn ? opacityAnimation.value : 1,
-                        child: Icon(
+                        child: const Icon(
                           Icons.brightness_1,
                           color: Colors.red,
                         ),
@@ -158,7 +158,7 @@ class StatusPageState extends State<StatusPage>
                     })
               ],
             ),
-            title: Text("LIVE"),
+            title: const Text("LIVE"),
             subtitle: Text(TranslationProvider.get("TID_LIVE_DESC")),
             trailing: OutlineButton(
               highlightedBorderColor: Colors.red,
@@ -168,17 +168,17 @@ class StatusPageState extends State<StatusPage>
           ),
         ),
       ),
-      margin: EdgeInsets.only(top: 8, left: 5, right: 5),
+      margin: const EdgeInsets.only(top: 8, left: 5, right: 5),
     );
   }
 
   Widget buildConnectionError() {
     return ListView(
-      padding: EdgeInsets.all(20),
+      padding: const EdgeInsets.all(20),
       children: <Widget>[
         Column(
           children: <Widget>[
-            Padding(
+            const Padding(
               padding: EdgeInsets.all(20),
               child: Icon(Icons.cloud_off),
             ),
@@ -225,14 +225,14 @@ class StatusPageState extends State<StatusPage>
         child: Container(
             decoration: BoxDecoration(
                 border: Border(left: BorderSide(color: statusColor, width: 4))),
-            padding: EdgeInsets.all(10),
+            padding: const EdgeInsets.all(10),
             child: Column(
               children: <Widget>[
                 Padding(
-                  padding: EdgeInsets.all(5),
+                  padding: const EdgeInsets.all(5),
                   child: Text(
                     status.gameName,
-                    style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
+                    style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
                   ),
                 ),
                 ListTile(
@@ -240,7 +240,7 @@ class StatusPageState extends State<StatusPage>
                     Icons.brightness_1,
                     color: statusColor,
                   ),
-                  title: Text("Status"),
+                  title: const Text("Status"),
                   subtitle: Text(statusName),
                   /*trailing: IconButton(
                     icon: Icon(Icons.report),
@@ -250,7 +250,7 @@ class StatusPageState extends State<StatusPage>
                 ListTile(
                   trailing: Builder(
                     builder: (context) => IconButton(
-                      icon: Icon(Icons.history),
+                      icon: const Icon(Icons.history),
                       onPressed: () {
                         Navigator.push(
                             context,
@@ -260,7 +260,7 @@ class StatusPageState extends State<StatusPage>
                       },
                     ),
                   ),
-                  leading: Icon(
+                  leading: const Icon(
                     Icons.fingerprint,
                   ),
                   title: Text(status.latestFingerprintVersion),
@@ -269,7 +269,7 @@ class StatusPageState extends State<StatusPage>
               ],
             )),
       ),
-      margin: EdgeInsets.only(top: 8),
+      margin: const EdgeInsets.only(top: 8),
     );
   }
 }

@@ -85,7 +85,7 @@ class EventGalleryPageState extends State<EventGalleryPage>
             ),
             actions: <Widget>[
               IconButton(
-                icon: Icon(Icons.refresh),
+                icon: const Icon(Icons.refresh),
                 onPressed: () {
                   requestEventImages();
                 },
@@ -93,7 +93,7 @@ class EventGalleryPageState extends State<EventGalleryPage>
             ],
           ),
           body: isLoading
-              ? Center(
+              ? const Center(
                   child: CircularProgressIndicator(),
                 )
               : TabBarView(
@@ -131,7 +131,7 @@ class EventGalleryPageState extends State<EventGalleryPage>
             children: <Widget>[
               Center(
                 child: Container(
-                  padding: EdgeInsets.all(5),
+                  padding: const EdgeInsets.all(5),
                   child: Image.network(
                     eventImage.imageUrl,
                     fit: BoxFit.fill,
@@ -159,10 +159,10 @@ class EventGalleryPageState extends State<EventGalleryPage>
                         borderRadius: new BorderRadius.only(
                           topLeft: const Radius.circular(10.0),
                         )),
-                    padding: EdgeInsets.all(5),
+                    padding: const EdgeInsets.all(5),
                     child: Text(
                       dateString,
-                      style: TextStyle(
+                      style: const TextStyle(
                           fontSize: 12,
                           fontWeight: FontWeight.bold,
                           color: Colors.white),

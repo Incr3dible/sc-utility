@@ -144,7 +144,7 @@ class MainPageState extends State<MainPage> {
         title: Text(title),
         actions: <Widget>[
           IconButton(
-            icon: Icon(Icons.settings),
+            icon: const Icon(Icons.settings),
             onPressed: () {
               Navigator.pushNamed(context, '/settings');
             },
@@ -178,7 +178,7 @@ class MainPageState extends State<MainPage> {
                     accountName: Text(title),
                   ),
                   ListTile(
-                    leading: Icon(Icons.collections),
+                    leading: const Icon(Icons.collections),
                     title: Text(TranslationProvider.get("TID_EVENT_GALLERY")),
                     onTap: () {
                       Navigator.pushNamed(context, '/event-gallery');
@@ -189,7 +189,7 @@ class MainPageState extends State<MainPage> {
                     title: Text(
                       'Event Compass (ROOT)',
                     ),
-                    leading: Icon(
+                    leading: const Icon(
                       Icons.cloud_upload,
                     ),
                     onTap: () {
@@ -200,7 +200,7 @@ class MainPageState extends State<MainPage> {
                     title: Text(
                       TranslationProvider.get("TID_SETTINGS"),
                     ),
-                    leading: Icon(
+                    leading: const Icon(
                       Icons.settings,
                     ),
                     onTap: () {
@@ -212,16 +212,16 @@ class MainPageState extends State<MainPage> {
               ),
             ),
             ListTile(
-              leading: Icon(Icons.open_in_new),
+              leading: const Icon(Icons.open_in_new),
               title: Text(TranslationProvider.get("TID_MORE")),
               subtitle: Text(TranslationProvider.get("TID_MORE_DESC")),
             ),
             Divider(),
             ListTile(
-              title: Text(
+              title: const Text(
                 'Discord',
               ),
-              leading: Icon(
+              leading: const Icon(
                 Icons.chat,
               ),
               onTap: () {
@@ -229,10 +229,10 @@ class MainPageState extends State<MainPage> {
               },
             ),
             ListTile(
-              title: Text(
+              title: const Text(
                 'API Status',
               ),
-              leading: Icon(
+              leading: const Icon(
                 Icons.announcement,
               ),
               onTap: () {
@@ -246,10 +246,10 @@ class MainPageState extends State<MainPage> {
               },
             ),
             ListTile(
-              title: Text(
+              title: const Text(
                 'Github',
               ),
-              leading: Icon(
+              leading: const Icon(
                 Icons.code,
               ),
               onTap: () {
