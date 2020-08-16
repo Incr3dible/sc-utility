@@ -38,17 +38,23 @@ class EventImageFinderPageState extends State<EventImageFinderPage> {
         return;
       }
 
-      var events = await getEvents(game.package);
+      var remoteEvents = await ApiClient.getEventImages(game.name);
+      var localEvents = await getEvents(game.package);
 
-      for (var i = 0; i < events.length; i++) {
-        var event = events.elementAt(i);
-        var result = await ApiClient.addEventImage(game.name, event);
+      for (var i = 0; i < localEvents.length; i++) {
+        var localEvent = localEvents.elementAt(i);
 
-        if (result == null) {
-          setState(() {
-            errorOccurred = true;
-          });
-          break;
+        if (remoteEvents.indexWhere(
+                (element) => element.imageUrl.contains(localEvent)) ==
+            -1) {
+          var result = await ApiClient.addEventImage(game.name, localEvent);
+
+          if (result == null) {
+            setState(() {
+              errorOccurred = true;
+            });
+            break;
+          }
         }
       }
     });
