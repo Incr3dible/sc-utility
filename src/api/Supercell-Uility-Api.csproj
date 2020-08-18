@@ -10,9 +10,9 @@
     <PackageReference Include="DotNetty.Codecs" Version="0.6.0" />
     <PackageReference Include="DotNetty.Handlers" Version="0.6.0" />
     <PackageReference Include="DotNetty.Transport" Version="0.6.0" />
-    <PackageReference Include="FirebaseAdmin" Version="1.14.0" />
+    <PackageReference Include="FirebaseAdmin" Version="1.15.0" />
     <PackageReference Include="MySql.Data" Version="8.0.21" />
-    <PackageReference Include="NLog" Version="4.7.2" />
+    <PackageReference Include="NLog" Version="4.7.3" />
   </ItemGroup>
 
   <ItemGroup>
