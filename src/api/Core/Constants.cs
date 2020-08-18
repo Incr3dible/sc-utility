@@ -13,7 +13,7 @@
         public const int StatusCheckInterval = 5;
 
         /// <summary>
-        /// Games where event images are stored as raw image
+        /// Games where event images are stored
         /// </summary>
         public static string[] EventGames = {"Clash Royale", "Clash of Clans"};
     }

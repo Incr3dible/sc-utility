@@ -37,24 +37,28 @@ namespace SupercellUilityApi.Network
             switch (game)
             {
                 case Enums.Game.ClashofClans:
-                    GameClient.CurrentGame = game;
                     host = "gamea.clashofclans.com";
                     break;
                 case Enums.Game.ClashRoyale:
-                    GameClient.CurrentGame = Enums.Game.ClashRoyale;
                     host = "game.clashroyaleapp.com";
                     break;
                 case Enums.Game.BrawlStars:
-                    GameClient.CurrentGame = game;
                     host = "game.brawlstarsgame.com";
                     break;
                 case Enums.Game.HayDayPop:
-                    GameClient.CurrentGame = game;
                     host = "game.prod.haydaypop.com";
+                    break;
+                case Enums.Game.BoomBeach:
+                    host = "game.boombeachgame.com";
+                    break;
+                case Enums.Game.HayDay:
+                    host = "game.haydaygame.com";
                     break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(game), game, null);
             }
+
+            GameClient.CurrentGame = game;
 
             try
             {

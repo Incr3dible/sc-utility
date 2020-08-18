@@ -7,7 +7,9 @@
             ClashRoyale,
             ClashofClans,
             BrawlStars,
-            HayDayPop
+            HayDayPop,
+            BoomBeach,
+            HayDay
         }
 
         public enum Status

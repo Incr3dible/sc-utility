@@ -32,6 +32,22 @@ namespace SupercellUilityApi.Core.Manager
                 Build = 154,
                 Key = 10
             });
+
+            VersionList.Add(Enums.Game.BoomBeach, new GameVersion
+            {
+                Major = 43,
+                Minor = 1,
+                Build = 63,
+                Key = 18
+            });
+
+            VersionList.Add(Enums.Game.HayDay, new GameVersion
+            {
+                Major = 1,
+                Minor = 97,
+                Build = 47,
+                Key = 7
+            });
         }
 
         public void VersionTooLow(Enums.Game game)
