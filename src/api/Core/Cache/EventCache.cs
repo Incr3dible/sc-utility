@@ -33,6 +33,11 @@ namespace SupercellUilityApi.Core.Cache
             }
         }
 
+        public void Update()
+        {
+            Update(null, null);
+        }
+
         public void UpdateLogs(IEnumerable<EventImage> eventImages, string gameName)
         {
             lock (_syncObject)

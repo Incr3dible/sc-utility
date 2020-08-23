@@ -39,6 +39,7 @@ namespace SupercellUilityApi.Controllers
             if (!exists) return NotFound();
 
             await EventDatabase.SaveEvent(value);
+            Resources.EventCache.Update();
             return Ok();
         }
     }
