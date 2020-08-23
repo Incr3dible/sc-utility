@@ -31,23 +31,34 @@ class FingerprintComparePageState extends State<FingerprintComparePage>
 
   FingerprintComparePageState(this.logs, this.gameName);
 
-  var tabs = {
-    Tab(
-      text: TranslationProvider.get("TID_ADDED"),
-    ),
-    Tab(
-      text: TranslationProvider.get("TID_CHANGED"),
-    ),
-    Tab(
-      text: TranslationProvider.get("TID_REMOVED"),
-    ),
-  }.toList();
+  static const states = ["TID_ADDED", "TID_CHANGED", "TID_REMOVED"];
+
+  List<Widget> buildTabs() {
+    var tabs = new List<Tab>();
+
+    for (var i = 0; i < states.length; i++) {
+      var state = TranslationProvider.get(states.elementAt(i));
+      var count = i == 0
+          ? (addedFiles?.length)
+          : i == 1
+              ? (changedFiles?.length)
+              : i == 2 ? (removedFiles?.length) : 0;
+
+      tabs.add(Tab(
+        child: count != null
+            ? Text(state + " (" + count.toString() + ")")
+            : Text(state),
+      ));
+    }
+
+    return tabs;
+  }
 
   @override
   void initState() {
     super.initState();
     controller =
-        new TabController(length: tabs.length, vsync: this, initialIndex: 1);
+        new TabController(length: states.length, vsync: this, initialIndex: 1);
 
     downloadFingerprints();
   }
@@ -89,6 +100,8 @@ class FingerprintComparePageState extends State<FingerprintComparePage>
 
   @override
   Widget build(BuildContext context) {
+    var tabs = buildTabs();
+
     return Scaffold(
       appBar: AppBar(
         title: Text(TranslationProvider.get("TID_FINGERPRINT_COMPARISON")),

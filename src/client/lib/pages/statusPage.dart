@@ -65,18 +65,19 @@ class StatusPageState extends State<StatusPage>
         if (showLoading) isLoading = false;
       });
     } else {
-      if (showLoading)
+      if (showLoading) {
         setState(() {
           isLoading = false;
         });
 
-      FlutterExtensions.showPopupDialogWithActionAndCancel(
-          context,
-          TranslationProvider.get("TID_CONNECTION_ERROR"),
-          TranslationProvider.get("TID_CONNECTION_ERROR_DESC"),
-          TranslationProvider.get("TID_TRY_AGAIN"),
-          () => {requestStatusList()},
-          false);
+        FlutterExtensions.showPopupDialogWithActionAndCancel(
+            context,
+            TranslationProvider.get("TID_CONNECTION_ERROR"),
+            TranslationProvider.get("TID_CONNECTION_ERROR_DESC"),
+            TranslationProvider.get("TID_TRY_AGAIN"),
+            () => {requestStatusList()},
+            false);
+      }
     }
   }
 
@@ -232,7 +233,8 @@ class StatusPageState extends State<StatusPage>
                   padding: const EdgeInsets.all(5),
                   child: Text(
                     status.gameName,
-                    style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
+                    style: const TextStyle(
+                        fontSize: 14, fontWeight: FontWeight.w600),
                   ),
                 ),
                 ListTile(

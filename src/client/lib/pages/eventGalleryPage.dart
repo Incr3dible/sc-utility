@@ -22,7 +22,7 @@ class EventGalleryPageState extends State<EventGalleryPage>
   void initState() {
     super.initState();
 
-    controller = new TabController(length: tabs.length, vsync: this);
+    controller = new TabController(length: games.length, vsync: this);
     controller.addListener(onGameChanged);
 
     gameName = games[0];
@@ -40,13 +40,21 @@ class EventGalleryPageState extends State<EventGalleryPage>
 
   static const games = ["Clash Royale", "Clash of Clans"];
 
-  var tabs = games
-      .map(
-        (e) => Tab(
-          text: e,
-        ),
-      )
-      .toList();
+  List<Widget> buildTabs() {
+    var tabs = new List<Tab>();
+
+    for (var i = 0; i < games.length; i++) {
+      var game = games.elementAt(i);
+      var count = images.elementAt(i)?.length ?? 0;
+
+      tabs.add(Tab(
+        child:
+            count > 0 ? Text(game + " (" + count.toString() + ")") : Text(game),
+      ));
+    }
+
+    return tabs;
+  }
 
   List<List<Widget>> images = games.map((e) => new List<Widget>()).toList();
 
@@ -73,6 +81,8 @@ class EventGalleryPageState extends State<EventGalleryPage>
 
   @override
   Widget build(BuildContext context) {
+    var tabs = buildTabs();
+
     return DefaultTabController(
         length: tabs.length,
         child: Scaffold(

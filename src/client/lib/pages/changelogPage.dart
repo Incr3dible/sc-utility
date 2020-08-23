@@ -35,7 +35,7 @@ class ChangelogPageState extends State<ChangelogPage>
     resources = Resources.getInstance();
     var currentGameIndex = games.indexOf(gameName);
     controller = new TabController(
-        length: tabs.length, vsync: this, initialIndex: currentGameIndex);
+        length: games.length, vsync: this, initialIndex: currentGameIndex);
     controller.addListener(onGameChanged);
 
     super.initState();
@@ -85,16 +85,26 @@ class ChangelogPageState extends State<ChangelogPage>
   List<List<FingerprintLog>> logList =
       games.map((e) => new List<FingerprintLog>()).toList();
 
-  var tabs = games
-      .map(
-        (e) => Tab(
-          text: e,
-        ),
-      )
-      .toList();
+  List<Widget> buildTabs() {
+    var tabs = new List<Tab>();
+
+    for (var i = 0; i < games.length; i++) {
+      var game = games.elementAt(i);
+      var count = logList.elementAt(i)?.length ?? 0;
+
+      tabs.add(Tab(
+        child:
+            count > 0 ? Text(game + " (" + count.toString() + ")") : Text(game),
+      ));
+    }
+
+    return tabs;
+  }
 
   @override
   Widget build(BuildContext context) {
+    var tabs = buildTabs();
+
     return DefaultTabController(
         length: tabs.length,
         child: Scaffold(
