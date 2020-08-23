@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:sc_utility/api/ApiClient.dart';
 import 'package:sc_utility/api/models/eventImageUrl.dart';
 import 'package:share/share.dart';
@@ -142,21 +143,24 @@ class EventGalleryPageState extends State<EventGalleryPage>
               Center(
                 child: Container(
                   padding: const EdgeInsets.all(5),
-                  child: Image.network(
-                    eventImage.imageUrl,
-                    fit: BoxFit.fill,
-                    loadingBuilder: (BuildContext context, Widget child,
-                        ImageChunkEvent loadingProgress) {
-                      if (loadingProgress == null) return child;
-                      return Center(
-                        child: CircularProgressIndicator(
-                          value: loadingProgress.expectedTotalBytes != null
-                              ? loadingProgress.cumulativeBytesLoaded /
-                                  loadingProgress.expectedTotalBytes
-                              : null,
-                        ),
-                      );
-                    },
+                  child: Hero(
+                    tag: eventImage.imageUrl,
+                    child: Image.network(
+                      eventImage.imageUrl,
+                      fit: BoxFit.fill,
+                      loadingBuilder: (BuildContext context, Widget child,
+                          ImageChunkEvent loadingProgress) {
+                        if (loadingProgress == null) return child;
+                        return Center(
+                          child: CircularProgressIndicator(
+                            value: loadingProgress.expectedTotalBytes != null
+                                ? loadingProgress.cumulativeBytesLoaded /
+                                    loadingProgress.expectedTotalBytes
+                                : null,
+                          ),
+                        );
+                      },
+                    ),
                   ),
                 ),
               ),
@@ -243,6 +247,26 @@ class ImageViewState extends State<ImageView> {
       appBar: AppBar(
         title: Text(image.gameName),
         actions: <Widget>[
+          Builder(
+              builder: (context) => IconButton(
+                    icon: Icon(Icons.content_copy),
+                    onPressed: () {
+                      Clipboard.setData(ClipboardData(text: image.imageUrl));
+
+                      Scaffold.of(context).showSnackBar(SnackBar(
+                        content: Row(
+                          children: [
+                            Container(
+                              child: const Icon(Icons.attach_file),
+                              padding: const EdgeInsets.all(5),
+                            ),
+                            Text(TranslationProvider.get("TID_COPIED"))
+                          ],
+                        ),
+                        duration: const Duration(seconds: 1),
+                      ));
+                    },
+                  )),
           IconButton(
             icon: Icon(Icons.share),
             onPressed: () {
@@ -254,7 +278,10 @@ class ImageViewState extends State<ImageView> {
       body: InteractiveViewer(
         child: Center(
           child: Container(
-            child: Image.network(image.imageUrl),
+            child: Hero(
+              tag: image.imageUrl,
+              child: Image.network(image.imageUrl),
+            ),
           ),
         ),
       ),

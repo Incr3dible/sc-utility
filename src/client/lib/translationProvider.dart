@@ -43,7 +43,8 @@ class TranslationProvider {
       "TID_ADDED": "Added",
       "TID_CHANGED": "Changed",
       "TID_REMOVED": "Removed",
-      "TID_NO_CHANGES": "No changes"
+      "TID_NO_CHANGES": "No changes",
+      "TID_COPIED": "Copied to clipboard"
     },
     {
       "TID_SETTINGS": "Einstellungen",
@@ -87,7 +88,8 @@ class TranslationProvider {
       "TID_ADDED": "Hinzugefügt",
       "TID_CHANGED": "Geändert",
       "TID_REMOVED": "Entfernt",
-      "TID_NO_CHANGES": "Keine Änderungen"
+      "TID_NO_CHANGES": "Keine Änderungen",
+      "TID_COPIED": "In die Zwischenablage kopiert"
     },
   };
 
