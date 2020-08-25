@@ -125,8 +125,8 @@ namespace SupercellUilityApi.Core.Manager
 
             if (status.Status == statusCode) return;
 
-            // Never send a online status notification when the content has been updated
-            if (status.Status == (int) Enums.Status.Content && statusCode == (int) Enums.Status.Online)
+            // Not send a status update after a content update
+            if (status.Status != (int) Enums.Status.Content || statusCode != (int) Enums.Status.Online)
                 Resources.Firebase.SendNotification("Status Update", $"{status.GameName}: {(Enums.Status) statusCode}");
 
             status.Status = statusCode;
