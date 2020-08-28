@@ -49,8 +49,12 @@ class EventGalleryPageState extends State<EventGalleryPage>
       var count = images.elementAt(i)?.length ?? 0;
 
       tabs.add(Tab(
-        child:
-            count > 0 ? Text(game + " (" + count.toString() + ")") : Text(game),
+        child: count > 0
+            ? Text(
+                game + " (" + count.toString() + ")",
+                textAlign: TextAlign.center,
+              )
+            : Text(game),
       ));
     }
 

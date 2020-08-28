@@ -21,56 +21,73 @@ class CustomWebViewPageState extends State<CustomWebViewPage> {
   CustomWebViewPageState(this.url, this.name);
 
   @override
+  void dispose() async {
+    super.dispose();
+
+    await flutterWebViewPlugin.close();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return WebviewScaffold(
-      url: url,
-      mediaPlaybackRequiresUserGesture: false,
-      appBar: AppBar(
-        leading: IconButton(
-          icon: Icon(Icons.close),
-          onPressed: () async {
-            await flutterWebViewPlugin.close();
-            Navigator.pop(context);
-          },
+    return WillPopScope(
+      onWillPop: () async {
+        await flutterWebViewPlugin.close();
+        return Future.value(true);
+      },
+      child: WebviewScaffold(
+        url: url,
+        mediaPlaybackRequiresUserGesture: false,
+        appBar: AppBar(
+          leading: IconButton(
+            icon: Icon(Icons.close),
+            onPressed: () async {
+              await flutterWebViewPlugin.close();
+              Navigator.pop(context);
+            },
+          ),
+          title: ListTile(
+            title: Text(name),
+            subtitle: Text(url),
+          ),
         ),
-        title: Text(name),
-      ),
-      withZoom: true,
-      withLocalStorage: true,
-      hidden: true,
-      initialChild: const Center(
-        child: CircularProgressIndicator(),
-      ),
-      bottomNavigationBar: BottomAppBar(
-        child: Row(
-          children: <Widget>[
-            IconButton(
-              icon: const Icon(Icons.arrow_back_ios),
-              onPressed: () async {
-                await flutterWebViewPlugin.goBack();
-              },
-            ),
-            IconButton(
-              icon: const Icon(Icons.arrow_forward_ios),
-              onPressed: () async {
-                await flutterWebViewPlugin.goForward();
-              },
-            ),
-            IconButton(
-              icon: const Icon(Icons.autorenew),
-              onPressed: () async {
-                await flutterWebViewPlugin.reloadUrl(url);
-              },
-            ),
-            Spacer(),
-            IconButton(
-              icon: const Icon(Icons.open_in_new),
-              onPressed: () {
-                FlutterExtensions.launchUrl(url);
-                Navigator.pop(context);
-              },
-            ),
-          ],
+        withZoom: true,
+        withLocalStorage: true,
+        hidden: true,
+        initialChild: Column(
+          children: [const LinearProgressIndicator()],
+        ),
+        bottomNavigationBar: BottomAppBar(
+          child: Row(
+            children: <Widget>[
+              IconButton(
+                icon: const Icon(Icons.arrow_back_ios),
+                onPressed: () async {
+                  await flutterWebViewPlugin.goBack();
+                },
+              ),
+              IconButton(
+                icon: const Icon(Icons.arrow_forward_ios),
+                onPressed: () async {
+                  await flutterWebViewPlugin.goForward();
+                },
+              ),
+              IconButton(
+                icon: const Icon(Icons.autorenew),
+                onPressed: () async {
+                  await flutterWebViewPlugin.hide();
+                  await flutterWebViewPlugin.reload();
+                },
+              ),
+              Spacer(),
+              IconButton(
+                icon: const Icon(Icons.open_in_new),
+                onPressed: () {
+                  FlutterExtensions.launchUrl(url);
+                  Navigator.pop(context);
+                },
+              ),
+            ],
+          ),
         ),
       ),
     );

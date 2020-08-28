@@ -46,7 +46,10 @@ class FingerprintComparePageState extends State<FingerprintComparePage>
 
       tabs.add(Tab(
         child: count != null
-            ? Text(state + " (" + count.toString() + ")")
+            ? Text(
+                state + " (" + count.toString() + ")",
+                textAlign: TextAlign.center,
+              )
             : Text(state),
       ));
     }
