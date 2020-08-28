@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sc_utility/api/ApiClient.dart';
 import 'package:sc_utility/translationProvider.dart';
-import 'package:sc_utility/utils/rootutil.dart';
+import 'package:sc_utility/utils/eventTools.dart';
 
 class EventImageFinderPage extends StatefulWidget {
   @override
@@ -28,7 +28,7 @@ class EventImageFinderPageState extends State<EventImageFinderPage> {
     await Future.delayed(Duration(milliseconds: 500));
 
     await Future.forEach(games, (game) async {
-      var isInstalled = await gameInstalled(game.package);
+      var isInstalled = await EventTools.gameInstalled(game.package);
 
       if (isInstalled == null) {
         print(game.name + " cache is empty!");
@@ -39,7 +39,7 @@ class EventImageFinderPageState extends State<EventImageFinderPage> {
       }
 
       var remoteEvents = await ApiClient.getEventImages(game.name);
-      var localEvents = await getEvents(game.package);
+      var localEvents = await EventTools.getEvents(game.package);
 
       for (var i = 0; i < localEvents.length; i++) {
         var localEvent = localEvents.elementAt(i);
@@ -62,26 +62,6 @@ class EventImageFinderPageState extends State<EventImageFinderPage> {
     setState(() {
       isLoading = false;
     });
-  }
-
-  Future<List<String>> getEvents(String gamePackage) async {
-    var sourceDir = '/data/data/$gamePackage/cache/events';
-    var sourceDirContent = await RootUtils.listContent(sourceDir);
-
-    return sourceDirContent.where((item) {
-      return item.endsWith(".png");
-    }).toList();
-  }
-
-  Future<bool> gameInstalled(String gamePackage) async {
-    if (!await RootUtils.dirExists('/data/data/$gamePackage/')) {
-      return true;
-    } else if (!await RootUtils.dirExists(
-        '/data/data/$gamePackage/cache/events/')) {
-      return null;
-    } else {
-      return true;
-    }
   }
 
   @override
