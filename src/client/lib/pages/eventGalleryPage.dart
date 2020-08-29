@@ -249,7 +249,10 @@ class ImageViewState extends State<ImageView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(image.gameName),
+        title: Text(
+          image.imageUrl.split(".com/")[1],
+          overflow: TextOverflow.fade,
+        ),
         actions: <Widget>[
           Builder(
               builder: (context) => IconButton(

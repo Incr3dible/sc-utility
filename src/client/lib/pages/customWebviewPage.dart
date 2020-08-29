@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
+import 'package:sc_utility/resources.dart';
 import 'package:sc_utility/utils/flutterextentions.dart';
 
 class CustomWebViewPage extends StatefulWidget {
@@ -46,8 +47,8 @@ class CustomWebViewPageState extends State<CustomWebViewPage> {
             },
           ),
           title: ListTile(
-            title: Text(name),
-            subtitle: Text(url),
+            title: Text(name, style: TextStyle(color: Colors.white)),
+            subtitle: Text(url, style: TextStyle(color: Colors.white)),
           ),
         ),
         withZoom: true,
