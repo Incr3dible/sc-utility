@@ -21,8 +21,8 @@ namespace SupercellUilityApi.Core.Manager
         public async void Initialize()
         {
             StatusList.Add(Enums.Game.ClashRoyale, await CreateGameStatus("Clash Royale"));
-            //StatusList.Add(Enums.Game.BrawlStars, await CreateGameStatus("Brawl Stars"));
-            //StatusList.Add(Enums.Game.HayDayPop, await CreateGameStatus("HayDay Pop"));
+            StatusList.Add(Enums.Game.BrawlStars, await CreateGameStatus("Brawl Stars"));
+            StatusList.Add(Enums.Game.HayDayPop, await CreateGameStatus("HayDay Pop"));
             //StatusList.Add(Enums.Game.BoomBeach, await CreateGameStatus("Boom Beach"));
             //StatusList.Add(Enums.Game.HayDay, await CreateGameStatus("HayDay"));
 
