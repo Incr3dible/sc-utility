@@ -187,6 +187,15 @@ class MainPageState extends State<MainPage> {
                       },
                     ),
                   ),
+                  /*CustomWidgets.roundedListTile(
+                    ListTile(
+                      leading: const Icon(Icons.web),
+                      title: Text("News"),
+                      onTap: () {
+
+                      },
+                    ),
+                  ),*/
                   CustomWidgets.roundedListTile(
                     ListTile(
                       enabled: _rootStatus,
