@@ -9,6 +9,7 @@ import 'package:sc_utility/resources.dart';
 import 'package:sc_utility/translationProvider.dart';
 import 'dart:async';
 import 'package:root_access/root_access.dart';
+import 'package:sc_utility/utils/customWidgets.dart';
 import 'package:sc_utility/utils/flutterextentions.dart';
 import 'package:permission_handler/permission_handler.dart';
 
@@ -177,36 +178,42 @@ class MainPageState extends State<MainPage> {
                         Text(TranslationProvider.get("TID_OPEN_SOURCE_DESC")),
                     accountName: Text(title),
                   ),
-                  ListTile(
-                    leading: const Icon(Icons.collections),
-                    title: Text(TranslationProvider.get("TID_EVENT_GALLERY")),
-                    onTap: () {
-                      Navigator.pushNamed(context, '/event-gallery');
-                    },
+                  CustomWidgets.roundedListTile(
+                    ListTile(
+                      leading: const Icon(Icons.collections),
+                      title: Text(TranslationProvider.get("TID_EVENT_GALLERY")),
+                      onTap: () {
+                        Navigator.pushNamed(context, '/event-gallery');
+                      },
+                    ),
                   ),
-                  ListTile(
-                    enabled: _rootStatus,
-                    title: Text(
-                      'Event Compass (ROOT)',
+                  CustomWidgets.roundedListTile(
+                    ListTile(
+                      enabled: _rootStatus,
+                      title: Text(
+                        'Event Compass (ROOT)',
+                      ),
+                      leading: const Icon(
+                        Icons.cloud_upload,
+                      ),
+                      onTap: () {
+                        Navigator.pushNamed(context, '/event-finder');
+                      },
                     ),
-                    leading: const Icon(
-                      Icons.cloud_upload,
-                    ),
-                    onTap: () {
-                      Navigator.pushNamed(context, '/event-finder');
-                    },
                   ),
-                  ListTile(
-                    title: Text(
-                      TranslationProvider.get("TID_SETTINGS"),
+                  CustomWidgets.roundedListTile(
+                    ListTile(
+                      title: Text(
+                        TranslationProvider.get("TID_SETTINGS"),
+                      ),
+                      leading: const Icon(
+                        Icons.settings,
+                      ),
+                      onTap: () {
+                        Navigator.pushNamed(context, '/settings');
+                      },
+                      enabled: true,
                     ),
-                    leading: const Icon(
-                      Icons.settings,
-                    ),
-                    onTap: () {
-                      Navigator.pushNamed(context, '/settings');
-                    },
-                    enabled: true,
                   ),
                 ],
               ),
