@@ -31,6 +31,7 @@ namespace SupercellUilityApi.Core
                     Topic = "everyone"
                 };
 
+                if (FirebaseMessaging.DefaultInstance == null) return;
                 var response = await FirebaseMessaging.DefaultInstance.SendAsync(message);
 
                 Logger.Log($"Successfully sent notification {response}");

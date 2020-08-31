@@ -10,11 +10,12 @@ namespace SupercellUilityApi.Core.Manager
 
         public GameVersionManager()
         {
+            // 3.2414.1
             VersionList.Add(Enums.Game.ClashRoyale, new GameVersion
             {
                 Major = 3,
                 Minor = 0,
-                Build = 2077,
+                Build = 2414,
                 Key = 29
             });
 
