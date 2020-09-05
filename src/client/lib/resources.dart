@@ -108,7 +108,8 @@ class Resources {
           TranslationProvider.get("TID_DOWNLOAD"),
           () => {
                 FlutterExtensions.launchUrl(
-                    "https://github.com/Incr3dible/sc-utility/releases")
+                    "https://github.com/Incr3dible/sc-utility/releases/tag/" +
+                        appUpdate.latestVersion)
               },
           false);
     } else {

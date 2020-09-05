@@ -5,6 +5,7 @@ import 'package:sc_utility/api/models/eventImageUrl.dart';
 import 'package:share/share.dart';
 import 'package:sc_utility/utils/flutterextentions.dart';
 
+import '../resources.dart';
 import '../translationProvider.dart';
 
 class EventGalleryPage extends StatefulWidget {
@@ -18,10 +19,12 @@ class EventGalleryPageState extends State<EventGalleryPage>
   int currentIndex = 0;
   String gameName;
   bool isLoading = true;
+  Resources resources;
 
   @override
   void initState() {
     super.initState();
+    resources = Resources.getInstance();
 
     controller = new TabController(length: games.length, vsync: this);
     controller.addListener(onGameChanged);
@@ -63,7 +66,7 @@ class EventGalleryPageState extends State<EventGalleryPage>
 
   List<List<Widget>> images = games.map((e) => new List<Widget>()).toList();
 
-  void requestEventImages() async {
+  void requestEventImages({String keywordFilter}) async {
     setState(() {
       isLoading = true;
       images.update(currentIndex, null);
@@ -75,7 +78,10 @@ class EventGalleryPageState extends State<EventGalleryPage>
       images.update(currentIndex, new List<Widget>());
 
       events.forEach((element) {
-        images.elementAt(currentIndex).add(buildImage(element));
+        if (keywordFilter == null)
+          images.elementAt(currentIndex).add(buildImage(element));
+        else if (element.imageUrl.contains(keywordFilter))
+          images.elementAt(currentIndex).add(buildImage(element));
       });
     }
 
@@ -99,6 +105,46 @@ class EventGalleryPageState extends State<EventGalleryPage>
               tabs: tabs,
             ),
             actions: <Widget>[
+              PopupMenuButton<String>(
+                icon: const Icon(Icons.filter_list),
+                onSelected: (value) {
+                  print(value);
+                  requestEventImages(keywordFilter: value);
+                },
+                itemBuilder: (context) => [
+                  PopupMenuItem(
+                    value: "clashroyale.com",
+                    child: Text(
+                      TranslationProvider.get("TID_SHOW_ALL"),
+                    ),
+                  ),
+                  PopupMenuItem(
+                    value: "offer",
+                    child: Text(
+                      TranslationProvider.get("TID_SHOP_OFFERS"),
+                    ),
+                  ),
+                  PopupMenuItem(
+                    value: "popup",
+                    child: Text(
+                      "Popup",
+                    ),
+                  ),
+                  PopupMenuItem(
+                    value: "header",
+                    child: Text(
+                      "Header",
+                    ),
+                  ),
+                  PopupMenuItem(
+                    value: "challenge",
+                    child: Text(
+                      TranslationProvider.get("TID_CHALLENGE"),
+                    ),
+                  )
+                ],
+                elevation: 4,
+              ),
               IconButton(
                 icon: const Icon(Icons.refresh),
                 onPressed: () {

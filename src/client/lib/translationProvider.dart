@@ -44,7 +44,10 @@ class TranslationProvider {
       "TID_CHANGED": "Changed",
       "TID_REMOVED": "Removed",
       "TID_NO_CHANGES": "No changes",
-      "TID_COPIED": "Copied to clipboard"
+      "TID_COPIED": "Copied to clipboard",
+      "TID_SHOW_ALL": "Show all",
+      "TID_SHOP_OFFERS": "Shop Offers",
+      "TID_CHALLENGE": "Challenge"
     },
     {
       "TID_SETTINGS": "Einstellungen",
@@ -89,7 +92,10 @@ class TranslationProvider {
       "TID_CHANGED": "Geändert",
       "TID_REMOVED": "Entfernt",
       "TID_NO_CHANGES": "Keine Änderungen",
-      "TID_COPIED": "In die Zwischenablage kopiert"
+      "TID_COPIED": "In die Zwischenablage kopiert",
+      "TID_SHOW_ALL": "Alle anzeigen",
+      "TID_SHOP_OFFERS": "Shopangebote",
+      "TID_CHALLENGE": "Herausforderung"
     },
   };
 
