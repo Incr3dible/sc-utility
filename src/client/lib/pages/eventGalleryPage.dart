@@ -113,7 +113,7 @@ class EventGalleryPageState extends State<EventGalleryPage>
                 },
                 itemBuilder: (context) => [
                   PopupMenuItem(
-                    value: "clashroyale.com",
+                    value: "",
                     child: Text(
                       TranslationProvider.get("TID_SHOW_ALL"),
                     ),
