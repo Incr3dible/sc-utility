@@ -12,7 +12,7 @@ class CsvViewerPage extends StatefulWidget {
 }
 
 class CsvViewerPageState extends State<CsvViewerPage> {
-  String decompressedCsv = "";
+  List<List<dynamic>> table;
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +26,7 @@ class CsvViewerPageState extends State<CsvViewerPage> {
           )
         ],
       ),
-      body: buildDataTable(decompressedCsv),
+      body: buildDataTable(),
     );
   }
 
@@ -55,31 +55,37 @@ class CsvViewerPageState extends State<CsvViewerPage> {
     }
 
     setState(() {
-      decompressedCsv = utf8.decode(bytes);
+      table = const CsvToListConverter().convert(utf8.decode(bytes));
     });
 
     print("Done!");
   }
 
-  Widget buildDataTable(String csv) {
-    List<List<dynamic>> rowsAsListOfValues =
-        const CsvToListConverter().convert(csv);
+  Widget buildDataTable() {
+    if (table == null)
+      return Center(
+        child: Text("No CSV loaded"),
+      );
 
-    return SingleChildScrollView(
-      scrollDirection: Axis.vertical,
-      child: SingleChildScrollView(
-        scrollDirection: Axis.horizontal,
-        child: DataTable(
-          rows: rowsAsListOfValues
-              .skip(1)
-              .map((e) =>
-                  DataRow(cells: e.map((c) => DataCell(Text(c.toString()))).toList()))
-              .toList(),
-          columns: rowsAsListOfValues.first
-              .map((e) => DataColumn(label: Text(e)))
-              .toList(),
-        ),
-      ),
+    return SafeArea(
+      child: Scrollbar(
+          child: SingleChildScrollView(
+              scrollDirection: Axis.vertical,
+              child: SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: DataTable(
+                  rows: table
+                      .skip(1)
+                      .map((e) => DataRow(
+                          cells: e
+                              .map((c) => DataCell(Text(c.toString())))
+                              .toList()))
+                      .toList(),
+                  columns: table.first
+                      .map((e) => DataColumn(label: Text(e)))
+                      .toList(),
+                ),
+              ))),
     );
   }
 }
