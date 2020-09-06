@@ -5,6 +5,7 @@ class CustomWidgets {
     return Container(
       padding: EdgeInsets.only(left: 5, right: 5, bottom: 2),
       child: Card(
+        margin: EdgeInsets.all(4),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(5.0),
         ),

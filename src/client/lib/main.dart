@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:sc_utility/pages/csvViewerPage.dart';
 import 'package:sc_utility/pages/customWebviewPage.dart';
 import 'package:sc_utility/pages/eventGalleryPage.dart';
 import 'package:sc_utility/pages/eventImageFinderPage.dart';
@@ -65,7 +66,8 @@ class MyAppState extends State<MyApp> {
       routes: {
         '/settings': (context) => SettingsPage(),
         '/event-finder': (context) => EventImageFinderPage(),
-        '/event-gallery': (context) => EventGalleryPage()
+        '/event-gallery': (context) => EventGalleryPage(),
+        '/csv-test': (context) => CsvViewerPage()
       },
     );
   }
@@ -184,6 +186,15 @@ class MainPageState extends State<MainPage> {
                       title: Text(TranslationProvider.get("TID_EVENT_GALLERY")),
                       onTap: () {
                         Navigator.pushNamed(context, '/event-gallery');
+                      },
+                    ),
+                  ),
+                  CustomWidgets.roundedListTile(
+                    ListTile(
+                      leading: const Icon(Icons.table_chart),
+                      title: Text(TranslationProvider.get("TID_CSV")),
+                      onTap: () {
+                        Navigator.pushNamed(context, '/csv-test');
                       },
                     ),
                   ),

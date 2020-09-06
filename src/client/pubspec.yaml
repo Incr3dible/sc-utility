@@ -11,7 +11,7 @@ description: A tool for games
 # In iOS, build-name is used as CFBundleShortVersionString while build-number used as CFBundleVersion.
 # Read more about iOS versioning at
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
-version: 1.4.0+28
+version: 1.4.1+29
 
 environment:
   sdk: ">=2.6.0 <3.0.0"
@@ -32,6 +32,8 @@ dependencies:
   permission_handler: ^5.0.0+hotfix.4
   http: ^0.12.1
   flutter_webview_plugin: ^0.3.11
+  csv: ^4.0.3
+  fixnum: ^0.10.11
 
 dev_dependencies:
   flutter_test:
@@ -50,6 +52,7 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
     - assets/
+    - assets/csv/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
