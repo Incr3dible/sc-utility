@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:typed_data';
+import 'package:csv/csv.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:sc_utility/compression/lzma/lzma.dart';
@@ -25,10 +26,7 @@ class CsvViewerPageState extends State<CsvViewerPage> {
           )
         ],
       ),
-      body: ListView(
-        padding: EdgeInsets.all(5),
-        children: [Text(decompressedCsv)],
-      ),
+      body: buildDataTable(decompressedCsv),
     );
   }
 
@@ -61,5 +59,27 @@ class CsvViewerPageState extends State<CsvViewerPage> {
     });
 
     print("Done!");
+  }
+
+  Widget buildDataTable(String csv) {
+    List<List<dynamic>> rowsAsListOfValues =
+        const CsvToListConverter().convert(csv);
+
+    return SingleChildScrollView(
+      scrollDirection: Axis.vertical,
+      child: SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        child: DataTable(
+          rows: rowsAsListOfValues
+              .skip(1)
+              .map((e) =>
+                  DataRow(cells: e.map((c) => DataCell(Text(c.toString()))).toList()))
+              .toList(),
+          columns: rowsAsListOfValues.first
+              .map((e) => DataColumn(label: Text(e)))
+              .toList(),
+        ),
+      ),
+    );
   }
 }
