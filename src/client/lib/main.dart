@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:sc_utility/pages/csvViewerPage.dart';
 import 'package:sc_utility/pages/customWebviewPage.dart';
+import 'package:sc_utility/pages/devSettingsPage.dart';
 import 'package:sc_utility/pages/eventGalleryPage.dart';
 import 'package:sc_utility/pages/eventImageFinderPage.dart';
 import 'package:sc_utility/pages/settingsPage.dart';
@@ -67,7 +68,8 @@ class MyAppState extends State<MyApp> {
         '/settings': (context) => SettingsPage(),
         '/event-finder': (context) => EventImageFinderPage(),
         '/event-gallery': (context) => EventGalleryPage(),
-        '/csv-test': (context) => CsvViewerPage()
+        '/csv-test': (context) => CsvViewerPage(),
+        '/dev-settings': (context) => DevSettingsPage()
       },
     );
   }
@@ -189,7 +191,7 @@ class MainPageState extends State<MainPage> {
                       },
                     ),
                   ),
-                  CustomWidgets.roundedListTile(
+                  /*CustomWidgets.roundedListTile(
                     ListTile(
                       leading: const Icon(Icons.table_chart),
                       title: Text(TranslationProvider.get("TID_CSV")),
@@ -197,7 +199,7 @@ class MainPageState extends State<MainPage> {
                         Navigator.pushNamed(context, '/csv-test');
                       },
                     ),
-                  ),
+                  ),*/
                   /*CustomWidgets.roundedListTile(
                     ListTile(
                       leading: const Icon(Icons.web),

@@ -67,10 +67,15 @@ namespace SupercellUilityApi.Network.Protocol.Messages.Server
                     Resources.GameVersionManager.VersionTooHigh(Client.CurrentGame);
                     break;
                 case 10:
-                    Resources.GameStatusManager.SetStatus(Client.CurrentGame, (int) Enums.Status.Maintenance);
+                    Resources.GameStatusManager.SetStatus(Client.CurrentGame, (int)Enums.Status.Maintenance);
+                    break;
+                case 16: // only for HayDay Pop (11.09.2020)
+                    Resources.GameVersionManager.VersionTooHigh(Client.CurrentGame);
                     break;
                 default:
-                    Logger.Log($"Unknown error code from {Client.CurrentGame}: {ErrorCode}", Logger.ErrorLevel.Error);
+                    Logger.Log(
+                        $"Unknown error code from {Client.CurrentGame}: {ErrorCode}, Version: {Resources.GameVersionManager.GetGameVersion(Client.CurrentGame)}",
+                        Logger.ErrorLevel.Error);
                     Resources.GameStatusManager.SetStatus(Client.CurrentGame, (int) Enums.Status.Offline);
                     break;
             }

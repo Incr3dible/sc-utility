@@ -68,9 +68,22 @@ namespace SupercellUilityApi.Core.Manager
         public async void CheckGames(object sender, ElapsedEventArgs args)
         {
             foreach (var (game, client) in _clientList)
+            {
+                if (client.UpdatingVersion) continue;
                 await client.ConnectAsync(game);
+            }
 
             //await Task.Delay(1000);
+        }
+
+        /// <summary>
+        /// Get the TcpClient of a Game
+        /// </summary>
+        /// <param name="game"></param>
+        /// <returns></returns>
+        public TcpClient GetClient(Enums.Game game)
+        {
+            return _clientList.ContainsKey(game) ? _clientList[game] : null;
         }
 
         /// <summary>
@@ -83,6 +96,8 @@ namespace SupercellUilityApi.Core.Manager
         {
             if (!StatusList.ContainsKey(game)) return;
             var status = StatusList[game];
+            var client = GetClient(game);
+            client.UpdatingVersion = false;
 
             // Content update was the last status, before we set a new status we keep this for a given time
             if (status.Status == (int) Enums.Status.Content)

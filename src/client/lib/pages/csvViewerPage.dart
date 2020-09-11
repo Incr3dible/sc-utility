@@ -69,23 +69,23 @@ class CsvViewerPageState extends State<CsvViewerPage> {
 
     return SafeArea(
       child: Scrollbar(
+        child: SingleChildScrollView(
+          scrollDirection: Axis.vertical,
           child: SingleChildScrollView(
-              scrollDirection: Axis.vertical,
-              child: SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: DataTable(
-                  rows: table
-                      .skip(1)
-                      .map((e) => DataRow(
-                          cells: e
-                              .map((c) => DataCell(Text(c.toString())))
-                              .toList()))
-                      .toList(),
-                  columns: table.first
-                      .map((e) => DataColumn(label: Text(e)))
-                      .toList(),
-                ),
-              ))),
+            scrollDirection: Axis.horizontal,
+            child: DataTable(
+              rows: table
+                  .skip(1)
+                  .map((e) => DataRow(
+                      cells:
+                          e.map((c) => DataCell(Text(c.toString()))).toList()))
+                  .toList(),
+              columns:
+                  table.first.map((e) => DataColumn(label: Text(e))).toList(),
+            ),
+          ),
+        ),
+      ),
     );
   }
 }

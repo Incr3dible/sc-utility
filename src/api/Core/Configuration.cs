@@ -11,6 +11,8 @@ namespace SupercellUilityApi.Core
         [JsonPropertyName("mysql_password")] public string MySqlPassword { get; set; }
         [JsonPropertyName("mysql_server")] public string MySqlServer { get; set; }
         [JsonPropertyName("mysql_user")] public string MySqlUserId { get; set; }
+        [JsonPropertyName("maintenance")] public bool Maintenance { get; set; }
+        [JsonPropertyName("dev_token")] public string DevToken { get; set; }
 
         /// <summary>
         ///     Loads the configuration
@@ -26,6 +28,9 @@ namespace SupercellUilityApi.Core
                     MySqlServer = config.MySqlServer;
                     MySqlPassword = config.MySqlPassword;
                     MySqlDatabase = config.MySqlDatabase;
+
+                    DevToken = config.DevToken;
+                    Maintenance = config.Maintenance;
                 }
                 catch (Exception)
                 {
@@ -60,6 +65,8 @@ namespace SupercellUilityApi.Core
                 MySqlPassword = "";
                 MySqlServer = "127.0.0.1";
                 MySqlUserId = "root";
+                Maintenance = false;
+                DevToken = "your_dev_token_please_change_it"; 
             }
 
             File.WriteAllText("config.json",

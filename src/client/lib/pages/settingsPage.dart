@@ -81,6 +81,22 @@ class SettingsState extends State<SettingsPage> {
     return Scaffold(
         appBar: AppBar(
           title: Text(TranslationProvider.get("TID_SETTINGS")),
+          /*actions: [
+            PopupMenuButton<int>(
+              onSelected: (value) {
+                Navigator.pushNamed(context, '/dev-settings');
+              },
+              itemBuilder: (context) => [
+                PopupMenuItem(
+                  value: 0,
+                  child: Text(
+                    TranslationProvider.get("TID_DEV_SETTINGS"),
+                  ),
+                ),
+              ],
+              elevation: 4,
+            ),
+          ],*/
         ),
         body: Stack(children: <Widget>[
           Column(

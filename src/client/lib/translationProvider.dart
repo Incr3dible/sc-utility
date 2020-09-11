@@ -47,7 +47,8 @@ class TranslationProvider {
       "TID_COPIED": "Copied to clipboard",
       "TID_SHOW_ALL": "Show all",
       "TID_SHOP_OFFERS": "Shop Offers",
-      "TID_CHALLENGE": "Challenge"
+      "TID_CHALLENGE": "Challenge",
+      "TID_DEV_SETTINGS": "Developer Settings"
     },
     {
       "TID_SETTINGS": "Einstellungen",
@@ -95,7 +96,8 @@ class TranslationProvider {
       "TID_COPIED": "In die Zwischenablage kopiert",
       "TID_SHOW_ALL": "Alle anzeigen",
       "TID_SHOP_OFFERS": "Shopangebote",
-      "TID_CHALLENGE": "Herausforderung"
+      "TID_CHALLENGE": "Herausforderung",
+      "TID_DEV_SETTINGS": "Entwicklereinstellungen"
     },
   };
 

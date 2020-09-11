@@ -21,6 +21,7 @@ namespace SupercellUilityApi.Network
 
         public IChannel ServerChannel { get; set; }
         public Client GameClient { get; set; }
+        public bool UpdatingVersion { get; set; }
 
         /// <summary>
         ///     Connect to a game and send ClientHello
