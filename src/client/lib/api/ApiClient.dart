@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:flutter/cupertino.dart';
+import 'package:sc_utility/api/models/ApiStatus.dart';
 import 'package:sc_utility/api/models/FingerprintLog.dart';
 import 'package:sc_utility/api/models/eventImageUrl.dart';
 import 'models/GameStatus.dart';
@@ -29,6 +30,26 @@ class ApiClient {
       }
     } catch (exception) {
       debugPrint("GET /gamestatus - " + exception.toString());
+      return null;
+    }
+  }
+
+  static Future<ApiStatus> getApiStatus() async {
+    try {
+      var request =
+          await http.get(baseHost + "/apistatus").timeout(Duration(seconds: 5));
+
+      if (request.statusCode == 200) {
+        var status = ApiStatus.fromJson(json.decode(request.body));
+
+        debugPrint("GET /apistatus - 200");
+        return status;
+      } else {
+        debugPrint("GET /apistatus - " + request.statusCode.toString());
+        return null;
+      }
+    } catch (exception) {
+      debugPrint("GET /apistatus - " + exception.toString());
       return null;
     }
   }

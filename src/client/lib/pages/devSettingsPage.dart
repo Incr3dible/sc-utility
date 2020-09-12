@@ -1,5 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:sc_utility/api/ApiClient.dart';
+import 'package:sc_utility/utils/timeUtils.dart';
 import '../resources.dart';
 import '../translationProvider.dart';
 
@@ -15,8 +17,15 @@ class DevSettingsPageState extends State<DevSettingsPage> {
   void initState() {
     resources = Resources.getInstance();
 
+    requestApiStatus();
+
     super.initState();
   }
+
+  String uptime = "0s";
+  int totalRequests = 0;
+  bool statusLoading = false;
+  bool settingsLoading = false;
 
   @override
   Widget build(BuildContext context) {
@@ -25,8 +34,28 @@ class DevSettingsPageState extends State<DevSettingsPage> {
           title: Text(TranslationProvider.get("TID_DEV_SETTINGS")),
         ),
         body: ListView(
-          padding: EdgeInsets.only(left: 10, right: 10),
+          padding: EdgeInsets.only(left: 10, right: 10, top: 15, bottom: 10),
           children: [
+            ListTile(
+              leading: Text("API Status"),
+              trailing: statusLoading
+                  ? const CircularProgressIndicator()
+                  : IconButton(
+                      icon: Icon(Icons.refresh),
+                      onPressed: requestApiStatus,
+                    ),
+            ),
+            ListTile(
+              leading: Icon(Icons.dns),
+              title: Text("Total Requests"),
+              trailing: Text(totalRequests.toString()),
+            ),
+            ListTile(
+              leading: Icon(Icons.access_time),
+              title: Text("Uptime"),
+              trailing: Text(uptime),
+            ),
+            Divider(),
             ListTile(
               leading: Text("Authentication"),
             ),
@@ -42,29 +71,13 @@ class DevSettingsPageState extends State<DevSettingsPage> {
             ),
             Divider(),
             ListTile(
-              leading: Text("API Status"),
-              trailing: IconButton(
-                icon: Icon(Icons.refresh),
-                onPressed: () {},
-              ),
-            ),
-            ListTile(
-              leading: Icon(Icons.dns),
-              title: Text("Total Requests"),
-              trailing: Text("102"),
-            ),
-            ListTile(
-              leading: Icon(Icons.access_time),
-              title: Text("Uptime"),
-              trailing: Text("2d, 4h"),
-            ),
-            Divider(),
-            ListTile(
               leading: Text("API Settings"),
-              trailing: IconButton(
-                icon: Icon(Icons.save),
-                onPressed: () {},
-              ),
+              trailing: settingsLoading
+                  ? const CircularProgressIndicator()
+                  : IconButton(
+                      icon: Icon(Icons.save),
+                      onPressed: () {},
+                    ),
             ),
             ListTile(
               onTap: () => {},
@@ -81,5 +94,26 @@ class DevSettingsPageState extends State<DevSettingsPage> {
             ),
           ],
         ));
+  }
+
+  void requestApiStatus() async {
+    setState(() {
+      statusLoading = true;
+    });
+
+    var status = await ApiClient.getApiStatus();
+
+    if (status != null) {
+      setState(() {
+        totalRequests = status.totalApiRequests;
+        uptime = TimeUtils.secondsToTime(status.uptimeSeconds);
+      });
+    } else {
+      print("ERROR");
+    }
+
+    setState(() {
+      statusLoading = false;
+    });
   }
 }

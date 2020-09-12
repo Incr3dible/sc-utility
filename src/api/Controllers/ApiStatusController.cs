@@ -22,7 +22,8 @@ namespace SupercellUilityApi.Controllers
             return new ApiStatus
             {
                 TotalApiRequests = Resources.TotalRequests,
-                UptimeSeconds = (long) DateTime.UtcNow.Subtract(Resources.StartTime).TotalSeconds
+                UptimeSeconds = (long) DateTime.UtcNow.Subtract(Resources.StartTime).TotalSeconds,
+                Maintenance = Resources.Configuration.Maintenance
             };
         }
     }
