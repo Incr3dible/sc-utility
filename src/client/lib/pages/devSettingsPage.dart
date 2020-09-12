@@ -23,23 +23,17 @@ class DevSettingsPageState extends State<DevSettingsPage> {
     return Scaffold(
         appBar: AppBar(
           title: Text(TranslationProvider.get("TID_DEV_SETTINGS")),
-          actions: [
-            IconButton(
-              icon: Icon(Icons.save),
-              onPressed: () {},
-            )
-          ],
         ),
         body: ListView(
           padding: EdgeInsets.only(left: 10, right: 10),
           children: [
             ListTile(
-              title: Text("Authentication"),
+              leading: Text("Authentication"),
             ),
             ListTile(
-              //padding: EdgeInsets.only(bottom: 20),
               title: TextField(
                 maxLength: 64,
+                obscureText: true,
                 decoration: InputDecoration(
                     labelText: "Developer Token",
                     hintText: "Verify that you are the owner of this app",
@@ -48,21 +42,41 @@ class DevSettingsPageState extends State<DevSettingsPage> {
             ),
             Divider(),
             ListTile(
-              title: Text("API Settings"),
+              leading: Text("API Status"),
+              trailing: IconButton(
+                icon: Icon(Icons.refresh),
+                onPressed: () {},
+              ),
             ),
-            Container(
-              child: ListTile(
-                onTap: () => {},
-                leading: const Icon(Icons.warning),
-                title: Text(
-                  "Maintenance",
-                ),
-                subtitle:
-                    Text("enable or disable the maintenance mode of the API"),
-                trailing: Switch(
-                  value: false,
-                  onChanged: (value) {},
-                ),
+            ListTile(
+              leading: Icon(Icons.dns),
+              title: Text("Total Requests"),
+              trailing: Text("102"),
+            ),
+            ListTile(
+              leading: Icon(Icons.access_time),
+              title: Text("Uptime"),
+              trailing: Text("2d, 4h"),
+            ),
+            Divider(),
+            ListTile(
+              leading: Text("API Settings"),
+              trailing: IconButton(
+                icon: Icon(Icons.save),
+                onPressed: () {},
+              ),
+            ),
+            ListTile(
+              onTap: () => {},
+              leading: const Icon(Icons.warning),
+              title: Text(
+                "Maintenance",
+              ),
+              subtitle:
+                  Text("enable or disable the maintenance mode of the API"),
+              trailing: Switch(
+                value: false,
+                onChanged: (value) {},
               ),
             ),
           ],

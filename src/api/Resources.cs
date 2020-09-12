@@ -21,12 +21,15 @@ namespace SupercellUilityApi
         public static Firebase Firebase { get; set; }
         public static Logger Logger { get; set; }
         public static long TotalRequests { get; set; }
+        public static DateTime StartTime { get; set; }
 
         public static async Task Initialize()
         {
             Logger = new Logger();
             Logger.Log(
                 $"Starting [{DateTime.Now.ToLongTimeString()}] ...");
+
+            StartTime = DateTime.UtcNow;
 
             Configuration = new Configuration();
             Configuration.Initialize();

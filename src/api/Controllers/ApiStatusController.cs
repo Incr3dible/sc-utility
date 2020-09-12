@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using SupercellUilityApi.Models;
 
@@ -20,7 +21,8 @@ namespace SupercellUilityApi.Controllers
         {
             return new ApiStatus
             {
-                TotalApiRequests = Resources.TotalRequests
+                TotalApiRequests = Resources.TotalRequests,
+                UptimeSeconds = (long) DateTime.UtcNow.Subtract(Resources.StartTime).TotalSeconds
             };
         }
     }

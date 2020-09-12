@@ -36,8 +36,10 @@ class EventGalleryPageState extends State<EventGalleryPage>
   void onGameChanged() async {
     if (currentIndex == controller.index) return;
 
-    currentIndex = controller.index;
-    gameName = games[currentIndex];
+    setState(() {
+      currentIndex = controller.index;
+      gameName = games[currentIndex];
+    });
 
     if (images.elementAt(currentIndex).length == 0) requestEventImages();
   }
@@ -105,46 +107,48 @@ class EventGalleryPageState extends State<EventGalleryPage>
               tabs: tabs,
             ),
             actions: <Widget>[
-              PopupMenuButton<String>(
-                icon: const Icon(Icons.filter_list),
-                onSelected: (value) {
-                  print(value);
-                  requestEventImages(keywordFilter: value);
-                },
-                itemBuilder: (context) => [
-                  PopupMenuItem(
-                    value: "",
-                    child: Text(
-                      TranslationProvider.get("TID_SHOW_ALL"),
-                    ),
-                  ),
-                  PopupMenuItem(
-                    value: "offer",
-                    child: Text(
-                      TranslationProvider.get("TID_SHOP_OFFERS"),
-                    ),
-                  ),
-                  PopupMenuItem(
-                    value: "popup",
-                    child: Text(
-                      "Popup",
-                    ),
-                  ),
-                  PopupMenuItem(
-                    value: "header",
-                    child: Text(
-                      "Header",
-                    ),
-                  ),
-                  PopupMenuItem(
-                    value: "challenge",
-                    child: Text(
-                      TranslationProvider.get("TID_CHALLENGE"),
-                    ),
-                  )
-                ],
-                elevation: 4,
-              ),
+              currentIndex == 0
+                  ? PopupMenuButton<String>(
+                      icon: const Icon(Icons.filter_list),
+                      onSelected: (value) {
+                        print(value);
+                        requestEventImages(keywordFilter: value);
+                      },
+                      itemBuilder: (context) => [
+                        PopupMenuItem(
+                          value: "",
+                          child: Text(
+                            TranslationProvider.get("TID_SHOW_ALL"),
+                          ),
+                        ),
+                        PopupMenuItem(
+                          value: "offer",
+                          child: Text(
+                            TranslationProvider.get("TID_SHOP_OFFERS"),
+                          ),
+                        ),
+                        PopupMenuItem(
+                          value: "popup",
+                          child: Text(
+                            "Popup",
+                          ),
+                        ),
+                        PopupMenuItem(
+                          value: "header",
+                          child: Text(
+                            "Header",
+                          ),
+                        ),
+                        PopupMenuItem(
+                          value: "challenge",
+                          child: Text(
+                            TranslationProvider.get("TID_CHALLENGE"),
+                          ),
+                        )
+                      ],
+                      elevation: 4,
+                    )
+                  : SizedBox.shrink(),
               IconButton(
                 icon: const Icon(Icons.refresh),
                 onPressed: () {
