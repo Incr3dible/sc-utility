@@ -86,6 +86,10 @@ class Resources {
     return prefs.getString("sha") ?? "unknown";
   }
 
+  String devToken(){
+    return prefs.getString("devToken") ?? "";
+  }
+
   Future checkForUpdate(
       BuildContext context, bool onlyShowWhenUpdateAvailable) async {
     var appUpdate = await GithubApiClient.isNewTagAvailable(
