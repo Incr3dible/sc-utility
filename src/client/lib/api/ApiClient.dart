@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:flutter/cupertino.dart';
+import 'package:sc_utility/api/models/ApiConfig.dart';
 import 'package:sc_utility/api/models/ApiStatus.dart';
 import 'package:sc_utility/api/models/FingerprintLog.dart';
 import 'package:sc_utility/api/models/eventImageUrl.dart';
@@ -54,6 +55,26 @@ class ApiClient {
     }
   }
 
+  static Future<ApiConfig> getApiConfig() async {
+    try {
+      var request =
+          await http.get(baseHost + "/config").timeout(Duration(seconds: 5));
+
+      if (request.statusCode == 200) {
+        var status = ApiConfig.fromJson(json.decode(request.body));
+
+        debugPrint("GET /config - 200");
+        return status;
+      } else {
+        debugPrint("GET /config - " + request.statusCode.toString());
+        return null;
+      }
+    } catch (exception) {
+      debugPrint("GET /config - " + exception.toString());
+      return null;
+    }
+  }
+
   static Future<List<FingerprintLog>> getFingerprintLog(String gameName) async {
     try {
       var request = await http
@@ -100,6 +121,26 @@ class ApiClient {
       }
     } catch (exception) {
       debugPrint("POST /event - " + exception.toString());
+      return null;
+    }
+  }
+
+  static Future<bool> saveApiConfig(String devToken, ApiConfig config) async {
+    try {
+      var request = await http.post(baseHost + "/config?devToken=" + devToken,
+          body: jsonEncode(config.toJson()),
+          headers: {
+            HttpHeaders.contentTypeHeader: "application/json"
+          }).timeout(Duration(seconds: 5));
+
+      if (request.statusCode == 200) {
+        return true;
+      } else {
+        debugPrint("POST /config - " + request.statusCode.toString());
+        return false;
+      }
+    } catch (exception) {
+      debugPrint("POST /config - " + exception.toString());
       return null;
     }
   }

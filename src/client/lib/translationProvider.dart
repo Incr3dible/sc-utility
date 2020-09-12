@@ -48,7 +48,14 @@ class TranslationProvider {
       "TID_SHOW_ALL": "Show all",
       "TID_SHOP_OFFERS": "Shop Offers",
       "TID_CHALLENGE": "Challenge",
-      "TID_DEV_SETTINGS": "Developer Settings"
+      "TID_DEV_SETTINGS": "Developer Settings",
+      "TID_AUTHENTICATION": "Authentication",
+      "TID_DEV_TOKEN": "Developer Token",
+      "TID_MAINTENANCE_DESC":
+          "use the maintenance mode to inform users for an ongoing investigation or update",
+      "TID_API_SETTINGS": "API Settings",
+      "TID_API_MAINTENANCE_DESC":
+          "We are currently investigating problems or are updating the servers. Please try again later."
     },
     {
       "TID_SETTINGS": "Einstellungen",
@@ -97,7 +104,14 @@ class TranslationProvider {
       "TID_SHOW_ALL": "Alle anzeigen",
       "TID_SHOP_OFFERS": "Shopangebote",
       "TID_CHALLENGE": "Herausforderung",
-      "TID_DEV_SETTINGS": "Entwicklereinstellungen"
+      "TID_DEV_SETTINGS": "Entwicklereinstellungen",
+      "TID_AUTHENTICATION": "Authentifizierung",
+      "TID_DEV_TOKEN": "Entwickler-Token",
+      "TID_MAINTENANCE_DESC":
+          "den Wartungsmodus verwenden, um Benutzer für eine laufende Untersuchung oder Aktualisierung zu informieren",
+      "TID_API_SETTINGS": "API Einstellungen",
+      "TID_API_MAINTENANCE_DESC":
+          "Wir untersuchen derzeit Probleme oder aktualisieren die Server. Bitte versuche es später erneut."
     },
   };
 

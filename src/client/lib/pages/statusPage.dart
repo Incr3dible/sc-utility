@@ -22,6 +22,7 @@ class StatusPageState extends State<StatusPage>
   AnimationController animationController;
   Animation<double> opacityAnimation;
   bool liveModeOn = false;
+  bool maintenance = false;
 
   @override
   void initState() {
@@ -30,8 +31,8 @@ class StatusPageState extends State<StatusPage>
     resources = Resources.getInstance();
     resources.statusPage = this;
 
-    animationController =
-        AnimationController(duration: const Duration(seconds: 1), vsync: this);
+    animationController = AnimationController(
+        duration: const Duration(milliseconds: 1200), vsync: this);
 
     opacityAnimation = Tween<double>(begin: 0.4, end: 1.0)
         .animate(animationController)
@@ -51,6 +52,16 @@ class StatusPageState extends State<StatusPage>
   }
 
   void requestStatusList({bool showLoading = true}) async {
+    if (await isMaintenanceActive()) {
+      setState(() {
+        maintenance = true;
+      });
+      return;
+    } else
+      setState(() {
+        maintenance = false;
+      });
+
     if (showLoading)
       setState(() {
         isLoading = true;
@@ -91,28 +102,122 @@ class StatusPageState extends State<StatusPage>
       onRefresh: () {
         return onRefresh(context);
       },
+      child: maintenance
+          ? buildMaintenaceInfo()
+          : Column(
+              children: <Widget>[
+                buildLive(),
+                Flexible(
+                  fit: FlexFit.tight,
+                  child: isLoading
+                      ? const Center(
+                          child: CircularProgressIndicator(),
+                        )
+                      : gameList.length == 0
+                          ? buildConnectionError()
+                          : ListView.builder(
+                              padding: const EdgeInsets.only(left: 5, right: 5),
+                              itemCount: gameList.length,
+                              itemBuilder: (BuildContext context, int index) {
+                                return buildGameStatus(
+                                    gameList.elementAt(index));
+                              },
+                            ),
+                ),
+              ],
+            ),
+    );
+  }
+
+  Widget buildMaintenaceInfo() {
+    return Center(
       child: Column(
-        children: <Widget>[
-          buildLive(),
-          Flexible(
-            fit: FlexFit.tight,
-            child: isLoading
-                ? const Center(
-                    child: CircularProgressIndicator(),
-                  )
-                : gameList.length == 0
-                    ? buildConnectionError()
-                    : ListView.builder(
-                        padding: const EdgeInsets.only(left: 5, right: 5),
-                        itemCount: gameList.length,
-                        itemBuilder: (BuildContext context, int index) {
-                          return buildGameStatus(gameList.elementAt(index));
-                        },
-                      ),
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Container(
+            padding: EdgeInsets.all(20),
+            child: AnimatedBuilder(
+                animation: animationController,
+                builder: (_, child) {
+                  return Opacity(
+                    opacity: liveModeOn ? opacityAnimation.value : 1,
+                    child: const Icon(
+                      Icons.warning,
+                      color: Colors.orange,
+                      size: 50,
+                    ),
+                  );
+                }),
           ),
+          Container(
+            margin: const EdgeInsets.only(left: 5, right: 5),
+            padding: const EdgeInsets.only(left: 25, right: 25),
+            child: Card(
+              elevation: 8,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10.0),
+              ),
+              clipBehavior: Clip.antiAliasWithSaveLayer,
+              child: Center(
+                child: Container(
+                  padding: const EdgeInsets.all(15),
+                  child: Column(
+                    children: [
+                      Text(
+                        TranslationProvider.get("TID_MAINTENANCE"),
+                        style: TextStyle(
+                            fontSize: 20, fontWeight: FontWeight.w600),
+                        textAlign: TextAlign.center,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 10, bottom: 10),
+                        child: Text(
+                          TranslationProvider.get("TID_API_MAINTENANCE_DESC"),
+                          style: TextStyle(fontSize: 15),
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                      OutlineButton(
+                        onPressed: () {
+                          requestStatusList();
+
+                          Scaffold.of(context).showSnackBar(SnackBar(
+                            content: Row(
+                              children: [
+                                Container(
+                                  child: const Icon(Icons.refresh),
+                                  padding: const EdgeInsets.all(5),
+                                ),
+                                const Text('Refreshed!')
+                              ],
+                            ),
+                            duration: const Duration(seconds: 1),
+                          ));
+                        },
+                        child: Text(
+                          TranslationProvider.get("TID_TRY_AGAIN")
+                              .toUpperCase(),
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          )
         ],
       ),
     );
+  }
+
+  Future<bool> isMaintenanceActive() async {
+    var config = await ApiClient.getApiConfig();
+
+    if (config != null) {
+      return config.maintenance;
+    }
+
+    return false;
   }
 
   void switchLiveMode() {

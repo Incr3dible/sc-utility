@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:sc_utility/api/ApiClient.dart';
+import 'package:sc_utility/api/models/ApiConfig.dart';
 import 'package:sc_utility/utils/flutterextentions.dart';
 import 'package:sc_utility/utils/timeUtils.dart';
 import '../resources.dart';
@@ -16,13 +17,13 @@ class DevSettingsPageState extends State<DevSettingsPage> {
   TextEditingController tokenController = new TextEditingController();
 
   bool maintenance = false;
+  bool obscureToken = true;
 
   @override
   void initState() {
     resources = Resources.getInstance();
 
     tokenController.addListener(() {
-      print(tokenController.text);
       saveDevToken();
 
       setState(() {
@@ -32,7 +33,7 @@ class DevSettingsPageState extends State<DevSettingsPage> {
 
     tokenController.text = resources.devToken();
 
-    requestApiStatus();
+    onRefresh(null);
     super.initState();
   }
 
@@ -42,83 +43,131 @@ class DevSettingsPageState extends State<DevSettingsPage> {
   bool settingsLoading = false;
   bool settingsEnabled = false;
 
+  Future<Null> onRefresh(BuildContext context) async {
+    requestApiStatus();
+    requestApiConfig();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text(TranslationProvider.get("TID_DEV_SETTINGS")),
       ),
-      body: ListView(
-        padding: EdgeInsets.only(left: 10, right: 10, top: 15, bottom: 10),
-        children: [
-          ListTile(
-            leading: Text("API Status"),
-            trailing: statusLoading
-                ? const CircularProgressIndicator()
-                : IconButton(
-                    icon: Icon(Icons.refresh),
-                    onPressed: requestApiStatus,
-                  ),
-          ),
-          ListTile(
-            leading: Icon(Icons.dns),
-            title: Text("Total Requests"),
-            trailing: Text(totalRequests.toString()),
-          ),
-          ListTile(
-            leading: Icon(Icons.access_time),
-            title: Text("Uptime"),
-            trailing: Text(uptime),
-          ),
-          Divider(),
-          ListTile(
-            leading: Text("Authentication"),
-          ),
-          ListTile(
-            title: TextField(
-              controller: tokenController,
-              maxLength: 64,
-              obscureText: true,
-              decoration: InputDecoration(
-                  labelText: "Developer Token",
-                  hintText: "Verify that you are the owner of this app",
-                  border: const OutlineInputBorder()),
+      body: RefreshIndicator(
+        onRefresh: () {
+          return onRefresh(context);
+        },
+        child: ListView(
+          padding:
+              const EdgeInsets.only(left: 5, right: 5, top: 15, bottom: 10),
+          children: [
+            ListTile(
+              leading: Text("API Status"),
+              trailing: statusLoading
+                  ? const CircularProgressIndicator()
+                  : IconButton(
+                      icon: const Icon(Icons.refresh),
+                      onPressed: requestApiStatus,
+                    ),
             ),
-          ),
-          Divider(),
-          ListTile(
-            leading: Text("API Settings"),
-            trailing: settingsLoading
-                ? const CircularProgressIndicator()
-                : IconButton(
-                    icon: Icon(Icons.save),
-                    onPressed: settingsEnabled ? saveSettings : null,
-                  ),
-          ),
-          ListTile(
-            enabled: settingsEnabled,
-            onTap: switchMaintenance,
-            leading: const Icon(Icons.warning),
-            title: Text(
-              "Maintenance",
+            ListTile(
+              leading: const Icon(Icons.dns),
+              title: Text("Total Requests"),
+              trailing: Text(totalRequests.toString()),
             ),
-            subtitle: Text("enable or disable the maintenance mode of the API"),
-            trailing: Switch(
-              value: maintenance,
-              onChanged: settingsEnabled
-                  ? (value) {
-                      switchMaintenance();
-                    }
-                  : null,
+            ListTile(
+              leading: const Icon(Icons.access_time),
+              title: Text("Uptime"),
+              trailing: Text(uptime),
             ),
-          ),
-        ],
+            Divider(),
+            ListTile(
+              leading: Text(
+                TranslationProvider.get("TID_AUTHENTICATION"),
+              ),
+              trailing: IconButton(
+                icon: const Icon(Icons.remove_red_eye),
+                onPressed: () {
+                  setState(() {
+                    obscureToken = !obscureToken;
+                  });
+                },
+              ),
+            ),
+            ListTile(
+              title: TextField(
+                controller: tokenController,
+                maxLength: 64,
+                obscureText: obscureToken,
+                decoration: InputDecoration(
+                    labelText: TranslationProvider.get("TID_DEV_TOKEN"),
+                    hintText: "Verify that you are the owner of this app",
+                    border: const OutlineInputBorder()),
+              ),
+            ),
+            Divider(),
+            ListTile(
+              leading: Text(TranslationProvider.get("TID_API_SETTINGS")),
+              trailing: settingsLoading
+                  ? const CircularProgressIndicator()
+                  : IconButton(
+                      icon: const Icon(Icons.save),
+                      onPressed: settingsEnabled ? saveSettings : null,
+                    ),
+            ),
+            ListTile(
+              enabled: settingsEnabled,
+              onTap: switchMaintenance,
+              leading: const Icon(Icons.warning),
+              title: Text(
+                TranslationProvider.get("TID_MAINTENANCE"),
+              ),
+              subtitle: Text(
+                TranslationProvider.get("TID_MAINTENANCE_DESC"),
+              ),
+              trailing: Switch(
+                value: maintenance,
+                onChanged: settingsEnabled
+                    ? (value) {
+                        switchMaintenance();
+                      }
+                    : null,
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
 
-  void saveSettings() {
-    print("SAVE");
+  void saveSettings() async {
+    setState(() {
+      settingsLoading = true;
+    });
+
+    var config = new ApiConfig();
+    config.maintenance = maintenance;
+
+    var response = await ApiClient.saveApiConfig(tokenController.text, config);
+
+    if (response != null) {
+      if (response) {
+        // SUCCESS
+      } else {
+        FlutterExtensions.showPopupDialog(context, "Invalid Token",
+            "We couldn't verify that you are the owner or administrator of the API.");
+      }
+    } else {
+      FlutterExtensions.showPopupDialog(
+          context,
+          TranslationProvider.get("TID_CONNECTION_ERROR"),
+          TranslationProvider.get("TID_CONNECTION_ERROR_DESC"));
+    }
+
+    setState(() {
+      settingsLoading = false;
+    });
   }
 
   void switchMaintenance() {
@@ -132,6 +181,29 @@ class DevSettingsPageState extends State<DevSettingsPage> {
     resources.prefs.setString("devToken", token);
   }
 
+  void requestApiConfig() async {
+    setState(() {
+      settingsLoading = true;
+    });
+
+    var config = await ApiClient.getApiConfig();
+
+    if (config != null) {
+      setState(() {
+        maintenance = config.maintenance;
+      });
+    } else {
+      FlutterExtensions.showPopupDialog(
+          context,
+          TranslationProvider.get("TID_CONNECTION_ERROR"),
+          TranslationProvider.get("TID_CONNECTION_ERROR_DESC"));
+    }
+
+    setState(() {
+      settingsLoading = false;
+    });
+  }
+
   void requestApiStatus() async {
     setState(() {
       statusLoading = true;
@@ -143,7 +215,6 @@ class DevSettingsPageState extends State<DevSettingsPage> {
       setState(() {
         totalRequests = status.totalApiRequests;
         uptime = TimeUtils.secondsToTime(status.uptimeSeconds);
-        maintenance = status.maintenance;
       });
     } else {
       FlutterExtensions.showPopupDialogWithAction(
