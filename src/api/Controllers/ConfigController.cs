@@ -1,30 +1,33 @@
-﻿using System.Collections.Generic;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
+using SupercellUilityApi.Models;
 
 namespace SupercellUilityApi.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("[controller]")]
     [ApiController]
     public class ConfigController : ControllerBase
     {
-        // GET: api/<ConfigController>
         [HttpGet]
-        public IEnumerable<string> Get()
+        public ApiConfig Get()
         {
-            return new[] {"value1", "value2"};
+            return new ApiConfig
+            {
+                Maintenance = Resources.Configuration.Maintenance
+            };
         }
 
-        // GET api/<ConfigController>/5
-        [HttpGet("{id}")]
-        public string Get(int id)
-        {
-            return "value";
-        }
-
-        // POST api/<ConfigController>
         [HttpPost]
-        public void Post([FromBody] string value)
+        public IActionResult Post(string devToken, [FromBody] ApiConfig value)
         {
+            var config = Resources.Configuration;
+
+            if (config.DevToken != devToken)
+                return Unauthorized();
+
+            config.Maintenance = value.Maintenance;
+            config.Save();
+
+            return Ok();
         }
     }
 }

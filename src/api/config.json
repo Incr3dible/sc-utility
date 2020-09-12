@@ -2,5 +2,7 @@
   "mysql_database": "scudb",
   "mysql_password": "",
   "mysql_server": "127.0.0.1",
-  "mysql_user": "root"
+  "mysql_user": "root",
+  "dev_token": "RKnFBolPBmKzG5ZzeBlH3cJF73O3BfLu8fxbVwa23zGJ4ljwEC2Mh5Q8ggpvpCU2",
+  "maintenance": false
 }
