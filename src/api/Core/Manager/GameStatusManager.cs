@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text.Json;
 using System.Threading.Tasks;
 using System.Timers;
 using SupercellUilityApi.Database;
@@ -23,6 +24,8 @@ namespace SupercellUilityApi.Core.Manager
             StatusList.Add(Enums.Game.ClashRoyale, await CreateGameStatus("Clash Royale"));
             StatusList.Add(Enums.Game.BrawlStars, await CreateGameStatus("Brawl Stars"));
             StatusList.Add(Enums.Game.HayDayPop, await CreateGameStatus("HayDay Pop"));
+            //StatusList.Add(Enums.Game.ClashofClans, await CreateGameStatus("Clash of Clans"));
+
             //StatusList.Add(Enums.Game.BoomBeach, await CreateGameStatus("Boom Beach"));
             //StatusList.Add(Enums.Game.HayDay, await CreateGameStatus("HayDay"));
 
@@ -91,8 +94,8 @@ namespace SupercellUilityApi.Core.Manager
         /// </summary>
         /// <param name="game"></param>
         /// <param name="statusCode"></param>
-        /// <param name="fingerprint"></param>
-        public async void SetStatus(Enums.Game game, int statusCode, Fingerprint fingerprint = null)
+        /// <param name="json"></param>
+        public async void SetStatus(Enums.Game game, int statusCode, string json = null)
         {
             if (!StatusList.ContainsKey(game)) return;
             var status = StatusList[game];
@@ -115,8 +118,10 @@ namespace SupercellUilityApi.Core.Manager
             }
 
             // Content Update is new and fingerprint is given
-            if (statusCode == (int) Enums.Status.Content && fingerprint != null)
+            if (statusCode == (int) Enums.Status.Content && json != null)
             {
+                var fingerprint = JsonSerializer.Deserialize<Fingerprint>(json);
+
                 if (status.LatestFingerprintSha == fingerprint.Sha)
                 {
                     Logger.Log($"The new Fingerprint of {game} has the same sha!", Logger.ErrorLevel.Error);
@@ -133,7 +138,7 @@ namespace SupercellUilityApi.Core.Manager
                     Sha = fingerprint.Sha,
                     Version = fingerprint.Version,
                     Timestamp = TimeUtils.CurrentUnixTimestamp
-                }, status.GameName);
+                }, status.GameName, json);
             }
 
             status.LastUpdated = TimeUtils.CurrentUnixTimestamp;

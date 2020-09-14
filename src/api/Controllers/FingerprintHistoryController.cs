@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using SupercellUilityApi.Models;
 
 namespace SupercellUilityApi.Controllers
@@ -9,13 +8,6 @@ namespace SupercellUilityApi.Controllers
     [Route("[controller]")]
     public class FingerprintHistoryController : ControllerBase
     {
-        private readonly ILogger<FingerprintHistoryController> _logger;
-
-        public FingerprintHistoryController(ILogger<FingerprintHistoryController> logger)
-        {
-            _logger = logger;
-        }
-
         [HttpGet]
         public IEnumerable<FingerprintLog> Get(string gameName)
         {

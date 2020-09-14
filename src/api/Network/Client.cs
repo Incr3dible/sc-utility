@@ -14,11 +14,8 @@ namespace SupercellUilityApi.Network
 
             await new ClientHelloMessage(this)
             {
-                MajorVersion = version.Major,
-                MinorVersion = version.Minor,
-                BuildVersion = version.Build,
-                Sha = fingerprintSha,
-                KeyVersion = version.Key
+                GameVersion = version,
+                Sha = fingerprintSha
             }.SendAsync();
         }
 

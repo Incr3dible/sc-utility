@@ -19,6 +19,7 @@ CREATE TABLE IF NOT EXISTS `fingerprint` (
 	`Sha` text CHARACTER SET utf8mb4,
 	`Version` text CHARACTER SET utf8mb4,
 	`Timestamp` bigint(20),
+	`Json` text CHARACTER SET utf8mb4,
 	PRIMARY KEY (`Id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 

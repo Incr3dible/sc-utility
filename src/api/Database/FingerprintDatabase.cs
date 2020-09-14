@@ -144,7 +144,7 @@ namespace SupercellUilityApi.Database
             #endregion
         }
 
-        public static async Task SaveFingerprintLog(FingerprintLog log, string gameName)
+        public static async Task SaveFingerprintLog(FingerprintLog log, string gameName, string json)
         {
             #region SaveAsync
 
@@ -152,12 +152,13 @@ namespace SupercellUilityApi.Database
             {
                 await using var cmd =
                     new MySqlCommand(
-                        $"INSERT INTO {Name} (`Game`, `Sha`, `Version`, `Timestamp`) VALUES (@game, @sha, @version, @timestamp)");
+                        $"INSERT INTO {Name} (`Game`, `Sha`, `Version`, `Timestamp`, `Json`) VALUES (@game, @sha, @version, @timestamp, @json)");
 #pragma warning disable 618
                 cmd.Parameters?.AddWithValue("@game", gameName);
                 cmd.Parameters?.AddWithValue("@sha", log.Sha);
                 cmd.Parameters?.AddWithValue("@version", log.Version);
                 cmd.Parameters?.AddWithValue("@timestamp", log.Timestamp);
+                cmd.Parameters?.AddWithValue("@json", json);
 #pragma warning restore 618
 
                 await ExecuteAsync(cmd);

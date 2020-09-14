@@ -1,4 +1,5 @@
 ﻿using SupercellUilityApi.Helpers;
+using SupercellUilityApi.Models;
 
 namespace SupercellUilityApi.Network.Protocol.Messages.Client
 {
@@ -10,18 +11,15 @@ namespace SupercellUilityApi.Network.Protocol.Messages.Client
         }
 
         public string Sha { get; set; }
-        public int MajorVersion { get; set; }
-        public int MinorVersion { get; set; }
-        public int BuildVersion { get; set; }
-        public int KeyVersion { get; set; }
+        public GameVersion GameVersion { get; set; }
 
         public override void Encode()
         {
-            Writer.WriteInt(2); // Protocol
-            Writer.WriteInt(KeyVersion); // KeyVersion
-            Writer.WriteInt(MajorVersion); // Major
-            Writer.WriteInt(MinorVersion); // Minor
-            Writer.WriteInt(BuildVersion); // Build
+            Writer.WriteInt(GameVersion.Protocol); // Protocol
+            Writer.WriteInt(GameVersion.Key); // KeyVersion
+            Writer.WriteInt(GameVersion.Major); // Major
+            Writer.WriteInt(GameVersion.Minor); // Minor
+            Writer.WriteInt(GameVersion.Build); // Build
             Writer.WriteScString(Sha); // SHA
             Writer.WriteInt(2); // Device
             Writer.WriteInt(2); // AppStore

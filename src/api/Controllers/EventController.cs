@@ -2,7 +2,6 @@
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using SupercellUilityApi.Core;
 using SupercellUilityApi.Database;
 using SupercellUilityApi.Models;
@@ -13,13 +12,6 @@ namespace SupercellUilityApi.Controllers
     [ApiController]
     public class EventController : ControllerBase
     {
-        private readonly ILogger<EventController> _logger;
-
-        public EventController(ILogger<EventController> logger)
-        {
-            _logger = logger;
-        }
-
         [HttpGet]
         public IEnumerable<EventImage> Get(string gameName)
         {
