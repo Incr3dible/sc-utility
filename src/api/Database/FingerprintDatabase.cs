@@ -199,7 +199,7 @@ namespace SupercellUilityApi.Database
                         Sha = reader["Sha"].ToString(),
                         Version = reader["Version"].ToString(),
                         Timestamp = long.Parse(reader["Timestamp"].ToString() ?? "0"),
-                        HasJson = reader["Json"] != null
+                        HasJson = !string.IsNullOrEmpty(reader["Json"].ToString())
                     });
             }
             catch (Exception exception)
@@ -243,7 +243,7 @@ namespace SupercellUilityApi.Database
                         Sha = reader["Sha"].ToString(),
                         Version = reader["Version"].ToString(),
                         Timestamp = long.Parse(reader["Timestamp"].ToString() ?? "0"),
-                        HasJson = reader["Json"] != null
+                        HasJson = !string.IsNullOrEmpty(reader["Json"].ToString())
                     };
             }
             catch (Exception exception)
