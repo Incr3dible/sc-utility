@@ -354,25 +354,27 @@ class StatusPageState extends State<StatusPage>
                     onPressed: () {},
                   ),*/
                 ),
-                ListTile(
-                  trailing: Builder(
-                    builder: (context) => IconButton(
-                      icon: const Icon(Icons.history),
-                      onPressed: () {
-                        Navigator.push(
-                            context,
-                            new MaterialPageRoute(
-                                builder: (BuildContext context) =>
-                                    new ChangelogPage(status.gameName)));
-                      },
-                    ),
-                  ),
-                  leading: const Icon(
-                    Icons.fingerprint,
-                  ),
-                  title: Text(status.latestFingerprintVersion),
-                  subtitle: Text(status.latestFingerprintSha),
-                )
+                status.latestFingerprintVersion == "unknown"
+                    ? SizedBox.shrink()
+                    : ListTile(
+                        trailing: Builder(
+                          builder: (context) => IconButton(
+                            icon: const Icon(Icons.history),
+                            onPressed: () {
+                              Navigator.push(
+                                  context,
+                                  new MaterialPageRoute(
+                                      builder: (BuildContext context) =>
+                                          new ChangelogPage(status.gameName)));
+                            },
+                          ),
+                        ),
+                        leading: const Icon(
+                          Icons.fingerprint,
+                        ),
+                        title: Text(status.latestFingerprintVersion),
+                        subtitle: Text(status.latestFingerprintSha),
+                      )
               ],
             )),
       ),

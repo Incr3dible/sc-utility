@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text.Json;
 using System.Threading.Tasks;
 using MySql.Data.MySqlClient;
 using SupercellUilityApi.Models;
@@ -96,7 +97,9 @@ namespace SupercellUilityApi.Database
                 using var connection = new MySqlConnection(_connectionString);
                 connection.Open();
 
-                using (var cmd = new MySqlCommand($"SELECT coalesce(MAX(Timestamp), 0) FROM {Name} WHERE Game = '{gameName}'", connection))
+                using (var cmd =
+                    new MySqlCommand($"SELECT coalesce(MAX(Timestamp), 0) FROM {Name} WHERE Game = '{gameName}'",
+                        connection))
                 {
                     seed = Convert.ToInt64(cmd.ExecuteScalar());
                 }
@@ -240,6 +243,42 @@ namespace SupercellUilityApi.Database
                         Version = reader["Version"].ToString(),
                         Timestamp = long.Parse(reader["Timestamp"].ToString() ?? "0")
                     };
+            }
+            catch (Exception exception)
+            {
+                Logger.Log(exception, Logger.ErrorLevel.Error);
+            }
+            finally
+            {
+                if (cmd.Connection != null)
+                    await cmd.Connection.CloseAsync();
+            }
+
+            return null;
+
+            #endregion
+        }
+
+        public static async Task<Fingerprint> GetFingerprintBySha(string gameName, string sha)
+        {
+            #region GetAsync
+
+            await using var cmd =
+                new MySqlCommand(
+                    $"SELECT * FROM {Name} WHERE Game = '{gameName}' AND Sha = @sha")
+                {
+                    Connection = new MySqlConnection(_connectionString)
+                };
+
+            try
+            {
+                cmd.Parameters?.AddWithValue("@sha", sha);
+                await cmd.Connection.OpenAsync();
+
+                var reader = await cmd.ExecuteReaderAsync();
+
+                while (await reader.ReadAsync())
+                    return JsonSerializer.Deserialize<Fingerprint>(reader["Json"].ToString());
             }
             catch (Exception exception)
             {

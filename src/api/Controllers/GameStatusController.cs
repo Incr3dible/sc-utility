@@ -13,7 +13,7 @@ namespace SupercellUilityApi.Controllers
         {
             Resources.IncrementRequests();
 
-            return Resources.GameStatusManager.StatusList.Values;
+            return Resources.GameStatusManager?.StatusList?.Values;
         }
     }
 }

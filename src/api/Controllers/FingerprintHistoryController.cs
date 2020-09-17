@@ -11,12 +11,9 @@ namespace SupercellUilityApi.Controllers
         [HttpGet]
         public IEnumerable<FingerprintLog> Get(string gameName)
         {
-            if (gameName == null) return null;
-
             Resources.IncrementRequests();
 
-            var history = Resources.FingerprintCache.GetCachedFingerprintLogs(gameName);
-            return history;
+            return Resources.FingerprintCache.GetCachedFingerprintLogs(gameName);
         }
     }
 }
