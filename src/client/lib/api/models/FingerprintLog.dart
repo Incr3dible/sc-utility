@@ -2,13 +2,15 @@ class FingerprintLog {
   String sha;
   String version;
   int timestamp;
+  bool hasJson;
 
   FingerprintLog();
 
   FingerprintLog.fromJson(Map<String, dynamic> json)
       : sha = json["sha"],
         version = json["version"],
-        timestamp = json["timestamp"];
+        timestamp = json["timestamp"],
+        hasJson = json["hasJson"];
 
   int isNewer(String oldVersion) {
     var versionSplit = version.split('.');
