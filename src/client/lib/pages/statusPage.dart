@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:sc_utility/translationProvider.dart';
 import 'package:sc_utility/utils/flutterextentions.dart';
+import 'package:sc_utility/widgets/ExpansionListTile.dart';
 import '../resources.dart';
 import '../api/models/GameStatus.dart';
 import '../api/ApiClient.dart';
@@ -342,39 +343,41 @@ class StatusPageState extends State<StatusPage>
                         fontSize: 14, fontWeight: FontWeight.w600),
                   ),
                 ),
-                ListTile(
-                  leading: Icon(
-                    Icons.brightness_1,
-                    color: statusColor,
-                  ),
-                  title: const Text("Status"),
-                  subtitle: Text(statusName),
-                  /*trailing: IconButton(
+                ExpansionListTile(
+                    leading: Icon(
+                      Icons.brightness_1,
+                      color: statusColor,
+                    ),
+                    title: const Text("Status"),
+                    subtitle: Text(statusName),
+                    /*trailing: IconButton(
                     icon: Icon(Icons.report),
                     onPressed: () {},
                   ),*/
-                ),
-                status.latestFingerprintVersion == "unknown"
-                    ? SizedBox.shrink()
-                    : ListTile(
-                        trailing: Builder(
-                          builder: (context) => IconButton(
-                            icon: const Icon(Icons.history),
-                            onPressed: () {
-                              Navigator.push(
-                                  context,
-                                  new MaterialPageRoute(
-                                      builder: (BuildContext context) =>
-                                          new ChangelogPage(status.gameName)));
-                            },
-                          ),
-                        ),
-                        leading: const Icon(
-                          Icons.fingerprint,
-                        ),
-                        title: Text(status.latestFingerprintVersion),
-                        subtitle: Text(status.latestFingerprintSha),
-                      )
+                    children: status.latestFingerprintVersion == "unknown"
+                        ? null
+                        : [
+                            ListTile(
+                              trailing: Builder(
+                                builder: (context) => IconButton(
+                                  icon: const Icon(Icons.history),
+                                  onPressed: () {
+                                    Navigator.push(
+                                        context,
+                                        new MaterialPageRoute(
+                                            builder: (BuildContext context) =>
+                                                new ChangelogPage(
+                                                    status.gameName)));
+                                  },
+                                ),
+                              ),
+                              leading: const Icon(
+                                Icons.fingerprint,
+                              ),
+                              title: Text(status.latestFingerprintVersion),
+                              subtitle: Text(status.latestFingerprintSha),
+                            )
+                          ]),
               ],
             )),
       ),

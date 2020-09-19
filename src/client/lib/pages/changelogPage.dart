@@ -214,15 +214,17 @@ class ChangelogPageState extends State<ChangelogPage>
       builder: (BuildContext context) => ListTile(
         title: Text(log.sha),
         subtitle: Text(dateString),
-        onLongPress: () {
-          setState(() {
-            if (!compareModeOn) {
-              compareList.clear();
-              compareList.add(log);
-              compareModeOn = true;
-            }
-          });
-        },
+        onLongPress: log.hasJson
+            ? () {
+                setState(() {
+                  if (!compareModeOn) {
+                    compareList.clear();
+                    compareList.add(log);
+                    compareModeOn = true;
+                  }
+                });
+              }
+            : null,
         onTap: () {
           setState(() {
             if (compareList.contains(log)) {
@@ -231,35 +233,38 @@ class ChangelogPageState extends State<ChangelogPage>
           });
         },
         trailing: compareModeOn
-            ? Checkbox(
-                onChanged: compareList.length == 2 && !compareList.contains(log)
-                    ? null
-                    : (bool value) {
-                        setState(() {
-                          if (value) {
-                            compareList.add(log);
+            ? log.hasJson
+                ? Checkbox(
+                    onChanged:
+                        compareList.length == 2 && !compareList.contains(log)
+                            ? null
+                            : (bool value) {
+                                setState(() {
+                                  if (value) {
+                                    compareList.add(log);
 
-                            if (compareList.length == 2) {
-                              Navigator.push(
-                                context,
-                                new MaterialPageRoute(
-                                  builder: (BuildContext context) =>
-                                      new FingerprintComparePage(
-                                          compareList, gameName),
-                                ),
-                              );
+                                    if (compareList.length == 2) {
+                                      Navigator.push(
+                                        context,
+                                        new MaterialPageRoute(
+                                          builder: (BuildContext context) =>
+                                              new FingerprintComparePage(
+                                                  compareList, gameName),
+                                        ),
+                                      );
 
-                              setState(() {
-                                compareModeOn = false;
-                              });
-                            }
-                          } else {
-                            compareList.remove(log);
-                          }
-                        });
-                      },
-                value: compareList.contains(log),
-              )
+                                      setState(() {
+                                        compareModeOn = false;
+                                      });
+                                    }
+                                  } else {
+                                    compareList.remove(log);
+                                  }
+                                });
+                              },
+                    value: compareList.contains(log),
+                  )
+                : null
             : IconButton(
                 icon: const Icon(Icons.content_copy),
                 onPressed: () {

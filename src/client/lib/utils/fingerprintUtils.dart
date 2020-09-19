@@ -52,13 +52,11 @@ class FingerprintUtils {
 
   static Future<Fingerprint> downloadFingerprint(
       FingerprintLog log, String gameName) async {
-    var fingerprintJson = log.hasJson
-        ? await http.get("https://api.incinc.xyz/fingerprint?gameName=" +
+    var fingerprintJson = await http.get(
+        "https://api.incinc.xyz/fingerprint?gameName=" +
             gameName +
             "&sha=" +
-            log.sha)
-        : await http
-            .get(getAssetHostByName(gameName) + log.sha + "/fingerprint.json");
+            log.sha);
 
     if (fingerprintJson.statusCode == 200)
       return Fingerprint.fromJson(json.decode(fingerprintJson.body));
