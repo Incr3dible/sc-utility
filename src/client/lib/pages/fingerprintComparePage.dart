@@ -116,7 +116,7 @@ class FingerprintComparePageState extends State<FingerprintComparePage>
             icon: Icon(Icons.info),
             onPressed: () {
               FlutterExtensions.showPopupDialog(context, "Info",
-                  "Long press on a csv file entry to view it.");
+                  TranslationProvider.get("TID_FILE_VIEW_DESC"));
             },
           )
         ],
@@ -130,13 +130,17 @@ class FingerprintComparePageState extends State<FingerprintComparePage>
           ? const Center(
               child: CircularProgressIndicator(),
             )
-          : TabBarView(
-              controller: controller,
-              children: <Widget>[
-                buildList(addedFiles, Colors.green[400]),
-                buildList(changedFiles, Colors.orange),
-                buildList(removedFiles, Colors.red[400])
-              ],
+          : Builder(
+              builder: (BuildContext context) {
+                return TabBarView(
+                  controller: controller,
+                  children: <Widget>[
+                    buildList(addedFiles, Colors.green[400], context),
+                    buildList(changedFiles, Colors.orange, context),
+                    buildList(removedFiles, Colors.red[400], context)
+                  ],
+                );
+              },
             ),
     );
   }
@@ -145,7 +149,7 @@ class FingerprintComparePageState extends State<FingerprintComparePage>
     downloadFingerprints();
   }
 
-  Widget buildList(List<AssetFile> files, Color color) {
+  Widget buildList(List<AssetFile> files, Color color, BuildContext context) {
     if (files == null) {
       return buildConnectionError();
     }

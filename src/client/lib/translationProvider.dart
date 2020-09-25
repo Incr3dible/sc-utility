@@ -58,7 +58,9 @@ class TranslationProvider {
           "We are currently investigating problems or are updating the servers. Please try again later.",
       "TID_GLOBAL_LIVE_MODE": "Global Live Mode",
       "TID_GLOBAL_LIVE_MODE_DESC":
-          "Switch live mode on all devices (changes only on startup)"
+          "Switch live mode on all devices (changes only on startup)",
+      "TID_FILE_VIEW_DESC":
+          "Open a file by pressing the entry in the list\n\nSupported file types:\nCSV"
     },
     {
       "TID_SETTINGS": "Einstellungen",
@@ -117,7 +119,9 @@ class TranslationProvider {
           "Wir untersuchen derzeit Probleme oder aktualisieren die Server. Bitte versuche es später erneut.",
       "TID_GLOBAL_LIVE_MODE": "Globaler Live-Modus",
       "TID_GLOBAL_LIVE_MODE_DESC":
-          "Umschalten des Live-Modus auf allen Geräten (Änderungen nur beim Start der App)"
+          "Umschalten des Live-Modus auf allen Geräten (Änderungen nur beim Start der App)",
+      "TID_FILE_VIEW_DESC":
+          "Öffne eine Datei indem du länger auf den Eintrag in der Liste drückst\n\nUnterstützte Dateitypen:\nCSV"
     },
   };
 
