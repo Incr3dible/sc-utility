@@ -68,7 +68,6 @@ class MyAppState extends State<MyApp> {
         '/settings': (context) => SettingsPage(),
         '/event-finder': (context) => EventImageFinderPage(),
         '/event-gallery': (context) => EventGalleryPage(),
-        '/csv-test': (context) => CsvViewerPage(),
         '/dev-settings': (context) => DevSettingsPage()
       },
     );
@@ -191,15 +190,6 @@ class MainPageState extends State<MainPage> {
                       },
                     ),
                   ),
-                  /*CustomWidgets.roundedListTile(
-                    ListTile(
-                      leading: const Icon(Icons.table_chart),
-                      title: Text(TranslationProvider.get("TID_CSV")),
-                      onTap: () {
-                        Navigator.pushNamed(context, '/csv-test');
-                      },
-                    ),
-                  ),*/
                   /*CustomWidgets.roundedListTile(
                     ListTile(
                       leading: const Icon(Icons.web),

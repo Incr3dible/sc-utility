@@ -3,8 +3,10 @@ import 'package:flutter/services.dart';
 import 'package:sc_utility/api/models/AssetFile.dart';
 import 'package:sc_utility/api/models/Fingerprint.dart';
 import 'package:sc_utility/api/models/FingerprintLog.dart';
+import 'package:sc_utility/pages/csvViewerPage.dart';
 import 'package:sc_utility/translationProvider.dart';
 import 'package:sc_utility/utils/fingerprintUtils.dart';
+import 'package:sc_utility/utils/flutterextentions.dart';
 
 class FingerprintComparePage extends StatefulWidget {
   final List<FingerprintLog> logs;
@@ -108,6 +110,15 @@ class FingerprintComparePageState extends State<FingerprintComparePage>
     return Scaffold(
       appBar: AppBar(
         title: Text(TranslationProvider.get("TID_FINGERPRINT_COMPARISON")),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.info),
+            onPressed: () {
+              FlutterExtensions.showPopupDialog(context, "Info",
+                  "Long press on a csv file entry to view it.");
+            },
+          )
+        ],
         bottom: TabBar(
           controller: controller,
           isScrollable: false,
@@ -176,6 +187,23 @@ class FingerprintComparePageState extends State<FingerprintComparePage>
             ),
             title: Text(file.file),
             subtitle: Text(file.sha),
+            onLongPress: file.file.endsWith(".csv")
+                ? () {
+                    var assetUrl =
+                        FingerprintUtils.getAssetHostByName(gameName) +
+                            file.fingerprintSha +
+                            "/" +
+                            file.file;
+
+                    Navigator.push(
+                      context,
+                      new MaterialPageRoute(
+                        builder: (BuildContext context) =>
+                            new CsvViewerPage(assetUrl, file.file),
+                      ),
+                    );
+                  }
+                : null,
             trailing: IconButton(
               icon: const Icon(Icons.content_copy),
               onPressed: () {

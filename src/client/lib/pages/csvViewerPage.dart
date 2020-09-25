@@ -2,37 +2,48 @@ import 'dart:convert';
 import 'dart:typed_data';
 import 'package:csv/csv.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:sc_utility/compression/lzma/lzma.dart';
 import 'package:sc_utility/helpers/reader.dart';
+import 'package:http/http.dart' as http;
 
 class CsvViewerPage extends StatefulWidget {
+  final String csvUrl;
+  final String fileName;
+
+  CsvViewerPage(this.csvUrl, this.fileName);
+
   @override
   CsvViewerPageState createState() => CsvViewerPageState();
 }
 
 class CsvViewerPageState extends State<CsvViewerPage> {
   List<List<dynamic>> table;
+  bool loading = true;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("CSV Viewer"),
-        actions: [
-          IconButton(
-            onPressed: decompressCsv,
-            icon: Icon(Icons.play_arrow),
-          )
-        ],
+        title: Text(widget.fileName),
       ),
-      body: buildDataTable(),
+      body: loading
+          ? Center(
+              child: CircularProgressIndicator(),
+            )
+          : buildDataTable(),
     );
   }
 
-  void decompressCsv() async {
+  @override
+  void initState(){
+    super.initState();
+
+    decompressCsv();
+  }
+
+  Future<void> decompressCsv() async {
     print("Loading file...");
-    var compressed = await rootBundle.load("assets/csv/wo-sign.csv");
+    var compressed = await downloadCsv(widget.csvUrl);
     var reader = new Reader(compressed.buffer.asUint8List());
 
     if (reader.readStringByLength(4) == "Sig:") {
@@ -59,6 +70,19 @@ class CsvViewerPageState extends State<CsvViewerPage> {
     });
 
     print("Done!");
+
+    setState(() {
+      loading = false;
+    });
+  }
+
+  static Future<Uint8List> downloadCsv(String url) async {
+    var request = await http.get(url);
+
+    if (request.statusCode == 200)
+      return request.bodyBytes;
+    else
+      return null;
   }
 
   Widget buildDataTable() {
@@ -80,8 +104,9 @@ class CsvViewerPageState extends State<CsvViewerPage> {
                       cells:
                           e.map((c) => DataCell(Text(c.toString()))).toList()))
                   .toList(),
-              columns:
-                  table.first.map((e) => DataColumn(label: Text(e))).toList(),
+              columns: table.first
+                  .map((e) => DataColumn(label: Text(e.toString())))
+                  .toList(),
             ),
           ),
         ),

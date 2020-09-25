@@ -13,6 +13,7 @@ class FingerprintUtils {
       if (newFingerprint.files.indexWhere((element) =>
               element.file == file.file && element.sha != file.sha) >
           -1) {
+        file.fingerprintSha = newFingerprint.sha;
         changedFiles.add(file);
       }
     });
@@ -28,6 +29,7 @@ class FingerprintUtils {
       if (oldFingerprint.files
               .indexWhere((element) => element.file == file.file) ==
           -1) {
+        file.fingerprintSha = newFingerprint.sha;
         addedFiles.add(file);
       }
     });
@@ -43,6 +45,7 @@ class FingerprintUtils {
       if (newFingerprint.files
               .indexWhere((element) => element.file == file.file) ==
           -1) {
+        file.fingerprintSha = oldFingerprint.sha;
         removedFiles.add(file);
       }
     });
