@@ -12,6 +12,7 @@ namespace SupercellUilityApi.Core
         [JsonPropertyName("mysql_server")] public string MySqlServer { get; set; }
         [JsonPropertyName("mysql_user")] public string MySqlUserId { get; set; }
         [JsonPropertyName("maintenance")] public bool Maintenance { get; set; }
+        [JsonPropertyName("globalLiveMode")] public bool GlobalLiveMode { get; set; }
         [JsonPropertyName("dev_token")] public string DevToken { get; set; }
 
         /// <summary>
@@ -31,6 +32,7 @@ namespace SupercellUilityApi.Core
 
                     DevToken = config.DevToken;
                     Maintenance = config.Maintenance;
+                    GlobalLiveMode = config.GlobalLiveMode;
                 }
                 catch (Exception)
                 {
@@ -66,6 +68,7 @@ namespace SupercellUilityApi.Core
                 MySqlServer = "127.0.0.1";
                 MySqlUserId = "root";
                 Maintenance = false;
+                GlobalLiveMode = false;
                 DevToken = "your_dev_token_please_change_it"; 
             }
 

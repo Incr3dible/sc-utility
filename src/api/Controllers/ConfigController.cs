@@ -10,9 +10,12 @@ namespace SupercellUilityApi.Controllers
         [HttpGet]
         public ApiConfig Get()
         {
+            var config = Resources.Configuration;
+
             return new ApiConfig
             {
-                Maintenance = Resources.Configuration.Maintenance
+                Maintenance = config.Maintenance,
+                GlobalLiveMode = config.GlobalLiveMode
             };
         }
 
@@ -25,6 +28,7 @@ namespace SupercellUilityApi.Controllers
                 return Unauthorized();
 
             config.Maintenance = value.Maintenance;
+            config.GlobalLiveMode = value.GlobalLiveMode;
             config.Save();
 
             return Ok();

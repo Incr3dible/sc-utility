@@ -17,6 +17,7 @@ class DevSettingsPageState extends State<DevSettingsPage> {
   TextEditingController tokenController = new TextEditingController();
 
   bool maintenance = false;
+  bool globalLiveMode = false;
   bool obscureToken = true;
 
   @override
@@ -135,6 +136,28 @@ class DevSettingsPageState extends State<DevSettingsPage> {
                     : null,
               ),
             ),
+            ListTile(
+              enabled: settingsEnabled,
+              onTap: switchGlobalLiveMode,
+              leading: const Icon(
+                Icons.brightness_1,
+                color: Colors.red,
+              ),
+              title: Text(
+                TranslationProvider.get("TID_GLOBAL_LIVE_MODE"),
+              ),
+              subtitle: Text(
+                TranslationProvider.get("TID_GLOBAL_LIVE_MODE_DESC"),
+              ),
+              trailing: Switch(
+                value: globalLiveMode,
+                onChanged: settingsEnabled
+                    ? (value) {
+                        switchGlobalLiveMode();
+                      }
+                    : null,
+              ),
+            ),
           ],
         ),
       ),
@@ -148,6 +171,7 @@ class DevSettingsPageState extends State<DevSettingsPage> {
 
     var config = new ApiConfig();
     config.maintenance = maintenance;
+    config.globalLiveMode = globalLiveMode;
 
     var response = await ApiClient.saveApiConfig(tokenController.text, config);
 
@@ -176,6 +200,12 @@ class DevSettingsPageState extends State<DevSettingsPage> {
     });
   }
 
+  void switchGlobalLiveMode() {
+    setState(() {
+      globalLiveMode = !globalLiveMode;
+    });
+  }
+
   void saveDevToken() {
     var token = tokenController.text;
     resources.prefs.setString("devToken", token);
@@ -190,7 +220,8 @@ class DevSettingsPageState extends State<DevSettingsPage> {
 
     if (config != null) {
       setState(() {
-        maintenance = config.maintenance;
+        maintenance = config.maintenance ?? false;
+        globalLiveMode = config.globalLiveMode ?? false;
       });
     } else {
       FlutterExtensions.showPopupDialog(

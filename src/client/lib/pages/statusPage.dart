@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:sc_utility/api/models/ApiConfig.dart';
 import 'package:sc_utility/translationProvider.dart';
 import 'package:sc_utility/utils/flutterextentions.dart';
 import 'package:sc_utility/widgets/ExpansionListTile.dart';
@@ -41,7 +42,18 @@ class StatusPageState extends State<StatusPage>
 
     animationController.forward();
 
-    switchLiveMode();
+    prepare();
+  }
+
+  void prepare() async {
+    var config = await ApiClient.getApiConfig();
+    if (config != null) {
+      setState(() {
+        maintenance = config.maintenance;
+      });
+
+      if (config.globalLiveMode ?? false) switchLiveMode();
+    }
   }
 
   void handleStatusChanged(AnimationStatus status) {
@@ -53,11 +65,11 @@ class StatusPageState extends State<StatusPage>
   }
 
   void requestStatusList({bool showLoading = true}) async {
-    if (await isMaintenanceActive()) {
+    var config = await ApiClient.getApiConfig();
+    if (config != null) {
       setState(() {
-        maintenance = true;
+        maintenance = config.maintenance;
       });
-      return;
     } else
       setState(() {
         maintenance = false;
@@ -211,26 +223,13 @@ class StatusPageState extends State<StatusPage>
     );
   }
 
-  Future<bool> isMaintenanceActive() async {
-    var config = await ApiClient.getApiConfig();
-
-    if (config != null) {
-      return config.maintenance;
-    }
-
-    return false;
-  }
-
   void switchLiveMode() {
     if (liveModeOn) {
       statusTimer.cancel();
-      animationController.stop();
     } else {
       statusTimer = new Timer.periodic(Duration(seconds: 10), (timer) {
         requestStatusList(showLoading: false);
       });
-
-      animationController.forward();
     }
 
     setState(() {

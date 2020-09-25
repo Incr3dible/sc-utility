@@ -55,7 +55,10 @@ class TranslationProvider {
           "use the maintenance mode to inform users for an ongoing investigation or update",
       "TID_API_SETTINGS": "API Settings",
       "TID_API_MAINTENANCE_DESC":
-          "We are currently investigating problems or are updating the servers. Please try again later."
+          "We are currently investigating problems or are updating the servers. Please try again later.",
+      "TID_GLOBAL_LIVE_MODE": "Global Live Mode",
+      "TID_GLOBAL_LIVE_MODE_DESC":
+          "Switch live mode on all devices (changes only on startup)"
     },
     {
       "TID_SETTINGS": "Einstellungen",
@@ -111,7 +114,10 @@ class TranslationProvider {
           "den Wartungsmodus verwenden, um Benutzer für eine laufende Untersuchung oder Aktualisierung zu informieren",
       "TID_API_SETTINGS": "API Einstellungen",
       "TID_API_MAINTENANCE_DESC":
-          "Wir untersuchen derzeit Probleme oder aktualisieren die Server. Bitte versuche es später erneut."
+          "Wir untersuchen derzeit Probleme oder aktualisieren die Server. Bitte versuche es später erneut.",
+      "TID_GLOBAL_LIVE_MODE": "Globaler Live-Modus",
+      "TID_GLOBAL_LIVE_MODE_DESC":
+          "Umschalten des Live-Modus auf allen Geräten (Änderungen nur beim Start der App)"
     },
   };
 
