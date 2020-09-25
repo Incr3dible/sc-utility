@@ -7,6 +7,7 @@ import 'package:sc_utility/pages/csvViewerPage.dart';
 import 'package:sc_utility/translationProvider.dart';
 import 'package:sc_utility/utils/fingerprintUtils.dart';
 import 'package:sc_utility/utils/flutterextentions.dart';
+import 'package:sc_utility/widgets/ExpansionListTile.dart';
 
 class FingerprintComparePage extends StatefulWidget {
   final List<FingerprintLog> logs;
@@ -146,27 +147,7 @@ class FingerprintComparePageState extends State<FingerprintComparePage>
 
   Widget buildList(List<AssetFile> files, Color color) {
     if (files == null) {
-      return RefreshIndicator(
-          onRefresh: () {
-            return onRefresh(context);
-          },
-          child: ListView(
-            padding: const EdgeInsets.all(20),
-            children: <Widget>[
-              Column(
-                children: <Widget>[
-                  const Padding(
-                    padding: EdgeInsets.all(20),
-                    child: Icon(Icons.cloud_off),
-                  ),
-                  Text(
-                    TranslationProvider.get("TID_SWIPE_RETRY"),
-                    textAlign: TextAlign.center,
-                  )
-                ],
-              )
-            ],
-          ));
+      return buildConnectionError();
     }
 
     if (files?.length == 0) {
@@ -175,55 +156,87 @@ class FingerprintComparePageState extends State<FingerprintComparePage>
       );
     }
 
-    return ListView.builder(
-        padding: const EdgeInsets.only(top: 8, left: 5, right: 5),
-        itemCount: files.length,
-        itemBuilder: (BuildContext context, int index) {
-          var file = files.elementAt(index);
-          return ListTile(
-            leading: Icon(
-              Icons.insert_drive_file,
-              color: color,
-            ),
-            title: Text(file.file),
-            subtitle: Text(file.sha),
-            onLongPress: file.file.endsWith(".csv")
-                ? () {
-                    var assetUrl =
-                        FingerprintUtils.getAssetHostByName(gameName) +
-                            file.fingerprintSha +
-                            "/" +
-                            file.file;
+    var types = FingerprintUtils.getAllFiletypes(files);
 
-                    Navigator.push(
-                      context,
-                      new MaterialPageRoute(
-                        builder: (BuildContext context) =>
-                            new CsvViewerPage(assetUrl, file.file),
-                      ),
-                    );
-                  }
-                : null,
-            trailing: IconButton(
-              icon: const Icon(Icons.content_copy),
-              onPressed: () {
-                Clipboard.setData(ClipboardData(text: file.file));
+    return ListView(
+      children: types
+          .map((type) => ExpansionListTile(
+                title: Text(type.replaceAll(".", "").toUpperCase()),
+                leading: Text(files
+                        .where((element) => element.file.endsWith(type))
+                        .length
+                        .toString() +
+                    "x"),
+                children: files
+                    .where((element) => element.file.endsWith(type))
+                    .map((file) => ListTile(
+                          leading: Icon(
+                            Icons.insert_drive_file,
+                            color: color,
+                          ),
+                          title: Text(file.file),
+                          subtitle: Text(file.sha),
+                          onLongPress: file.file.endsWith(".csv")
+                              ? () {
+                                  Navigator.push(
+                                    context,
+                                    new MaterialPageRoute(
+                                      builder: (BuildContext context) =>
+                                          new CsvViewerPage(
+                                              file.getAssetUrl(gameName),
+                                              file.file),
+                                    ),
+                                  );
+                                }
+                              : null,
+                          trailing: IconButton(
+                            icon: const Icon(Icons.content_copy),
+                            onPressed: () {
+                              Clipboard.setData(ClipboardData(
+                                  text: file.getAssetUrl(gameName)));
 
-                Scaffold.of(context).showSnackBar(SnackBar(
-                  content: Row(
-                    children: [
-                      Container(
-                        child: const Icon(Icons.attach_file),
-                        padding: const EdgeInsets.all(5),
-                      ),
-                      const Text('Filename copied to clipboard')
-                    ],
-                  ),
-                  duration: const Duration(seconds: 1),
-                ));
-              },
-            ),
-          );
-        });
+                              Scaffold.of(context).showSnackBar(SnackBar(
+                                content: Row(
+                                  children: [
+                                    Container(
+                                      child: const Icon(Icons.link),
+                                      padding: const EdgeInsets.all(5),
+                                    ),
+                                    const Text('URL copied to clipboard')
+                                  ],
+                                ),
+                                duration: const Duration(seconds: 1),
+                              ));
+                            },
+                          ),
+                        ))
+                    .toList(),
+              ))
+          .toList(),
+    );
+  }
+
+  Widget buildConnectionError() {
+    return RefreshIndicator(
+        onRefresh: () {
+          return onRefresh(context);
+        },
+        child: ListView(
+          padding: const EdgeInsets.all(20),
+          children: <Widget>[
+            Column(
+              children: <Widget>[
+                const Padding(
+                  padding: EdgeInsets.all(20),
+                  child: Icon(Icons.cloud_off),
+                ),
+                Text(
+                  TranslationProvider.get("TID_SWIPE_RETRY"),
+                  textAlign: TextAlign.center,
+                )
+              ],
+            )
+          ],
+        ));
   }
 }

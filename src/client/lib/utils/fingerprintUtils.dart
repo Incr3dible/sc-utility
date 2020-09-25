@@ -67,6 +67,18 @@ class FingerprintUtils {
       return null;
   }
 
+  static List<String> getAllFiletypes(List<AssetFile> files) {
+    var types = List<String>();
+
+    files.forEach((element) {
+      var type = "." + element.file.split(".").last;
+
+      if (!types.contains(type)) types.add(type);
+    });
+
+    return types;
+  }
+
   static String getAssetHostByName(String gameName) {
     switch (gameName) {
       case "Clash Royale":
