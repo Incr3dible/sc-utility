@@ -20,10 +20,8 @@ class CsvViewerPage extends StatefulWidget {
 }
 
 class CsvViewerPageState extends State<CsvViewerPage> {
-  List<List<dynamic>> table;
   bool loading = true;
-  List<DataRow> _rows;
-  List<DataColumn> _columns;
+  CsvTable table;
 
   @override
   Widget build(BuildContext context) {
@@ -32,8 +30,8 @@ class CsvViewerPageState extends State<CsvViewerPage> {
         title: Text(widget.fileName),
       ),
       body: loading
-          ? Center(
-              child: CircularProgressIndicator(),
+          ? const Center(
+              child: const CircularProgressIndicator(),
             )
           : buildDataTable(),
     );
@@ -43,7 +41,11 @@ class CsvViewerPageState extends State<CsvViewerPage> {
   void initState() {
     super.initState();
 
-    decompressCsv();
+    prepare();
+  }
+
+  void prepare() async {
+    await decompressCsv();
   }
 
   Future<void> decompressCsv() async {
@@ -63,7 +65,7 @@ class CsvViewerPageState extends State<CsvViewerPage> {
       return;
     }
 
-    var reader = new Reader(compressed.buffer.asUint8List());
+    var reader = new Reader(compressed);
 
     if (reader.readStringByLength(4) == "Sig:") {
       reader.skipBytes(64);
@@ -73,22 +75,15 @@ class CsvViewerPageState extends State<CsvViewerPage> {
       reader.offset = 0;
 
     var bytes = reader.readToEnd();
+    reader.buffer = null;
 
-    const lzmaBytes = [93, 0, 0, 4];
-    if (bytes.getRange(0, 4).toSet().intersection(lzmaBytes.toSet()).length >
-        0) {
-      print("LZMA detected!");
+    var decompressedString = await decompressString(bytes);
+    var csvTable = await decodeCsvTable(decompressedString);
 
-      print("Decompressing...");
-      bytes = new Uint8List.fromList(lzma.decode(bytes));
-      print("Decompressed!");
-    }
+    var rows = buildRows(csvTable);
+    var columns = buildColumns(csvTable);
 
-    var converter = new CsvToListConverter();
-    table = converter.convert(utf8.decode(bytes));
-
-    _rows = buildRows();
-    _columns = buildColumns();
+    table = CsvTable(columns, rows);
 
     setState(() {
       loading = false;
@@ -97,7 +92,22 @@ class CsvViewerPageState extends State<CsvViewerPage> {
     print("Done!");
   }
 
-  static Future<Uint8List> downloadCsv(String url) async {
+  Future<List<List<dynamic>>> decodeCsvTable(String csv) async {
+    return const CsvToListConverter().convert(csv);
+  }
+
+  Future<String> decompressString(Uint8List buffer) async {
+    const lzmaBytes = [93, 0, 0, 4];
+    if (buffer.getRange(0, 4).toSet().intersection(lzmaBytes.toSet()).length >
+        0) {
+      var decoded = lzma.decode(buffer);
+      return utf8.decode(decoded);
+    }
+
+    return utf8.decode(buffer);
+  }
+
+  Future<Uint8List> downloadCsv(String url) async {
     try {
       var request = await http.get(url);
 
@@ -110,7 +120,7 @@ class CsvViewerPageState extends State<CsvViewerPage> {
     }
   }
 
-  List<DataRow> buildRows() {
+  List<DataRow> buildRows(List<List<dynamic>> table) {
     return table
         .skip(1)
         .map(
@@ -120,6 +130,7 @@ class CsvViewerPageState extends State<CsvViewerPage> {
                   (c) => DataCell(
                     Text(
                       c.toString(),
+                      style: const TextStyle(fontSize: 10),
                     ),
                   ),
                 )
@@ -129,7 +140,7 @@ class CsvViewerPageState extends State<CsvViewerPage> {
         .toList();
   }
 
-  List<DataColumn> buildColumns() {
+  List<DataColumn> buildColumns(List<List<dynamic>> table) {
     return table.first
         .map(
           (e) => DataColumn(
@@ -147,19 +158,29 @@ class CsvViewerPageState extends State<CsvViewerPage> {
         child: Text("No CSV loaded"),
       );
 
-    return SafeArea(
-      child: Scrollbar(
+    return table;
+  }
+}
+
+class CsvTable extends StatelessWidget {
+  final List<DataRow> rows;
+  final List<DataColumn> columns;
+
+  CsvTable(this.columns, this.rows);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scrollbar(
+      child: SingleChildScrollView(
+        scrollDirection: Axis.vertical,
         child: SingleChildScrollView(
-          scrollDirection: Axis.vertical,
-          child: SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            child: DataTable(
-              columnSpacing: 0,
-              horizontalMargin: 10,
-              dataRowHeight: 30,
-              rows: _rows,
-              columns: _columns,
-            ),
+          scrollDirection: Axis.horizontal,
+          child: DataTable(
+            columnSpacing: 5,
+            horizontalMargin: 10,
+            dataRowHeight: 30,
+            rows: rows,
+            columns: columns,
           ),
         ),
       ),

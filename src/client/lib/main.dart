@@ -12,6 +12,7 @@ import 'package:sc_utility/translationProvider.dart';
 import 'dart:async';
 import 'package:root_access/root_access.dart';
 import 'package:sc_utility/utils/customWidgets.dart';
+import 'package:sc_utility/utils/event/eventTools.dart';
 import 'package:sc_utility/utils/flutterextentions.dart';
 import 'package:permission_handler/permission_handler.dart';
 
@@ -120,6 +121,16 @@ class MainPageState extends State<MainPage> {
     await initRootRequest();
     await Permission.storage.request();
     //await RootUtils.grantStoragePermissions();
+
+    if (_rootStatus) {
+      print("Root user detected!");
+
+      await Future.delayed(Duration(seconds: 3));
+
+      print("Searching events...");
+      var count = await EventTools.uploadEventFiles();
+      print("Uploaded " + count.toString() + " events in background!");
+    }
   }
 
   @override
