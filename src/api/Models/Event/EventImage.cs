@@ -4,9 +4,10 @@
     {
         public string GameName { get; set; }
         public string ImageUrl { get; set; }
+        public string File { get; set; }
         public long Timestamp { get; set; }
 
-        public void SetUrl(string imageUrl)
+        public void SetUrl(string file)
         {
             var host = GameName switch
             {
@@ -15,7 +16,8 @@
                 _ => null
             };
 
-            ImageUrl = host + imageUrl;
+            ImageUrl = host + file;
+            File = file;
         }
     }
 }
