@@ -22,6 +22,17 @@ class CustomWebViewPageState extends State<CustomWebViewPage> {
   CustomWebViewPageState(this.url, this.name);
 
   @override
+  void initState(){
+    super.initState();
+
+    flutterWebViewPlugin.onUrlChanged.listen((url) {
+      setState(() {
+        this.url = url;
+      });
+    });
+  }
+
+  @override
   void dispose() async {
     super.dispose();
 

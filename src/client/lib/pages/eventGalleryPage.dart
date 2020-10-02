@@ -271,7 +271,7 @@ class EventGalleryPageState extends State<EventGalleryPage>
                 padding: const EdgeInsets.all(10),
                 sliver: SliverGrid.count(
                     mainAxisSpacing: 1,
-                    childAspectRatio: 3 / 2,
+                    childAspectRatio: 1.5,
                     crossAxisSpacing: 5,
                     crossAxisCount:
                         mediaQuery.orientation == Orientation.portrait ? 2 : 4,
@@ -300,7 +300,7 @@ class ImageViewState extends State<ImageView> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          image.imageUrl.split(".com/")[1],
+          image.file,
           overflow: TextOverflow.fade,
         ),
         actions: <Widget>[

@@ -7,6 +7,7 @@ class RoundedListTile extends StatelessWidget {
   final Widget leading;
   final bool enabled;
   final Function onTap;
+  final Function onLongPress;
 
   RoundedListTile(
       {this.trailing,
@@ -14,7 +15,8 @@ class RoundedListTile extends StatelessWidget {
       this.subtitle,
       this.leading,
       this.enabled,
-      this.onTap});
+      this.onTap,
+      this.onLongPress});
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +35,8 @@ class RoundedListTile extends StatelessWidget {
             subtitle: subtitle,
             leading: leading,
             enabled: enabled ?? true,
-            onTap: onTap),
+            onTap: onTap,
+            onLongPress: onLongPress),
       ),
     );
   }

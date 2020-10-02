@@ -191,7 +191,7 @@ class ChangelogPageState extends State<ChangelogPage>
                 ],
               )
             : ListView.builder(
-                padding: const EdgeInsets.only(top: 8, left: 5, right: 5),
+                padding: const EdgeInsets.only(top: 8),
                 itemCount: logs.length,
                 itemBuilder: (BuildContext context, int index) {
                   var item = logs.elementAt(index);
