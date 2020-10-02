@@ -118,7 +118,7 @@ namespace SupercellUilityApi.Core.Manager
             }
 
             // Content Update is new and fingerprint is given
-            if (statusCode == (int) Enums.Status.Content && json != null)
+            if (statusCode == (int) Enums.Status.Content && !string.IsNullOrEmpty(json))
             {
                 var fingerprint = JsonSerializer.Deserialize<Fingerprint>(json);
 

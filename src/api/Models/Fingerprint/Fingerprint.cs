@@ -8,7 +8,5 @@ namespace SupercellUilityApi.Models
         [JsonPropertyName("files")] public List<AssetFile> Files { get; set; }
         [JsonPropertyName("sha")] public string Sha { get; set; }
         [JsonPropertyName("version")] public string Version { get; set; }
-
-
     }
 }

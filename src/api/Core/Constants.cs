@@ -10,7 +10,7 @@
         /// <summary>
         ///     The interval in which the games are checked (seconds)
         /// </summary>
-        public const int StatusCheckInterval = 5;
+        public const int StatusCheckInterval = 8;
 
         /// <summary>
         /// Games where event images are stored
