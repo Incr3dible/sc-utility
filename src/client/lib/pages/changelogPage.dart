@@ -213,7 +213,7 @@ class ChangelogPageState extends State<ChangelogPage>
     return Builder(
       builder: (BuildContext context) => ListTile(
         title: Text(log.sha),
-        subtitle: Text(dateString),
+        subtitle: Text(dateString + " - " + log.version),
         onLongPress: log.hasJson
             ? () {
                 setState(() {

@@ -1,4 +1,4 @@
-class GameStatus{
+class GameStatus {
   String gameName;
   int status;
   String latestFingerprintSha;

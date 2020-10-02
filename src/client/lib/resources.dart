@@ -86,7 +86,7 @@ class Resources {
     return prefs.getString("sha") ?? "unknown";
   }
 
-  String devToken(){
+  String devToken() {
     return prefs.getString("devToken") ?? "";
   }
 

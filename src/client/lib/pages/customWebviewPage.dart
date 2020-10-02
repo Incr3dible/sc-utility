@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
-import 'package:sc_utility/resources.dart';
 import 'package:sc_utility/utils/flutterextentions.dart';
 
 class CustomWebViewPage extends StatefulWidget {
@@ -22,7 +21,7 @@ class CustomWebViewPageState extends State<CustomWebViewPage> {
   CustomWebViewPageState(this.url, this.name);
 
   @override
-  void initState(){
+  void initState() {
     super.initState();
 
     flutterWebViewPlugin.onUrlChanged.listen((url) {

@@ -83,14 +83,13 @@ class RootUtils {
   static Future<void> grantStoragePermissions() async {
     await _channel.invokeMethod('executeRootCommand', <String, dynamic>{
       'args':
-      'pm grant com.tamedia.sc_utility android.permission.READ_EXTERNAL_STORAGE',
+          'pm grant com.tamedia.sc_utility android.permission.READ_EXTERNAL_STORAGE',
     });
   }
 
   static Future<void> startApp(String package) async {
     await _channel.invokeMethod('executeRootCommand', <String, dynamic>{
-      'args':
-      'monkey -p $package -v 1',
+      'args': 'monkey -p $package -v 1',
     });
   }
 }

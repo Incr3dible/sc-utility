@@ -54,7 +54,9 @@ class Base {
   static const int kMatchMinLen = 2;
 
   static int getLenToPosState(int len) =>
-     len - kMatchMinLen < kNumLenToPosStates ? len - kMatchMinLen : kNumLenToPosStates - 1;
+      len - kMatchMinLen < kNumLenToPosStates
+          ? len - kMatchMinLen
+          : kNumLenToPosStates - 1;
 
   static const int kNumAlignBits = 4;
   static const int kAlignTableSize = 1 << kNumAlignBits;

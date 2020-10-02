@@ -1,4 +1,4 @@
-class SupercellUtil{
+class SupercellUtil {
   static bool validateTag(String tag) {
     if (tag.length > 30 && tag.length < 3) return false;
 

@@ -46,7 +46,7 @@ class MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    Color themeColor = Colors.green;
+    const Color themeColor = Colors.green;
 
     return MaterialApp(
       title: title,
@@ -100,26 +100,12 @@ class MainPageState extends State<MainPage> {
       setState(() {
         isLoading = false;
       });
-
-      /*FlutterExtensions.showPopupDialogWithActionAndCancel(
-          context,
-          "Root error",
-          "Root is required for this app, please make sure you give this app root access.",
-          "Try again",
-          () => {
-                initRootRequest(),
-                setState(() {
-                  isLoading = false;
-                })
-              },
-          false);*/
     }
   }
 
   void prepare() async {
     await initRootRequest();
     await Permission.storage.request();
-    //await RootUtils.grantStoragePermissions();
 
     if (_rootStatus) {
       print("Root user detected!");

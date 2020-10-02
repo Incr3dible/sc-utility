@@ -25,22 +25,22 @@ class Reader {
     if (offset + 4 > length) return -1;
 
     return buffer[offset++] << 24 |
-    buffer[offset++] << 16 |
-    buffer[offset++] << 8 |
-    buffer[offset++];
+        buffer[offset++] << 16 |
+        buffer[offset++] << 8 |
+        buffer[offset++];
   }
 
   int readInt64() {
     if (offset + 8 > length) return -1;
 
     return buffer[offset++] << 56 |
-    buffer[offset++] << 48 |
-    buffer[offset++] << 40 |
-    buffer[offset++] << 32 |
-    buffer[offset++] << 24 |
-    buffer[offset++] << 16 |
-    buffer[offset++] << 8 |
-    buffer[offset++];
+        buffer[offset++] << 48 |
+        buffer[offset++] << 40 |
+        buffer[offset++] << 32 |
+        buffer[offset++] << 24 |
+        buffer[offset++] << 16 |
+        buffer[offset++] << 8 |
+        buffer[offset++];
   }
 
   String readString() {
@@ -108,9 +108,9 @@ class Reader {
     var val = (b & 0x80) != 0
         ? -1
         : i |
-    (sign == 1 && offset < 32
-        ? i | 0x7FFFFFFF & (0xFFFFFFFF << offset)
-        : i);
+            (sign == 1 && offset < 32
+                ? i | 0x7FFFFFFF & (0xFFFFFFFF << offset)
+                : i);
     return val == 0x7FFFFFFF ? -1 : val;
   }
 
