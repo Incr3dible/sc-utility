@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:sc_utility/pages/csvViewerPage.dart';
 import 'package:sc_utility/pages/customWebviewPage.dart';
 import 'package:sc_utility/pages/devSettingsPage.dart';
 import 'package:sc_utility/pages/eventGalleryPage.dart';
@@ -11,10 +10,10 @@ import 'package:sc_utility/resources.dart';
 import 'package:sc_utility/translationProvider.dart';
 import 'dart:async';
 import 'package:root_access/root_access.dart';
-import 'package:sc_utility/utils/customWidgets.dart';
 import 'package:sc_utility/utils/event/eventTools.dart';
 import 'package:sc_utility/utils/flutterextentions.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:sc_utility/widgets/RoundedListTile.dart';
 
 bool _rootStatus = false;
 String title = 'Supercell-Utility';
@@ -192,51 +191,36 @@ class MainPageState extends State<MainPage> {
                         Text(TranslationProvider.get("TID_OPEN_SOURCE_DESC")),
                     accountName: Text(title),
                   ),
-                  CustomWidgets.roundedListTile(
-                    ListTile(
-                      leading: const Icon(Icons.collections),
-                      title: Text(TranslationProvider.get("TID_EVENT_GALLERY")),
-                      onTap: () {
-                        Navigator.pushNamed(context, '/event-gallery');
-                      },
-                    ),
+                  RoundedListTile(
+                    leading: const Icon(Icons.collections),
+                    title: Text(TranslationProvider.get("TID_EVENT_GALLERY")),
+                    onTap: () {
+                      Navigator.pushNamed(context, '/event-gallery');
+                    },
                   ),
-                  /*CustomWidgets.roundedListTile(
-                    ListTile(
-                      leading: const Icon(Icons.web),
-                      title: Text("News"),
-                      onTap: () {
-
-                      },
+                  RoundedListTile(
+                    enabled: _rootStatus,
+                    title: Text(
+                      'Event Compass (ROOT)',
                     ),
-                  ),*/
-                  CustomWidgets.roundedListTile(
-                    ListTile(
-                      enabled: _rootStatus,
-                      title: Text(
-                        'Event Compass (ROOT)',
-                      ),
-                      leading: const Icon(
-                        Icons.cloud_upload,
-                      ),
-                      onTap: () {
-                        Navigator.pushNamed(context, '/event-finder');
-                      },
+                    leading: const Icon(
+                      Icons.cloud_upload,
                     ),
+                    onTap: () {
+                      Navigator.pushNamed(context, '/event-finder');
+                    },
                   ),
-                  CustomWidgets.roundedListTile(
-                    ListTile(
-                      title: Text(
-                        TranslationProvider.get("TID_SETTINGS"),
-                      ),
-                      leading: const Icon(
-                        Icons.settings,
-                      ),
-                      onTap: () {
-                        Navigator.pushNamed(context, '/settings');
-                      },
-                      enabled: true,
+                  RoundedListTile(
+                    title: Text(
+                      TranslationProvider.get("TID_SETTINGS"),
                     ),
+                    leading: const Icon(
+                      Icons.settings,
+                    ),
+                    onTap: () {
+                      Navigator.pushNamed(context, '/settings');
+                    },
+                    enabled: true,
                   ),
                 ],
               ),
