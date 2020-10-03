@@ -180,7 +180,7 @@ class ChangelogPageState extends State<ChangelogPage>
                     children: <Widget>[
                       const Padding(
                         padding: EdgeInsets.all(20),
-                        child: Icon(Icons.cloud_off),
+                        child: const Icon(Icons.cloud_off),
                       ),
                       Text(
                         TranslationProvider.get("TID_SWIPE_RETRY"),
@@ -244,6 +244,7 @@ class ChangelogPageState extends State<ChangelogPage>
                                     compareList.add(log);
 
                                     if (compareList.length == 2) {
+                                      Navigator.pop(context);
                                       Navigator.push(
                                         context,
                                         new MaterialPageRoute(

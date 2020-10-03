@@ -83,14 +83,19 @@ class SettingsState extends State<SettingsPage> {
           title: Text(TranslationProvider.get("TID_SETTINGS")),
           actions: [
             PopupMenuButton<int>(
+              padding: EdgeInsets.zero,
               onSelected: (value) {
+                Navigator.pop(context);
                 Navigator.pushNamed(context, '/dev-settings');
               },
               itemBuilder: (context) => [
                 PopupMenuItem(
                   value: 0,
-                  child: Text(
-                    TranslationProvider.get("TID_DEV_SETTINGS"),
+                  child: ListTile(
+                    leading: Icon(Icons.developer_board),
+                    title: Text(
+                      TranslationProvider.get("TID_DEV_SETTINGS"),
+                    ),
                   ),
                 ),
               ],

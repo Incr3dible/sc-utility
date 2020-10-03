@@ -264,20 +264,24 @@ class EventGalleryPageState extends State<EventGalleryPage>
               )
             ],
           )
-        : CustomScrollView(
-            primary: false,
-            slivers: <Widget>[
-              SliverPadding(
-                padding: const EdgeInsets.all(10),
-                sliver: SliverGrid.count(
-                    mainAxisSpacing: 1,
-                    childAspectRatio: 1.5,
-                    crossAxisSpacing: 5,
-                    crossAxisCount:
-                        mediaQuery.orientation == Orientation.portrait ? 2 : 4,
-                    children: images),
-              ),
-            ],
+        : Scrollbar(
+            child: CustomScrollView(
+              primary: false,
+              slivers: <Widget>[
+                SliverPadding(
+                  padding: const EdgeInsets.all(10),
+                  sliver: SliverGrid.count(
+                      mainAxisSpacing: 1,
+                      childAspectRatio: 1.5,
+                      crossAxisSpacing: 5,
+                      crossAxisCount:
+                          mediaQuery.orientation == Orientation.portrait
+                              ? 2
+                              : 4,
+                      children: images),
+                ),
+              ],
+            ),
           );
   }
 }
