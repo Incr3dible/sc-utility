@@ -1,3 +1,4 @@
+import 'package:firebase_admob/firebase_admob.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:package_info/package_info.dart';
@@ -45,6 +46,12 @@ class Resources {
     if (prefs.getBool("notifications") ?? true) {
       firebaseMessaging.subscribeToTopic("everyone");
     }
+
+    /*await FirebaseAdMob.instance
+        .initialize(appId: "ca-app-pub-1062335961447258~1282086109");*/
+
+    /*await RewardedVideoAd.instance
+        .load(adUnitId: "ca-app-pub-1062335961447258/6563506409");*/
 
     packageInfo = await PackageInfo.fromPlatform();
 

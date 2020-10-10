@@ -21,6 +21,9 @@
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_icon"
             android:resource="@drawable/ic_stat_name" />
+        <meta-data
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="ca-app-pub-1062335961447258~1282086109"/>
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"

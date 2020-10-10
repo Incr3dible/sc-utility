@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:sc_utility/api/models/ApiConfig.dart';
 import 'package:sc_utility/translationProvider.dart';
 import 'package:sc_utility/utils/flutterextentions.dart';
 import 'package:sc_utility/widgets/ExpansionListTile.dart';
@@ -9,6 +8,7 @@ import '../resources.dart';
 import '../api/models/GameStatus.dart';
 import '../api/ApiClient.dart';
 import 'changelogPage.dart';
+import 'package:firebase_admob/firebase_admob.dart';
 
 class StatusPage extends StatefulWidget {
   @override
@@ -54,6 +54,29 @@ class StatusPageState extends State<StatusPage>
 
       if (config.globalLiveMode ?? false) switchLiveMode();
     }
+
+    /*BannerAd banner = BannerAd(
+      adUnitId: "ca-app-pub-1062335961447258/1250296518",
+      size: AdSize.smartBanner,
+      listener: (MobileAdEvent event) {
+        print("BannerAd event is $event");
+      },
+    );
+
+    await banner.load();
+
+    if (await banner.isLoaded()) {
+      banner
+        ..show(
+          // Positions the banner ad 60 pixels from the bottom of the screen
+          anchorOffset: 60.0,
+          // Positions the banner ad 10 pixels from the center of the screen to the right
+          horizontalCenterOffset: 10.0,
+          anchorType: AnchorType.bottom,
+        );
+
+      print("Showing ad");
+    }*/
   }
 
   void handleStatusChanged(AnimationStatus status) {
@@ -128,13 +151,10 @@ class StatusPageState extends State<StatusPage>
                         )
                       : gameList.length == 0
                           ? buildConnectionError()
-                          : ListView.builder(
+                          : ListView(
                               padding: const EdgeInsets.only(left: 5, right: 5),
-                              itemCount: gameList.length,
-                              itemBuilder: (BuildContext context, int index) {
-                                return buildGameStatus(
-                                    gameList.elementAt(index));
-                              },
+                              children: []..addAll(gameList
+                                  .map((game) => buildGameStatus(game))),
                             ),
                 ),
               ],
