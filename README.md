@@ -1,4 +1,5 @@
 # SC-Utility 
+## The API and APP was discontinued on 12/04/20.
 checkout the latest [release](https://github.com/Incr3dible/sc-utility/releases)
 
 <p align="center">
